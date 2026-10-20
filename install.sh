@@ -38,6 +38,7 @@ echo "==> Criando links das convenções"
 echo "==> Instalando skills"
 
 install_dir "$ROOT/net"
+install_dir "$ROOT/refinamento"
 install_dir "$ROOT/meta-skills"
 
 echo "==> Concluído: ${#installed[@]} link(s) criado(s)"
