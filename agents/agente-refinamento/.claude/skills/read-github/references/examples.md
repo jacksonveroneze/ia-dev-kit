@@ -1,4 +1,4 @@
-# Exemplos: ler-github
+# Exemplos: read-github
 
 Valores fictícios. Nunca copie literalmente.
 

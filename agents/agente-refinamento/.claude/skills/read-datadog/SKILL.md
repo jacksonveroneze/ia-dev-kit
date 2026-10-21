@@ -8,7 +8,7 @@ description: 'Consulta métricas, traces, logs e monitores de um serviço no Dat
 Responde "como este serviço se comporta em produção?" a partir do Datadog. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório.
 
 ## O que entrega
-Um relatório no formato de `report.md`: indicadores com valor, janela e link, endpoints e erros, riscos e lacunas. Nada além disso: sem criar ou editar monitor, dashboard ou alerta, e sem log bruto.
+Um relatório no formato de `references/report.md`: indicadores com valor, janela e link, endpoints e erros, riscos e lacunas. Nada além disso: sem criar ou editar monitor, dashboard ou alerta, e sem log bruto.
 
 ## Escopo
 - **Usar:** entender latência, erros, volume e saúde de um serviço; investigar um endpoint; checar o estado de monitores e SLOs. Vale em qualquer contexto: conversa avulsa, incidente, análise de desempenho, refinamento.
@@ -49,7 +49,7 @@ Faltando: pergunte só o que falta. Inválido: serviço inexistente; pergunta qu
 3. **Métricas:** requisições por minuto, taxa de erro, latência p50, p95 e p99. Observe: algo fora do normal?
 4. **Traces:** dos endpoints mais lentos ou com mais erro (ou do endpoint pedido). Observe qual explica a anomalia.
 5. **Logs:** erros recentes desse endpoint, agrupados e mascarados. Monitores e SLOs, se existirem.
-6. **Consolidar** em `report.md` e verificar pelo Checklist.
+6. **Consolidar** em `references/report.md` e verificar pelo Checklist.
 
 ## Raciocínio antes de escrever (CoT)
 - O indicador responde à pergunta ou é só ruído?
@@ -58,7 +58,7 @@ Faltando: pergunte só o que falta. Inválido: serviço inexistente; pergunta qu
 - Este texto de log contém dado pessoal? Mascare antes de citar.
 
 ## Exemplos (certo/errado)
-Leia `examples.md` antes de escrever.
+Leia `references/examples.md` antes de escrever.
 
 ## Anti-patterns (recusar)
 - Escrever no Datadog (monitor, dashboard, alerta).
@@ -75,4 +75,4 @@ Leia `examples.md` antes de escrever.
 - [ ] Amostra pequena sinalizada.
 - [ ] O que falhou ou veio vazio está em Lacunas.
 
-Ao concluir (ou parar), apresente o relatório no formato de `report.md`.
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

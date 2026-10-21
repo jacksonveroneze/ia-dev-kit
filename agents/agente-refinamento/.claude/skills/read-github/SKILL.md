@@ -1,6 +1,6 @@
 ---
 name: read-github
-description: 'Lê um repositório do GitHub, somente leitura, e explica como uma regra, fluxo ou funcionalidade funciona hoje, com arquivo e linha, riscos e lacunas. Só segue com o repositório e a pergunta. Use sempre que o usuário pedir para entender, auditar ou localizar algo no código, nos testes, ADRs, PRs ou issues de um repositório, mesmo sem citar o GitHub. Não use para alterar código, abrir PR ou issue, nem para dados de produção.'
+description: 'Lê um repositório do GitHub, somente leitura, e explica como uma regra, fluxo ou funcionalidade funciona hoje, com arquivo e linha, riscos e lacunas. Só segue com o repositório e a pergunta; funciona sozinha, sem depender de arquivo de configuração, de fases ou de outra skill. Use sempre que o usuário pedir para entender, auditar ou localizar algo no código, nos testes, ADRs, PRs ou issues de um repositório, mesmo sem citar o GitHub. Não use para alterar código, abrir PR ou issue, nem para dados de produção.'
 ---
 
 # Ler GitHub
@@ -8,7 +8,7 @@ description: 'Lê um repositório do GitHub, somente leitura, e explica como uma
 Responde "como isso funciona hoje?" a partir de um repositório. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório.
 
 ## O que entrega
-Um relatório no formato de `report.md`: regras, onde estão, observação, riscos e lacunas. Nada além disso: sem branch, commit, PR, issue ou cópia de código em bloco.
+Um relatório no formato de `references/report.md`: regras, onde estão, observação, riscos e lacunas. Nada além disso: sem branch, commit, PR, issue ou cópia de código em bloco.
 
 ## Escopo
 - **Usar:** entender uma regra de negócio, fluxo, validação, integração ou configuração; localizar onde algo é feito; auditar o comportamento atual. Vale em qualquer contexto: conversa avulsa, investigação de bug, onboarding, refinamento.
@@ -48,7 +48,7 @@ Faltando: pergunte só o que falta. Inválido: repositório inexistente ou sem a
 3. **Buscar** os termos do domínio. Observe os resultados e refine os termos.
 4. **Seguir o caminho:** endpoint, serviço ou handler, validações, persistência. A cada arquivo, observe o que aponta para o próximo.
 5. **Ler os testes** da regra, depois ADRs, documentação e PRs ou issues recentes sobre o tema.
-6. **Consolidar** em `report.md` e verificar pelo Checklist.
+6. **Consolidar** em `references/report.md` e verificar pelo Checklist.
 
 ## Raciocínio antes de escrever (CoT)
 - O arquivo que li executa a regra ou só a menciona?
@@ -57,7 +57,7 @@ Faltando: pergunte só o que falta. Inválido: repositório inexistente ou sem a
 - Sei a linha exata, ou estou resumindo de memória?
 
 ## Exemplos (certo/errado)
-Leia `examples.md` antes de escrever.
+Leia `references/examples.md` antes de escrever.
 
 ## Anti-patterns (recusar)
 - Escrever no repositório (branch, commit, PR, issue).
@@ -74,4 +74,4 @@ Leia `examples.md` antes de escrever.
 - [ ] Nada fora de leitura; nenhum segredo ou dado pessoal copiado.
 - [ ] O que não foi achado está em Lacunas.
 
-Ao concluir (ou parar), apresente o relatório no formato de `report.md`.
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

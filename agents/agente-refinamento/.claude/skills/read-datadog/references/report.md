@@ -1,4 +1,4 @@
-# Relatório: ler-datadog
+# Relatório: read-datadog
 
 Formato fixo. Seção sem conteúdo recebe `Nenhum`.
 

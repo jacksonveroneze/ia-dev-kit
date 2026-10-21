@@ -1,4 +1,4 @@
-# Relatório: ler-github
+# Relatório: read-github
 
 Formato fixo. Seção sem conteúdo recebe `Nenhum`.
 

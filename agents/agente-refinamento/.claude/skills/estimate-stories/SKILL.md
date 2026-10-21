@@ -1,6 +1,6 @@
 ---
 name: estimate-stories
-description: 'Estima pontos e horas de cada story e sugere o dev de cada uma a partir de uma tabela do time, e sinaliza carga e capacidade por dev. Só segue com as stories (título, escopo e critérios de aceite) e a tabela do time (devs, skills e, se houver, capacidade e horas por pontos). Use sempre que o usuário pedir para estimar, reestimar, trocar o dev ou ver a carga do time, mesmo sem usar a palavra estimar. Não use para criar ou reescrever stories, ordenar dependências ou criar cards.'
+description: 'Estima pontos e horas de cada story e sugere o dev de cada uma a partir de uma tabela do time, e sinaliza carga e capacidade por dev. Só segue com as stories (título, escopo e critérios de aceite) e a tabela do time (devs, skills e, se houver, capacidade e horas por pontos); funciona sozinha, sem depender de arquivo, de fases ou de outra skill. Use sempre que o usuário pedir para estimar, reestimar, trocar o dev ou ver a carga do time, mesmo sem usar a palavra estimar. Não use para criar ou reescrever stories, ordenar dependências ou criar cards.'
 ---
 
 # Estimar stories
@@ -8,7 +8,7 @@ description: 'Estima pontos e horas de cada story e sugere o dev de cada uma a p
 Atribui pontos, horas e dev sugerido a cada story, com base na tabela do time informada. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório.
 
 ## O que entrega
-Um relatório no formato de `report.md`: estimativa por story, carga por dev, alertas e suposições. Nada além disso: não cria nem reescreve story, não muda a ordem e não cria cards.
+Um relatório no formato de `references/report.md`: estimativa por story, carga por dev, alertas e suposições. Nada além disso: não cria nem reescreve story, não muda a ordem e não cria cards.
 
 ## Escopo
 - **Usar:** estimar ou reestimar pontos e horas; sugerir ou trocar o dev; calcular a carga e a capacidade por dev. Vale em qualquer contexto: conversa avulsa, planejamento, refinamento.
@@ -46,7 +46,7 @@ Faltando: pergunte só o que falta. Inválido: story sem critério de aceite; ta
 2. **Declarar**, num bloco só: devs e skills, capacidade e quais células de horas estão vazias.
 3. **Estimar** cada story: pontos, dev e horas. Observe: o risco informado muda a faixa? A skill do dev cobre o trabalho?
 4. **Contar** stories e pontos por dev, linha a linha. Sinalize carga e capacidade.
-5. **Consolidar** em `report.md` e verificar pelo Checklist.
+5. **Consolidar** em `references/report.md` e verificar pelo Checklist.
 
 ## Raciocínio antes de escrever (CoT)
 - O que torna esta story maior do que uma de 3 pontos?
@@ -55,7 +55,7 @@ Faltando: pergunte só o que falta. Inválido: story sem critério de aceite; ta
 - Este dev já tem outra story? Somei os pontos dele?
 
 ## Exemplos (certo/errado)
-Leia `examples.md` antes de escrever.
+Leia `references/examples.md` antes de escrever.
 
 ## Anti-patterns (recusar)
 - Usar dev que não está na tabela informada.
@@ -72,4 +72,4 @@ Leia `examples.md` antes de escrever.
 - [ ] Horas da tabela; célula vazia marcada como `(suposição)`.
 - [ ] Contagem de stories e pontos por dev conferida linha a linha; alertas onde couber.
 
-Ao concluir (ou parar), apresente o relatório no formato de `report.md`.
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

@@ -5,7 +5,7 @@ description: Lê um repositório do GitHub em somente leitura e devolve a regra 
 tools: Read, Grep, Glob
 ---
 
-Execute a skill `read-github` (`.claude/skills/read-github/SKILL.md`) em contexto isolado e devolva o relatório no formato do `report.md` dela.
+Execute a skill `read-github` (`.claude/skills/read-github/SKILL.md`) em contexto isolado e devolva o relatório no formato do `references/report.md` dela.
 
 ## Contrato
 - **Entrada:** repositório (`org/repo`) e pergunta sobre a regra.

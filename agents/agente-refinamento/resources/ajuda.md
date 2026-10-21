@@ -36,6 +36,7 @@ EXEMPLO (fictício): "Contexto da `api-extrato`, GitHub e Datadog. Como o perío
 ## Fase 3 - Refinamento
 - O agente gera epic, stories, critérios de aceite, subtasks, ordem, dependências, estimativa e dev sugerido.
 - Nada é publicado. Você revisa na fase seguinte.
+- Story de código também recebe a especificação técnica (referência, contrato, regras, arquivos, testes), só com o que foi informado ou lido no contexto. O que faltar fica `a definir`.
 - Story acima de 8 pontos é dividida. Dev com 2 ou mais stories gera alerta de carga.
 
 ## Fase 4 - Revisão
@@ -47,10 +48,14 @@ EXEMPLOS (fictícios):
 - "Move a Story 4 para antes da Story 2."
 - "Aumenta a Story 1 para 5 pontos."
 
-O agente mostra só o que mudou e confere a Definition of Ready. Alerta de carga: responda CIENTE por dev sinalizado. Tudo certo: AVANÇAR.
+- "Confirmo o arquivo `X` proposto para a Story 2."
+- "O contrato da Story 1 é: entrada período, saída lista de totais."
+
+O agente mostra só o que mudou, a prontidão de cada story e o que falta para ficar pronta. Alerta de carga: responda CIENTE por dev sinalizado. Tudo certo: AVANÇAR.
 
 ## Fase 5 - Publicação
-- O agente mostra o preview (título, dev, pontos, subtasks, dependência) e checa cards duplicados.
+- O agente mostra o preview (título, dev, pontos, subtasks, dependência, labels) e checa cards duplicados.
+- A descrição do card leva a especificação técnica completa. Stories prontas recebem a label `agent-ready`.
 - Nada é criado até você responder APROVADO.
 - Card duplicado: escolha pular, atualizar ou criar mesmo assim.
 - Falha no meio: o agente para e não recria o que já existe.

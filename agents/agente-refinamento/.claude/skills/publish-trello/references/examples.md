@@ -1,4 +1,4 @@
-# Exemplos: publicar-trello
+# Exemplos: publish-trello
 
 Valores fictícios. Nunca copie literalmente.
 
@@ -7,10 +7,10 @@ Valores fictícios. Nunca copie literalmente.
 Board: Time Exemplo | Lista de destino: Backlog
 Duplicados: nenhum
 
-| Ordem | Título do card | Dev | Pontos | Subtasks | Depende de |
-|---|---|---|---|---|---|
-| 1 | [Story 1] Calcular limite mínimo configurável | Ana | 3 | 4 | nenhuma |
-| 2 | [Story 2] Expor limite na API | Ana | 5 | 5 | Story 1 |
+| Ordem | Título do card | Dev | Pontos | Subtasks | Depende de | Labels adicionais |
+|---|---|---|---|---|---|---|
+| 1 | [Story 1] Calcular limite mínimo configurável | Ana | 3 | 4 | nenhuma | pronta-para-codar |
+| 2 | [Story 2] Expor limite na API | Ana | 5 | 5 | Story 1 | nenhuma |
 
 Confirma a criação destes cards na lista Backlog?
 ```
@@ -20,6 +20,16 @@ Por que está certo: só leitura, na ordem informada, termina pedindo confirmaç
 - Criar os cards logo após o usuário dizer "o preview está bom". Comentário não é autorização.
 - Criar um card na Parte A "para testar".
 - Título fora do padrão: `Calcular limite` em vez de `[Story 1] Calcular limite`.
+
+## Especificação técnica na descrição
+A story chega com a seção `Especificação técnica` (referência, contrato, regras, arquivos, testes, restrições).
+- Correto: copiar a seção inteira para a descrição do card, sem alterar uma palavra, e conferir na verificação que ficou idêntica.
+- Errado: resumir a especificação em duas linhas, omitir o contrato ou reescrever com outras palavras.
+
+## Label adicional
+A story chega com a label adicional `pronta-para-codar`.
+- Correto: criar a label se não existir e aplicá-la apenas a essa story.
+- Errado: aplicar a label a todos os cards, ou criar uma label que ninguém informou.
 
 ## Card duplicado
 Já existe `[Story 1] Calcular limite mínimo configurável` na lista.

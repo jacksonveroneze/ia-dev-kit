@@ -1,4 +1,4 @@
-# Exemplos: estimar-stories
+# Exemplos: estimate-stories
 
 Valores fictícios. Nunca copie literalmente.
 

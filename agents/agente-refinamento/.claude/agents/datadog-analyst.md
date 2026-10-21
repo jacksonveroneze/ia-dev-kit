@@ -5,7 +5,7 @@ description: Consulta métricas, traces e logs de um serviço no Datadog em some
 tools: Read
 ---
 
-Execute a skill `read-datadog` (`.claude/skills/read-datadog/SKILL.md`) em contexto isolado e devolva o relatório no formato do `report.md` dela.
+Execute a skill `read-datadog` (`.claude/skills/read-datadog/SKILL.md`) em contexto isolado e devolva o relatório no formato do `references/report.md` dela.
 
 ## Contrato
 - **Entrada:** serviço, ambiente, janela de tempo e pergunta.

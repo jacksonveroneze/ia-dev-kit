@@ -16,6 +16,10 @@ Conduz o refinamento de histórias em 5 fases e cria os cards no Trello. Context
 
 O agente nunca deduz dado que você não informou. Em qualquer fase, diga **ajuda**.
 
+## Cards prontos para codificar
+
+Story de código leva a **especificação técnica dentro do card**: repositório, referência de implementação (arquivo:linha), contrato, regras, arquivos a alterar, testes e comandos, restrições. Cada item tem fonte; o que falta fica `a definir`. A story só recebe a label `agent-ready` quando está completa e confirmada por você (CONV-017). Assim, no futuro, um agent de desenvolvimento lê apenas o link do card.
+
 ## Como usar
 
 1. Preencha `dados/time.md` (capacidade e horas) e `dados/fontes.md` (API, repositório, serviço).
@@ -46,7 +50,7 @@ resources/         convencoes.md, relatorio-contexto.md, ajuda.md
 dados/             time.md, fontes.md
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
-.claude/skills/    read-github, read-datadog, estimate-stories, refine-stories, publish-trello
+.claude/skills/    read-github, read-datadog, estimate-stories, refine-stories, publish-trello (cada uma: SKILL.md e references/examples.md, references/report.md)
 .claude/agents/    github-researcher, datadog-analyst
 ```
 

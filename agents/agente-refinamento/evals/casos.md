@@ -1,6 +1,6 @@
 # Casos de teste
 
-Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`. Resultado diferente do esperado: ajuste a origem do problema (orquestrador, skill ou agent).
+Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e em cada ferramenta e modelo usados (Claude Code, Copilot). Resultado diferente do esperado: ajuste a origem do problema (orquestrador, skill ou agent).
 
 | # | Caso | Esperado |
 |---|---|---|
@@ -27,7 +27,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`. Res
 | 21 | Qualquer resposta | Sem emojis nem símbolos decorativos (CONV-015) |
 | 22 | Qualquer resposta | Começa com `Fase X/5 - Nome` e termina com Feito, Pendente e Próximo passo (CONV-001, CONV-002) |
 | 23 | Story acima de 8 pontos | A estimativa devolve `DIVIDIR`; o orquestrador volta a `refine-stories` pedindo a divisão e estima de novo |
-| 24 | Saída de skill fora do formato do seu `report.md` | Conta como falha |
+| 24 | Saída de skill fora do formato do seu `references/report.md` | Conta como falha |
 | 25 | Cada skill chamada avulsa, só com os inputs, sem arquivo, fase ou outra skill | Funciona e devolve o relatório no formato fixo |
 | 26 | `publish-trello` chamada com stories, board e lista, sem confirmação | Faz só o preview e pede confirmação; nada é escrito |
 | 27 | Usuário comenta "o preview está bom" sem autorizar | Não conta como confirmação; pergunta de novo |
@@ -39,3 +39,17 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`. Res
 | 33 | "Ajuda" ou "como usar" em cada fase | Devolve a seção de `resources/ajuda.md` com exemplo rotulado `EXEMPLO (fictício)`; fase e estado não mudam (CONV-016) |
 | 34 | Primeira resposta de cada fase | Termina com a linha de ajuda; as seguintes não repetem |
 | 35 | Depois da ajuda, o usuário responde AVANÇAR sem ter preenchido a entrada | Não avança; o exemplo da ajuda nunca vira dado do refinamento |
+| 36 | Story de código com contexto lido do repositório | Tem especificação técnica completa, cada item com fonte (arquivo:linha) |
+| 37 | Story de código sem contexto técnico solicitado | Itens `a definir`; prontidão `precisa de humano` com a lista do que falta; sem `agent-ready` |
+| 38 | Arquivo a alterar sugerido por analogia à referência | Marcado `(proposto, confirmar)`, citando a referência; a story não fica `pronta` até o usuário confirmar |
+| 39 | Contrato, regra ou comando que ninguém informou | `a definir`; nunca preenchido de cabeça (CONV-006) |
+| 40 | Story sem código (documentação, infra) | `Tipo: sem código`, sem especificação técnica, prontidão `não se aplica`, sem `agent-ready` |
+| 41 | Publicação com stories prontas e não prontas | Descrição do card idêntica à especificação; `agent-ready` só nas prontas (CONV-017) |
+| 42 | Usuário pede `agent-ready` em story `precisa de humano` | Recusa em 1 frase, lista o que falta e pergunta o dado |
+| 43 | `refine-stories` avulsa com contexto de implementação completo | Gera a especificação e a prontidão no formato do `references/report.md`, sem depender de fase ou arquivo |
+| 44 | Story depende da saída de outra | A spec escreve os campos ou o tipo e o caminho exatos; nunca "a mesma da Story N" |
+| 45 | Spec ou critério cita sugestão numerada, relatório, fase ou a conversa | Falha de autocontenção: reescrever com o conteúdo |
+| 46 | Critério com resultado vago ("devolve o sumário", "devolve erro") | Reescreve com campos, código ou mensagem; sem dado, `a definir` |
+| 47 | Story de código sem `Testes` ou sem comando de build | Itens obrigatórios ausentes; prontidão `precisa de humano` |
+| 48 | Usuário decide não testar | `sem testes por decisão do usuário (risco: ...)` no card; build continua obrigatório |
+| 49 | Repositório informado com skill ou guia para o tipo de mudança | Aparece em `Restrições` como `Siga: ...`, com arquivo e linha |

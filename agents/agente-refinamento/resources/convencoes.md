@@ -25,7 +25,9 @@ Fonte única das regras. Skills e agentes citam por número. Ao citar em uma res
 - **CONV-015** (sem emojis) Nenhum emoji nem símbolo decorativo, em nenhuma saída. Use texto: `ALERTA DE CARGA:`, `Correto:`, `Errado:`, `->` nas sequências.
 - **CONV-016** (ajuda) A primeira resposta de cada fase termina, depois do Próximo passo, com: `Ajuda: diga "ajuda" para ver como funciona esta fase.` Pedido de ajuda ("ajuda", "como usar", "exemplo") devolve a seção de `resources/ajuda.md` da fase atual. Ajuda só mostra: não muda de fase, não grava nada e o exemplo nunca entra no refinamento. Todo exemplo vem rotulado `EXEMPLO (fictício)`.
 
+- **CONV-017** (prontidão para codificar) Story de código leva a especificação técnica dentro do card. A label `agent-ready` só vai em story com prontidão `pronta`: todos os itens com fonte e nenhum `a definir` ou `(proposto, confirmar)`. O usuário resolve o que falta informando o dado ou confirmando a proposta; você não promove a story por conta própria. Story sem código não recebe a label.
+
 ## Padrões
 - Estimativa em pontos: 1, 2, 3, 5 ou 8. Mais de 8: dividir.
-- Card no Trello: título `[Story N] <título>`, label `Epic: <nome>`, membro = dev.
+- Card no Trello: título `[Story N] <título>`, label `Epic: <nome>`, membro = dev, descrição com a especificação técnica (stories de código) e label `agent-ready` quando pronta (CONV-017).
 - Cards criados na ordem de execução, com a dependência na descrição.

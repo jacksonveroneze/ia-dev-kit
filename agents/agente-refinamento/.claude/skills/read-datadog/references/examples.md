@@ -1,4 +1,4 @@
-# Exemplos: ler-datadog
+# Exemplos: read-datadog
 
 Valores fictícios. Nunca copie literalmente.
 

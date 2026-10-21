@@ -1,4 +1,4 @@
-# Relatório: estimar-stories
+# Relatório: estimate-stories
 
 Formato fixo. Seção sem conteúdo recebe `Nenhum`.
 

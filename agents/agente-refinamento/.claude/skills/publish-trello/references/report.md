@@ -1,4 +1,4 @@
-# Relatório: publicar-trello
+# Relatório: publish-trello
 
 Formato fixo, por parte.
 
@@ -7,9 +7,9 @@ Formato fixo, por parte.
 Board: <board> | Lista de destino: <lista>
 Duplicados: <nenhum | card X: pular, atualizar ou criar>
 
-| Ordem | Título do card | Dev | Pontos | Subtasks | Depende de |
-|---|---|---|---|---|---|
-| 1 | [Story 1] <título> | <dev> | <pontos> | <N> | nenhuma |
+| Ordem | Título do card | Dev | Pontos | Subtasks | Depende de | Labels adicionais |
+|---|---|---|---|---|---|---|
+| 1 | [Story 1] <título> | <dev> | <pontos> | <N> | nenhuma | <labels ou nenhuma> |
 
 Confirma a criação destes cards na lista <lista>?
 ```
