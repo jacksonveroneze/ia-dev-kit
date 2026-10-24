@@ -1,0 +1,3 @@
+{ "card": "https://trello.com/c/VNGWAJQ2/16-story-1-sum%C3%A1rio-de-transa%C3%A7%C3%B5es-do-cart%C3%A3o-acesso-%C3%A0-api-e-caso-de-uso", "modo": "rígido", "estado": "BLOQUEADO",
+  "aguardando": { "transicao": "T15", "gate": "COMENTAR" }, "tentativas": 0, "ciclos": 0,
+  "base": "main", "sha_base": "897a47d852d98c755e102a482d9cc160c778cd96", "preflight": "pendente" }

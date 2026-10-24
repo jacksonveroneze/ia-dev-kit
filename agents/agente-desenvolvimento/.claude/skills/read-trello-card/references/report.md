@@ -4,8 +4,10 @@ Formato fixo.
 
 ```
 Card: <título> | Link: <link>
-Labels: <lista | nenhuma> | Membros: <lista | nenhum>
-Depende de: <texto da descrição | ausente> | Cards citados: <links | nenhum>
+Labels: <lista | nenhuma>
+Membros: <lista | nenhum>
+Depende de: <texto da descrição | ausente>
+Cards citados: <links | nenhum>
 
 Seções da descrição (cópia fiel):
 - Tipo: <valor | ausente>
