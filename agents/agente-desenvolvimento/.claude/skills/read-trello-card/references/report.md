@@ -16,7 +16,9 @@ Seções da descrição (cópia fiel):
 - Especificação técnica: <texto completo | ausente>
 - Prontidão para codificar: <valor | ausente>
 
-Checklist: <itens com estado | nenhum>
+Checklist: <nenhum | por checklist:>
+- <nome da checklist>
+  - [<completo | incompleto>] <item>
 
 Completude da especificação técnica:
 | Item | Estado |
