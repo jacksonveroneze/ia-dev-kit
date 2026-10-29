@@ -1,12 +1,14 @@
 ---
-name: create-generic-repository
-description: 'Cria um repositório genérico (.NET/C#), sem EF Core. Gera a interface (contrato) e a implementação com os métodos que o usuário descreve, cada um delegando a uma dependência informada (cliente HTTP, API, cache e afins), mapeando o resultado para o tipo de retorno informado e aplicando o tratamento de erro e o log descritos. Só segue com todos os dados informados, os diretórios, o nome do contrato, as dependências e, por método, nome, parâmetros, retorno e comportamento. Use sempre que o usuário pedir um repository, repositório ou adaptador com métodos descritos que não seja de persistência EF Core, mesmo sem usar o termo. Não use para registro de DI nem para regra de negócio.'
+name: create-external-repository
+description: 'Cria um repositório externo (.NET/C#), sem EF Core. Gera a interface (contrato) e a implementação com os métodos que o usuário descreve, cada um delegando a uma dependência informada (cliente HTTP, API, cache e afins), mapeando o resultado para o tipo de retorno informado e aplicando o tratamento de erro e o log descritos. Só segue com todos os dados informados, os diretórios, o nome do contrato, as dependências e, por método, nome, parâmetros, retorno e comportamento. Use sempre que o usuário pedir um repository, repositório ou adaptador com métodos descritos que não seja de persistência EF Core, mesmo sem usar o termo. Não use para registro de DI nem para regra de negócio.'
 ---
 
-# Criar repositório genérico (.NET)
+# Criar repositório externo (.NET)
 
 Gera o contrato e a implementação de um repositório cujos métodos o usuário descreve, conforme a
-`dotnet-conventions.md`. Em conflito entre o Template canônico e os Exemplos, o Template vence.
+`dotnet-conventions.md`. "Externo" = delega a uma dependência externa (HTTP, cache etc.); não é o
+padrão `Repository<T>` nem persistência EF Core. Em conflito entre o Template canônico e os
+Exemplos, o Template vence.
 
 ## O que gera
 - `{InterfaceDir}/I{Name}.cs`: o contrato, com um método por item descrito.
@@ -27,7 +29,7 @@ skill para e relata o que falta e onde era esperado.
 - **Local (dados obrigatórios):** só começa com todos os dados do Inputs. Faltando ou inválido, pede só o que falta e não escreve nada; nunca infere nem usa valor de exemplo.
 - **Local (nada além do descrito):** cada método faz só o que a descrição diz: chamada da dependência, mapeamento, tratamento de erro e log. Sem log, `try/catch` ou mapeamento não descritos.
 - **Local (mapeamento):** quando descrito, mapeia o resultado da dependência para o **Retorno informado**; o tipo mapeado nunca é deduzido.
-- **Local (tratamento de erro):** captura só a exceção descrita, com filtro `when`, e devolve o valor descrito; qualquer outra propaga. Ausência vira `null` apenas se o Retorno é anulável e a descrição manda; é ausência, não erro de negócio (CONV-069).
+- **Local (tratamento de erro):** captura só a exceção descrita e devolve o valor descrito; qualquer outra propaga. Quando a descrição qualifica a exceção (status, código, condição), o `catch` leva filtro `when`; quando a exceção descrita é o próprio filtro, `catch (ExcecaoDescrita)` sem `when`. Ausência vira `null` apenas se o Retorno é anulável e a descrição manda; é ausência, não erro de negócio (CONV-069).
 - **Local (formatação):** cada parâmetro do método e do construtor em sua própria linha; numa chamada, quebra depois do `(` e os argumentos seguem juntos.
 
 ### Rules gerais (dotnet-conventions.md)
@@ -47,7 +49,7 @@ no repositório ou em pacote já referenciado. Nenhum dos dois arquivos existe.
 3. **Dependências** — tipo e nome de cada uma (`ICustomerApi api`, `IMapper mapper`, `ILogger<CustomerRepository> logger`).
 4. **Métodos** (um ou mais), cada um com:
    - **Nome** (termina em `Async`) e **Parâmetros** (tipo e nome; o `cancellationToken` é acrescentado).
-   - **Retorno** — tipo final do método, informado explicitamente (o do mapeamento, se houver).
+   - **Retorno** — tipo final do método, informado explicitamente (o `T` de `Task<T>`; a assinatura é sempre `Task<{Return}>`, `ValueTask` está fora do escopo).
    - **Comportamento** — dependência e método chamados, se o resultado é mapeado, tratamento de erro e log, se houver.
 
 Inválido: nome sem `I`, método sem `Async`, diretório fora de projeto, Retorno ausente, comportamento
@@ -106,16 +108,18 @@ public sealed class {Name}(
     }
 }
 ```
+Repasse puro — uma única chamada, sem mapeamento, log ou tratamento — não usa `async`/`await`; o
+método não-`async` tem corpo só `return {depName}.{DepMethod}({args}, cancellationToken);` (CONV-088).
 Um bloco por método, separados por linha em branco, na interface e na classe.
 
 ## Exemplos (certo/errado)
-Leia `examples.md` antes de escrever: busca por ID com tratamento de 404, busca de coleção com log e
-um pedido incompleto.
+Leia `resources/examples.md` antes de escrever: busca por ID com tratamento de 404, busca de coleção
+com log e um pedido incompleto.
 
 ## Anti-patterns (recusar)
 - Começar sem todos os dados, inferir o que falta (diretório, Retorno, dependência) ou usar valor de exemplo → peça só o que falta.
 - Deduzir o tipo mapeado a partir do retorno da dependência → use o Retorno informado.
-- Log, `try/catch` ou mapeamento que a descrição não pediu; `catch` sem filtro, vazio ou que engole a exceção (CONV-083) → capture só a descrita, com `when`, e devolva o valor descrito.
+- Log, `try/catch` ou mapeamento que a descrição não pediu; `catch` sem tipo nem filtro, vazio ou que engole a exceção (CONV-083) → capture só a exceção descrita (com `when` quando a descrição a qualifica) e devolva o valor descrito.
 - Log com interpolação de string, `Console.WriteLine` ou dado pessoal (CONV-062/054) → message template com identificador.
 - `null` por erro de negócio, ou para tipo de retorno não anulável (CONV-069).
 - `CancellationToken` ausente ou com `= default`; `=>` em método; classe sem `sealed` (CONV-044/074/089/064).
@@ -127,7 +131,7 @@ Checklist:
 - [ ] Todos os dados informados antes de qualquer escrita; nada inferido.
 - [ ] Contrato e implementação nos diretórios e namespaces de "O que gera"; implementação `sealed`, com primary constructor, nome do contrato sem o `I` (CONV-011/012/013/064/066).
 - [ ] Cada método: `Async`, `cancellationToken` por último e sem default, corpo em bloco, Retorno igual ao informado (CONV-014/044/074/089).
-- [ ] Só o comportamento descrito; `catch` com `when`; log com template e sem PII (CONV-083/062/054).
+- [ ] Só o comportamento descrito; `catch` só da exceção descrita, com `when` quando ela é qualificada; log com template e sem PII (CONV-083/062/054).
 - [ ] `await` só quando o resultado é usado (CONV-088); nenhum `using` duplicado, registro de DI, pacote ou placeholder.
 
 Harness (gate — só conclui quando passam):
@@ -138,4 +142,4 @@ Falha de ambiente/ferramenta (timeout, processo que não inicia) em vez de repro
 tente de novo uma vez e, se persistir, reporte "Harness incompleto" e pare — não declare a criação
 como concluída.
 
-Ao concluir (ou parar), apresente o relatório no formato de `report.md`.
+Ao concluir (ou parar), apresente o relatório no formato de `resources/report.md`.
