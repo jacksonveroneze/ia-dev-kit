@@ -1,7 +1,7 @@
 # Régua de aderência (fonte única)
 
-Critérios que uma skill deve cumprir. `create-skill` usa como checklist e harness da skill que escreve;
-`audit-skill` usa como régua da skill que audita. Anatomia em `anatomia.md`; comportamento em
+Critérios que uma skill deve cumprir. Quem cria usa como checklist e harness da skill que escreve; quem
+audita usa como régua da skill auditada. Anatomia em `anatomia.md`; comportamento em
 `comportamento.md`. Comandos rodam a partir do diretório da skill (`$S`).
 
 ## Itens mecânicos (M): verificáveis por comando
@@ -25,12 +25,13 @@ Critérios que uma skill deve cumprir. `create-skill` usa como checklist e harne
 | J-02 | Gate de inputs: passo 1 do Fluxo valida, para e lista o que falta; nunca infere | "assuma valores razoáveis" |
 | J-03 | Relatório: manda apresentar `references/report.md` ao concluir ou parar; o arquivo tem tabela e regra de parada | sem relatório ou sem regra de parada |
 | J-04 | Toda negativa traz a alternativa | proibição isolada |
-| J-05 | Declara a ausência: o que o artefato não faz e quem assume | escopo implícito |
+| J-05 | Declara a ausência: o que o artefato não faz, sem indicar quem faz | escopo implícito |
 | J-06 | Explica o porquê das restrições, citando a regra do projeto | "MUST" sem motivo |
 | J-07 | CoT com 2 a 4 perguntas verificáveis | perguntas abertas ou ausentes |
 | J-08 | Exemplos com certo e errado e um caso de pedido incompleto | só caminho feliz |
-| J-09 | `description` é gatilho: o quê e quando, com "NÃO usar" e skill irmã, sem o como | descreve implementação |
+| J-09 | `description` é gatilho: o quê e quando, com "NÃO usar" (o que fica de fora), sem o como | descreve implementação |
 | J-10 | Tom de desenvolvedor sênior (ver `comportamento.md`) | informal ou vago |
 | J-11 | É procedimento (skill), não invariante permanente (rule) | "nunca X" como skill |
 | J-12 | Harness executável, com regra para falha de ambiente | gate sem comando |
 | J-13 | Template canônico coerente com Inputs e Exemplos | placeholder sem input |
+| J-14 | Independência: não cita, não depende e não indica outra skill; ao parar ou recusar, só relata | "use a skill X", "skill irmã", "indique a skill Y" |

@@ -24,7 +24,7 @@ Pedido: "Crie uma skill para gerar controllers."
 Certo: a meta-skill para e lista o que falta, sem escrever nada:
 - diretório de destino e nome da skill;
 - tipo (gerador, transformador ou auditor);
-- gatilho, com o "NÃO usar" e a skill irmã;
+- gatilho, com o "NÃO usar" (o que fica de fora);
 - inputs que a skill exigirá do usuário;
 - saída esperada (artefatos e caminhos);
 - fonte do conteúdo (convenções ou código de referência);

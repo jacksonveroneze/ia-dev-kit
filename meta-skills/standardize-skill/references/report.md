@@ -21,8 +21,6 @@ Tipo: aplicar, propor ou pendência. Ao final do mapa: "Confirma a aplicação d
 | Pendências | o que faltou de conteúdo de origem e quem deve fornecer |
 | Harness | comandos dos itens M e resultado, ou "Harness incompleto" e o motivo |
 
-Próximo passo: validar com a `audit-skill`, em contexto limpo.
-
 Ao parar, troque as tabelas por uma linha: o que faltou (input ausente ou inválido, alterações
 pendentes no diretório, divergência de nome, arquivos de `_shared` ausentes, mapa sem confirmação) e
 onde era esperado. Nada foi alterado.

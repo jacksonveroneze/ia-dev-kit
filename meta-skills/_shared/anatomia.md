@@ -1,6 +1,6 @@
 # Anatomia da skill (fonte única)
 
-Compartilhado por `create-skill` (aplica ao escrever) e `audit-skill` (confere ao auditar). Texto puro.
+Compartilhado pelas meta-skills (cada uma aplica a parte que lhe cabe). Texto puro.
 Mudou a anatomia: mude só aqui.
 
 ## Arquivos de toda skill
@@ -40,7 +40,7 @@ description: '{o quê e quando, sem o como; até 1024 caracteres; sem dois-ponto
 | Frontmatter | Gatilho | `name` e `description`, sem o como |
 | Título e propósito | Contexto mínimo | A distância que a skill cobre |
 | O que gera | Saída explícita | Arquivos, caminhos e nomes |
-| Escopo | Restrição negativa | Quando usar, quando NÃO usar e a skill irmã |
+| Escopo | Restrição negativa | Quando usar e quando NÃO usar, sem nomear outras skills |
 | Contrato: Rules | Grounding | Locais da skill, depois as gerais do projeto |
 | Contrato: Pré-condições | Fail-fast | O que precisa existir antes |
 | Contrato: Inputs | Fail-fast | Todos obrigatórios; o que é inválido |
@@ -62,7 +62,7 @@ distância nenhuma. Skill de boas práticas genéricas reprova no teste.
 ## Frontmatter
 - `name`: kebab-case, igual ao nome da pasta, até 64 caracteres.
 - `description`: é o gatilho, não documentação. Diga o quê e quando; mantenha os traços que discriminam
-  o disparo, os sinônimos do artefato e o "quando NÃO usar" apontando a skill irmã. Corte detalhe de
+  o disparo, os sinônimos do artefato e o "quando NÃO usar" (o que fica de fora, sem nomear outra skill). Corte detalhe de
   implementação. Até 1024 caracteres, sem dois-pontos e sem sinais de maior ou menor.
 
 ## Tipos de skill

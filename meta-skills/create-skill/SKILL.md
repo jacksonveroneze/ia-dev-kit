@@ -1,6 +1,6 @@
 ---
 name: create-skill
-description: 'Cria uma nova skill para agentes de código (Claude, Devin e afins), em qualquer stack, seguindo a anatomia padronizada e a mesma ordem de seções em todas. Cada skill criada valida os inputs antes de agir, para e lista o que falta, e termina com um relatório do que executou. Use sempre que o usuário pedir para criar uma skill, documentar um procedimento reutilizável para o agente, ou transformar uma correção recorrente em skill; e em dúvida entre skill e rule. Não use para auditar ou editar skill existente (audit-skill audita), nem para executar uma skill, nem para escrever regras invariantes permanentes.'
+description: 'Cria uma nova skill para agentes de código (Claude, Devin e afins), em qualquer stack, seguindo a anatomia padronizada e a mesma ordem de seções em todas. Cada skill criada valida os inputs antes de agir, para e lista o que falta, e termina com um relatório do que executou. Use sempre que o usuário pedir para criar uma skill, documentar um procedimento reutilizável para o agente, ou transformar uma correção recorrente em skill; e em dúvida entre skill e rule. Não use para auditar, corrigir ou editar skill existente, nem para executar uma skill, nem para escrever regras invariantes permanentes.'
 ---
 
 # Meta-skill: criação de skills
@@ -17,11 +17,11 @@ Anatomia, régua e comportamento comuns estão em `../_shared/`: leia `anatomia.
 - Opcionais: `references/stack-{nome}.md`, `scripts/`.
 
 Nada além disso: não executa a skill criada, não a registra em ferramenta, não instala dependências, não
-audita (a auditoria é da `audit-skill`) e não altera skill existente.
+audita e não altera skill existente.
 
 ## Escopo (quando usar / NÃO usar)
 - **Usar:** criar uma skill nova; decidir entre skill e rule antes de escrever.
-- **NÃO usar:** auditar ou revisar skill existente (use `audit-skill`); corrigir ou padronizar skill existente (use `standardize-skill`); executar uma skill (use a própria skill); escrever invariante permanente ("nunca X", "toda classe Y deve Z"), que é rule e vai para o arquivo de instruções permanentes do projeto (`AGENTS.md`, `CLAUDE.md` ou equivalente).
+- **NÃO usar:** auditar, revisar, corrigir ou padronizar skill existente; executar uma skill; escrever invariante permanente ("nunca X", "toda classe Y deve Z"), que é rule e vai para o arquivo de instruções permanentes do projeto (`AGENTS.md`, `CLAUDE.md` ou equivalente).
 
 ## Contrato
 
@@ -40,7 +40,7 @@ audita (a auditoria é da `audit-skill`) e não altera skill existente.
 ### Inputs (todos obrigatórios)
 1. Nome (kebab-case) e diretório de destino.
 2. Tipo: gerador, transformador ou auditor.
-3. Objetivo em uma frase e gatilho (quando dispara, quando não dispara, skill irmã que assume o resto).
+3. Objetivo em uma frase e gatilho (quando dispara e quando não dispara, sem nomear outras skills).
 4. Inputs que a skill criada exigirá do usuário, com o formato de cada um.
 5. Saída esperada: artefatos, caminhos e convenções de nome.
 6. Fonte do conteúdo: convenções, código de referência ou a correção da sessão.
@@ -75,7 +75,8 @@ negativa com e sem alternativa, `description` como gatilho e seção `N/A`.
 
 ## Anti-patterns (recusar)
 - Escrever sem todos os inputs ou preencher o que falta por conta própria: pare e liste o que falta.
-- Auditar, corrigir ou editar skill existente: indique `audit-skill` (auditar) ou `standardize-skill` (corrigir); não altere.
+- Auditar, corrigir ou editar skill existente: não altere; relate que está fora do escopo e pare.
+- Citar ou indicar outra skill no texto da skill criada: descreva só o escopo dela (J-14).
 - Skill sem `references/report.md` ou `references/examples.md`: crie os dois.
 - Skill de boas práticas genéricas: reprovada no teste da distância, não crie.
 - Invariante escrita como skill: mova para o arquivo de regras permanentes do projeto.
@@ -96,8 +97,8 @@ Harness (gate):
 1. Rodar os comandos dos itens M de `../_shared/regua.md` na skill criada; todos devem passar.
 2. Conferir que `references/report.md` e `references/examples.md` existem e estão citados.
 
-Falha de ferramenta: conforme `../_shared/comportamento.md` ("Harness incompleto"). Para validar a skill
-de forma independente, indique a `audit-skill`; esta skill não se autoaudita.
+Falha de ferramenta: conforme `../_shared/comportamento.md` ("Harness incompleto"). Esta skill não
+declara a skill criada aprovada; a validação independente é fora do escopo dela.
 
 ## Relatório
 Ao concluir ou parar, apresente o relatório no formato de `references/report.md`.

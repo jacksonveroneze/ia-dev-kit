@@ -1,6 +1,6 @@
 ---
 name: standardize-skill
-description: 'Corrige e padroniza uma skill existente para a anatomia e a régua do projeto, aplicando as correções mecânicas (ordem das seções, frontmatter, tamanho do corpo, arquivos de references, emoji) e, quando autorizado, as de julgamento, sem mudar o comportamento da skill. Mostra o mapa de alterações e pede confirmação antes de gravar, e termina com um relatório do que alterou. Use quando o usuário pedir para corrigir, padronizar, ajustar ou adequar uma skill existente ao padrão, ou aplicar os ajustes de uma auditoria. Não use para criar skill (create-skill) nem para auditar (audit-skill).'
+description: 'Corrige e padroniza uma skill existente para a anatomia e a régua do projeto, aplicando as correções mecânicas (ordem das seções, frontmatter, tamanho do corpo, arquivos de references, emoji) e, quando autorizado, as de julgamento, sem mudar o comportamento da skill. Mostra o mapa de alterações e pede confirmação antes de gravar, e termina com um relatório do que alterou. Use quando o usuário pedir para corrigir, padronizar, ajustar ou adequar uma skill existente ao padrão, ou aplicar os ajustes de uma auditoria. Não use para criar skill nem para auditar ou validar.'
 ---
 
 # Padronizar uma skill existente
@@ -17,11 +17,11 @@ Anatomia, régua e comportamento comuns estão em `../_shared/`: leia `anatomia.
 - O relatório de alterações, no formato de `references/report.md`.
 
 Nada além disso: não cria skill nova, não renomeia a pasta, não muda o que a skill faz, não inventa
-conteúdo, não audita nem emite veredito (use `audit-skill`) e não grava fora do diretório da skill alvo.
+conteúdo, não audita nem emite veredito e não grava fora do diretório da skill alvo.
 
 ## Escopo (quando usar / NÃO usar)
 - **Usar:** adequar uma skill existente ao padrão; aplicar os ajustes de um relatório de auditoria.
-- **NÃO usar:** criar skill (use `create-skill`); auditar ou validar (use `audit-skill`); mudar a finalidade da skill; executar a skill.
+- **NÃO usar:** criar skill; auditar ou validar; mudar a finalidade da skill; executar a skill.
 
 ## Contrato
 
@@ -42,7 +42,7 @@ conteúdo, não audita nem emite veredito (use `audit-skill`) e não grava fora 
 ### Inputs
 1. **Skill alvo** (obrigatório): nome ou caminho do diretório.
 2. **Escopo** (padrão `mecanico`): `mecanico` ou `completo` (inclui correções de julgamento).
-3. **Relatório de auditoria** (obrigatório informar): caminho do relatório da `audit-skill`, ou `nenhum` para diagnosticar com a régua.
+3. **Relatório de desvios** (obrigatório informar): caminho de um relatório que cite os itens da régua com evidência, ou `nenhum` para diagnosticar com a régua.
 
 Inválido: skill alvo inexistente, escopo fora dos dois, relatório citado e ilegível, pasta fora de kebab-case,
 alterações pendentes no diretório da skill.
@@ -55,7 +55,7 @@ alterações pendentes no diretório da skill.
 5. **Declarar** o mapa de alterações: arquivo, antes e depois de cada mudança, mais propostas e pendências. **Peça confirmação** e não grave sem ela.
 6. **Aplicar** na ordem de `references/correcoes.md`: frontmatter, estrutura, extração para `references/`, texto.
 7. **Verificar:** rode os itens M da régua e revise o diff conforme o Harness.
-8. **Relatório** conforme `references/report.md`; recomende a `audit-skill` para a validação independente.
+8. **Relatório** conforme `references/report.md`, sem declarar a skill aprovada.
 
 ## Raciocínio antes de agir (CoT)
 - Esta mudança altera a forma ou o significado? Se o significado, não é minha: é proposta.
@@ -78,8 +78,9 @@ proposta versus aplicação e pedido incompleto.
 - Reescrever ao mover: mova literal e altere em passo separado, se confirmado.
 - Aplicar correção de julgamento com escopo `mecanico`: registre como proposta.
 - Renomear a pasta ou o `name`: relate a divergência e pare.
-- Emitir veredito ou aprovar a própria correção: indique a `audit-skill`.
-- Criar skill nova: indique `create-skill`.
+- Emitir veredito ou aprovar a própria correção: relate o que alterou e pare.
+- Criar skill nova: relate que está fora do escopo e pare.
+- Citar ou indicar outra skill no texto corrigido: descreva só o escopo dela (J-14).
 
 ## Checklist + Harness
 

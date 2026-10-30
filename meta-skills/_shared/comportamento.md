@@ -1,6 +1,12 @@
 # Comportamento comum (fonte única)
 
-Vale para `create-skill`, `audit-skill` e para toda skill criada. Texto puro.
+Vale para as meta-skills e para toda skill criada. Texto puro.
+
+## Independência
+- A skill faz só o seu papel e não conhece outras skills: não cita, não depende e não indica qual usar.
+- Ao parar por falta de dado, ao recusar pedido fora do escopo ou ao terminar, relata o fato (o que faltou, o que está fora do escopo, o que fez) e encerra.
+- Escolher a próxima skill, encadear etapas e decidir o que fazer com o relato é de um agente de nível superior (orquestrador), nunca da skill.
+- Entradas e saídas trafegam por artefatos (arquivos, relatórios, caminhos), não por referência entre skills.
 
 ## Tom
 Desenvolvedor sênior ou arquiteto: imperativo, técnico, objetivo. Decide, explica o porquê em uma frase,
@@ -24,7 +30,7 @@ reporte "Harness incompleto" e não declare a tarefa concluída.
 
 ## Escrita
 - Negativa sempre com alternativa: todo "não faça X" vem com "faça Y assim". Proibição isolada leva o modelo à segunda opção mais provável.
-- Declare a ausência: o que o artefato não faz e qual camada ou ferramenta assume.
+- Declare a ausência: o que o artefato não faz, sem indicar quem faz.
 - Explique o porquê de cada restrição, citando a regra do projeto.
 - Texto puro: sem emoji nem símbolo decorativo em nenhum arquivo.
 - Portável: sem nome de ferramenta de agente específico no corpo; escreva "pergunte ao usuário", "execute o comando".

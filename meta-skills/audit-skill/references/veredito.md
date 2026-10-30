@@ -3,7 +3,7 @@
 Específico da auditoria. A régua (itens M e J) está em `../../_shared/regua.md`.
 
 ## Severidade
-- **Alta:** qualquer item M; J-02; J-03. Reprova.
+- **Alta:** qualquer item M; J-02; J-03; J-14. Reprova.
 - **Média:** J-01, J-04, J-08, J-09, J-11, J-12. Ressalva; reprova se recorrente.
 - **Baixa:** J-05, J-06, J-07, J-10, J-13. Ressalva.
 

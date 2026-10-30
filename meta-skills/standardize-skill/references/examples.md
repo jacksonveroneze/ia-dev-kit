@@ -34,7 +34,7 @@ Errado: trocar o passo 1 com escopo `mecanico` porque "claramente estava errado"
 Certo: a original descreve o como interno e tem dois-pontos. A nova mantém o quê, o quando e o "NÃO usar";
 o mapa mostra antes e depois e pede confirmação, porque a `description` decide o disparo.
 
-Errado: cortar a `description` para caber no limite e perder o "NÃO usar" e a skill irmã.
+Errado: cortar a `description` para caber no limite e perder o "NÃO usar".
 
 ## Name e pasta divergentes
 

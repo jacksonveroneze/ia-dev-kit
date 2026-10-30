@@ -43,7 +43,7 @@ Adapte só o trecho "declare" ao que a skill alvo resolve. Nunca acrescente dica
 ## Cenários de borda (bateria completa, quando pedido)
 - Artefato já existe: esperado parar e relatar, sem sobrescrever.
 - Input incompleto: esperado parar e listar o que faltou e onde, sem perguntar e sem inventar.
-- Pedido fora do escopo: esperado recusar e apontar a skill correta.
+- Pedido fora do escopo: esperado recusar e relatar que está fora do escopo, sem indicar outra skill.
 
 ## Arquivo de caso (opcional)
 `tests/{skill}/case-NN.md` com tarefa, estado inicial, critérios e, opcionalmente, testes de contrato a

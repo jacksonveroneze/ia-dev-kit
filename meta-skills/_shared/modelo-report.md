@@ -1,7 +1,6 @@
 # Modelo do `references/report.md` de uma skill
 
-Compartilhado por `create-skill` (cria o arquivo na skill nova) e `standardize-skill` (cria o arquivo
-quando a skill não o tem). Copie e adapte ao artefato da skill. Mantenha a tabela e a regra de parada.
+Compartilhado pelas meta-skills que precisam criar o arquivo (skill nova ou skill que não o tem). Copie e adapte ao artefato da skill. Mantenha a tabela e a regra de parada.
 
 ```
 # Relatório (formato)

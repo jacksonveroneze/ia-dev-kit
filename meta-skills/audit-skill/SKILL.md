@@ -1,6 +1,6 @@
 ---
 name: audit-skill
-description: 'Audita uma skill existente quanto à aderência à anatomia padronizada e às boas práticas do projeto, e opcionalmente a executa N vezes em contexto limpo para medir comportamento e variação. Emite um relatório com critérios passou ou falhou, classificação de cada falha e ajustes propostos, sem alterar a skill auditada. Use quando o usuário pedir para auditar, validar, avaliar, revisar ou testar uma skill (ex. audite a create-entity, valide se a skill X segue o padrão). Não use para criar ou corrigir skills (create-skill cria) nem para executar a skill em produção.'
+description: 'Audita uma skill existente quanto à aderência à anatomia padronizada e às boas práticas do projeto, e opcionalmente a executa N vezes em contexto limpo para medir comportamento e variação. Emite um relatório com critérios passou ou falhou, classificação de cada falha e ajustes propostos, sem alterar a skill auditada. Use quando o usuário pedir para auditar, validar, avaliar, revisar ou testar uma skill (ex. audite a create-entity, valide se a skill X segue o padrão). Não use para criar ou corrigir skills nem para executar a skill em produção.'
 ---
 
 # Auditar uma skill
@@ -19,7 +19,7 @@ Nada além disso: não altera a skill alvo, não cria skill, não corrige desvio
 
 ## Escopo (quando usar / NÃO usar)
 - **Usar:** validar aderência de uma skill ao padrão; testar o comportamento dela por execução.
-- **NÃO usar:** criar skill (use `create-skill`); corrigir ou padronizar skill (use `standardize-skill`); executar a skill em produção (use a própria skill).
+- **NÃO usar:** criar skill; corrigir ou padronizar skill; executar a skill em produção.
 
 ## Contrato
 
