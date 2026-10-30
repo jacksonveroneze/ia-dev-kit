@@ -6,7 +6,7 @@ Exemplos de apoio da skill `SKILL.md`. Em conflito com a seção do arquivo, a s
 Estado antes: sem `Directory.Build.props` em `{SolutionDir}`; os projetos têm `Nullable` e
 `ImplicitUsings` em `enable`.
 
-Certo — cópia de `resources/Directory.Build.props`, com `Nullable` e `ImplicitUsings` ajustados
+Certo — cópia de `assets/Directory.Build.props`, com `Nullable` e `ImplicitUsings` ajustados
 (aqui, `enable`):
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -27,7 +27,7 @@ Certo — cópia de `resources/Directory.Build.props`, com `Nullable` e `Implici
 </Project>
 ```
 
-Errado — acrescentar `TargetFramework`, `LangVersion` ou qualquer item que não esteja no resource.
+Errado — acrescentar `TargetFramework`, `LangVersion` ou qualquer item que não esteja no asset.
 
 ## Caso misto, sem `Directory.Build.props` existente
 Estado antes, três projetos:

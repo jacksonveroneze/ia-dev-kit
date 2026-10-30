@@ -27,7 +27,7 @@ Arquivos a criar:
 
 | Arquivo | Caminho final | Origem do conteúdo |
 |---|---|---|
-| `.editorconfig` | `{SolutionDir}/.editorconfig` | `resources/.editorconfig` |
+| `.editorconfig` | `{SolutionDir}/.editorconfig` | `assets/.editorconfig` |
 
 Arquivos a mover:
 
@@ -71,7 +71,7 @@ Uma linha por arquivo: `Directory.Build.props`, `.editorconfig`, `.dockerignore`
 | Id | Arquivo | Onde existe hoje | Ação | Detalhe |
 |---|---|---|---|---|
 | A1 | `Dockerfile` | caminho, ou "não existe" | mover | de onde para `{SolutionDir}` |
-| A2 | `.editorconfig` | "não existe" | criar | cópia de `resources/.editorconfig` |
+| A2 | `.editorconfig` | "não existe" | criar | cópia de `assets/.editorconfig` |
 
 ## 3. Solution
 Uma linha por entrada de arquivo da solution que muda de caminho.

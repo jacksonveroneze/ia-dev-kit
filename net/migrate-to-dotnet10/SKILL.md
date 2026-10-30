@@ -1,6 +1,6 @@
 ---
 name: migrate-to-dotnet10
-description: 'Migra uma solution .NET 8 para .NET 10, subindo a versão em todos os locais definidos: TargetFramework e LangVersion (Directory.Build.props e .csproj), SDK do global.json, tags das imagens .NET do Dockerfile e pacotes para versões estáveis do .NET 10; lista os demais arquivos que citam a versão sem alterá-los. Use sempre que o usuário pedir para migrar, atualizar ou subir uma API/solution de .NET 8 (net8.0) para .NET 10 (net10.0), mesmo sem citar os arquivos. Não use para padronizar arquivos da solution, nem para corrigir código quebrado pela migração.'
+description: 'Migra uma solution .NET 8 para .NET 10, subindo a versão em todos os locais definidos, a saber TargetFramework e LangVersion (Directory.Build.props e .csproj), SDK do global.json, tags das imagens .NET do Dockerfile e pacotes para versões estáveis do .NET 10; lista os demais arquivos que citam a versão sem alterá-los. Use sempre que o usuário pedir para migrar, atualizar ou subir uma API/solution de .NET 8 (net8.0) para .NET 10 (net10.0), mesmo sem citar os arquivos. Não use para padronizar arquivos da solution, nem para corrigir código quebrado pela migração.'
 allowed-tools:
   - Read
   - Glob
@@ -17,9 +17,8 @@ allowed-tools:
 # Migrar solution .NET 8 para .NET 10
 
 Leva a solution de `net8.0` para `net10.0` subindo a versão do .NET em cada local listado na
-seção "Onde a versão sobe". As regras de cada arquivo estão na seção dele, em "Arquivos"; o Fluxo
-só dá a ordem. Esta skill altera arquivos de configuração, de projeto e de container; não altera
-código-fonte.
+tabela "Onde a versão sobe". As regras de cada arquivo estão na seção dele; a tabela e as seções ficam em
+`references/arquivos.md`, e o Fluxo só dá a ordem. Esta skill altera arquivos de configuração, de projeto e de container; não altera código-fonte.
 
 Em conflito entre o conteúdo de uma seção e os Exemplos, a seção vence — os exemplos são reforço
 didático, não a fonte primária.
@@ -41,23 +40,13 @@ de criá-lo.
 
 ## Contrato
 
-### Regras desta skill
+### Rules
+**Desta skill**
 - **Local — qual solution.** Procura-se em `app/src`. Solution cujo nome de arquivo, ou de qualquer pasta do caminho, contém `E2E` (sem diferenciar maiúscula) é ignorada, junto com a pasta dela.
 - **Local — aprovação.** A skill só escreve, cria ou instala depois de o usuário aprovar o relatório de plano (Gate de aprovação).
-- **Local — onde a versão sobe.** Só se altera a versão do .NET nos locais da tabela abaixo. Todo outro arquivo que cite a versão é apenas relatado (seção "Outros locais").
+- **Local — onde a versão sobe.** Só se altera a versão do .NET nos locais da tabela "Onde a versão sobe" (`references/arquivos.md`). Todo outro arquivo que cite a versão é apenas relatado (seção "Outros locais").
 
-### Onde a versão sobe
-| Local | O que sobe | De | Para |
-|---|---|---|---|
-| `Directory.Build.props` | `TargetFramework` | qualquer valor | `net10.0` |
-| `Directory.Build.props` | `LangVersion` | qualquer valor, ou ausente | `14` |
-| `.csproj` | `TargetFramework` e `LangVersion` | declarados no projeto | removidos (o `Directory.Build.props` define) |
-| `global.json` | `sdk.version` | `8.0.x` (ou ausente o arquivo) | versão estável do SDK 10 instalado |
-| `Dockerfile` | tag das imagens `mcr.microsoft.com/dotnet/{sdk,aspnet,runtime,runtime-deps}` e `ARG` de versão que alimenta o `FROM` | `8.0...` | `10.0...` (tabela da seção `Dockerfile`) |
-| Pacotes da família Microsoft | `PackageReference`/`PackageVersion` | `8.x` | maior estável da major 10 |
-| Pacotes de terceiros | `PackageReference`/`PackageVersion` | versão atual | maior estável da major atual (regra da seção Pacotes) |
-
-### Rules gerais (dotnet-conventions.md)
+**Gerais (dotnet-conventions.md)**
 - **CONV-001** o `.csproj` não repete as propriedades do `Directory.Build.props`. *Local desta skill:* o arquivo fica em `{SolutionDir}` e a lista de propriedades é `TargetFramework` e `LangVersion`.
 - **CONV-058** com Central Package Management, versão de pacote só em `Directory.Packages.props`; o `.csproj` não fixa versão.
 - **CONV-087** nenhum pacote novo: só se mudam versões de pacotes que já existem.
@@ -80,75 +69,23 @@ Não há outro input.
 **Fase 0 — Identificação e plano (somente leitura)**
 1. **Localizar a solution.** Sem caminho informado, procure `.sln`/`.slnx` recursivamente em `{RepoRoot}/app/src` (`{RepoRoot}` é a raiz do repositório git; sem git, o diretório atual). Descarte as solutions `E2E`. Restando exatamente uma, ela é `{Solution}` e o diretório dela é `{SolutionDir}`; zero ou mais de uma: pare e pergunte. As descartadas, e a pasta de cada uma, ficam fora de todas as buscas e entram no relatório. Liste os projetos com `dotnet sln {Solution} list`.
 2. **Checar as Pré-condições.** Falhou alguma: pare e relate.
-3. **Levantar.** Execute o "Levantar" de cada seção de "Arquivos", na mesma ordem do passo 6. O restore grava em `obj`; isso não conta como alteração.
+3. **Levantar.** Execute o "Levantar" de cada seção de `references/arquivos.md`, na mesma ordem do passo 6. O restore grava em `obj`; isso não conta como alteração.
 4. **Calcular o plano.** Aplique no papel o "Executar" de cada seção.
-5. **Apresentar o relatório de plano** no formato de `report.md` (seção "Relatório de plano") e parar. A visão geral vem primeiro: a tabela "Onde a versão sobe" preenchida com os valores reais, arquivos a criar e pacotes a atualizar.
+5. **Apresentar o relatório de plano** no formato de `references/report.md` (seção "Relatório de plano") e parar. A visão geral vem primeiro: a tabela "Onde a versão sobe" preenchida com os valores reais, arquivos a criar e pacotes a atualizar.
 
 **Gate de aprovação**
 - Nada é criado, editado nem instalado antes da aprovação explícita do usuário ("aprovo", "pode executar"). Pergunta, ajuste ou comentário não é aprovação: responda e reapresente o relatório.
 - Aprovação parcial (o usuário exclui linhas): execute só o aprovado. Linha excluída de `TargetFramework`/`LangVersion` deixa o valor no `.csproj`, que prevalece sobre o `Directory.Build.props`.
 - Divergência durante a execução em relação ao relatório aprovado (arquivo novo, valor diferente, pacote sem versão): pare e reapresente o relatório atualizado.
-- Se a ferramenta oferecer modo plan (ex.: `EnterPlanMode`/`ExitPlanMode`), use-o para apresentar o relatório. Ele não substitui este gate.
+- Se o agente oferecer um modo de planejamento, use-o para apresentar o relatório. Ele não substitui este gate.
 
 **Fase 1 — Versão do .NET (após a aprovação)**
-6. Execute o "Executar" de cada seção de "Arquivos", nesta ordem: `Directory.Build.props`, `.csproj`, `global.json`, `Dockerfile`, Pacotes. A seção "Outros locais" não tem "Executar".
+6. Execute o "Executar" de cada seção de `references/arquivos.md`, nesta ordem: `Directory.Build.props`, `.csproj`, `global.json`, `Dockerfile`, Pacotes. A seção "Outros locais" não tem "Executar".
 
 **Fase 2 — Verificação**
 7. Verificar pelo Checklist + Harness. Falha por erro de build ou de teste causado pela migração: pare e relate os primeiros erros; não edite código-fonte.
 
-## Arquivos
-
-### `Directory.Build.props`
-- **Local:** `{SolutionDir}/Directory.Build.props`. Existe em outro diretório além de `{SolutionDir}` (subdiretório ou ancestral até `{RepoRoot}`): pare e relate.
-- **Levantar:** leia `TargetFramework` e `LangVersion` do arquivo (declarados ou não, com ou sem `Condition`).
-- **Executar:** ajuste `TargetFramework` para `net10.0` e `LangVersion` para `14` (acrescente os ausentes no primeiro `PropertyGroup` sem `Condition`), preserve todo o resto e relate o que mudou. Propriedade condicional no arquivo: pare e relate.
-
-### `.csproj` (cada projeto da solution)
-- **Local:** onde já está.
-- **Levantar:** leia `TargetFramework` e `LangVersion` (declarados ou não, com ou sem `Condition`).
-- **Executar:** remova `TargetFramework` e `LangVersion`, qualquer que seja o valor. `TargetFramework` com valor diferente de `net8.0` (ex.: `netstandard2.0`) é alerta em linha própria, que o usuário pode excluir. Propriedade com `Condition` (própria ou do `PropertyGroup`): não remova; relate. `PropertyGroup` que ficar vazio é removido. Preserve indentação e o restante do arquivo.
-
-### `global.json`
-- **Local:** `{SolutionDir}/global.json`. Existe só em outro diretório: pare e relate.
-- **Levantar:** se existir, leia `sdk.version`, `sdk.rollForward` e `sdk.allowPrerelease`. Leia a versão estável mais alta do SDK 10 em `dotnet --list-sdks`: é o `{Sdk10}`.
-- **Ausente:** execute `dotnet new globaljson` dentro de `{SolutionDir}` e confira que o `sdk.version` gerado é `{Sdk10}`, sem sufixo de prerelease.
-- **Existente:** altere só `sdk.version` para `{Sdk10}`; preserve `rollForward`, `allowPrerelease` e o restante. `sdk.version` já na major 10 estável: nada a fazer. `allowPrerelease` `true`: não altere e relate.
-- **Alerta:** o SDK fixado é o instalado nesta máquina; quem tiver SDK mais antigo na mesma major terá erro de resolução, a menos que o `rollForward` permita.
-
-### `Dockerfile`
-- **Local:** todo arquivo chamado `Dockerfile`, `Dockerfile.*` ou `*.Dockerfile` na árvore de `{SolutionDir}` e nos diretórios ancestrais até `{RepoRoot}` (ignorando `bin`, `obj`, `.git`, `node_modules` e as pastas das solutions descartadas). Nenhum encontrado: relate, não crie.
-- **Levantar:** leia cada `FROM` (inclusive com `--platform` e `AS`) cuja imagem seja `mcr.microsoft.com/dotnet/sdk`, `aspnet`, `runtime` ou `runtime-deps`, e cada `ARG` cujo valor padrão alimente esse `FROM` (`FROM ...:${ARG}`).
-- **Executar:** troque só a parte da versão da tag, conforme a tabela. O resto do arquivo não é tocado.
-
-| Tag atual | Tag nova |
-|---|---|
-| `8.0`, `8.0.<patch>` | `10.0` |
-| `8.0-alpine` | `10.0-alpine` |
-| `8.0-noble`, `8.0-noble-chiseled` | `10.0-noble`, `10.0-noble-chiseled` |
-| `ARG` com valor `8.0...` que alimenta o `FROM` | mesmo mapeamento acima, no valor do `ARG` |
-| qualquer outra: sufixo `-slim`, `-bookworm*`, `-bullseye*`, `-jammy*`, `-alpine<versão>`, `-azurelinux*`, digest `@sha256`, imagem `nightly` | não altere a linha; relate como alerta |
-
-- **Alertas fixos:** (a) as imagens .NET 10 não são mais Debian; a tag sem variante (`10.0`) passa a ser Ubuntu 24.04, então o sistema operacional base muda em relação ao `8.0`; (b) `COPY` com caminho relativo, `ENTRYPOINT` e `USER` não são avaliados; (c) a existência da tag nova só é confirmada no Harness.
-
-### Pacotes (`PackageReference`, `PackageVersion`)
-- **Local:** cada `.csproj` e, se existir, `Directory.Packages.props` (CONV-058).
-- **Levantar:** `dotnet list {Solution} package --outdated` (sem `--include-prerelease`). Para a família Microsoft, liste as versões com `dotnet package search {id} --exact-match --format json` e escolha a maior estável de major 10.
-- **Regras:** só pacote direto. Família Microsoft atrelada ao runtime (`Microsoft.AspNetCore.*`, `Microsoft.Extensions.*`, `Microsoft.EntityFrameworkCore.*` e `System.*` publicado com a versão do runtime): maior versão estável da major 10, nunca major 11. Os demais pacotes da Microsoft e os de terceiros: maior versão estável dentro da major atual; a major só sobe quando a versão atual não restaura nem compila em `net10.0`, e cada subida é relatada. Versão prerelease (qualquer sufixo) nunca é instalada. Pacote novo nunca é adicionado (CONV-087).
-- **Executar:** com `Directory.Packages.props`, altere só o `PackageVersion`; sem ele, use `dotnet add {csproj} package {id} --version {versao}`. Um pacote por vez, anotando versão anterior e nova. Sem versão estável compatível: mantenha a atual e relate (id, versão, motivo).
-
-| Pacote | Versão alvo |
-|---|---|
-| Família Microsoft atrelada ao runtime | maior versão estável de major 10 |
-| Terceiro, ou outro pacote da Microsoft | maior versão estável dentro da major atual |
-| Terceiro que não restaura nem compila em `net10.0` | menor major estável que compila; subida relatada |
-| Sem versão estável compatível | manter a atual e relatar |
-
-### Outros locais que citam a versão (somente relato)
-- **Local:** `.github/workflows/*`, `azure-pipelines*.yml`, `.gitlab-ci.yml`, `Jenkinsfile`, `docker-compose*`, `.devcontainer/*`, e qualquer `.csproj`/`.props`/`.targets` com condição em `$(TargetFramework)`. Fora das pastas das solutions descartadas.
-- **Levantar:** procure por `net8.0`, `8.0.x`, `dotnet-version`, `dotnet/sdk:8`, `dotnet/aspnet:8`, `dotnet/runtime:8`.
-- **Executar:** nada. Cada ocorrência entra no relatório como alerta (arquivo, linha, trecho). Não se altera.
-
-## Raciocínio antes de escrever (CoT)
+## Raciocínio antes de agir (CoT)
 - Algum projeto é multi-target, tem propriedade condicional ou não é SDK-style? Se sim, pare.
 - Algum `TargetFramework` não é `net8.0`? Vira alerta em linha própria, que o usuário pode excluir.
 - Cada tag de imagem do `Dockerfile` está na tabela? Se não estiver, a linha fica como está e vira alerta.
@@ -156,8 +93,13 @@ Não há outro input.
 - O pacote é da família Microsoft ou de terceiros? A versão candidata é estável? Há Central Package Management?
 - Algum outro arquivo cita a versão do .NET? Relate, não altere.
 
-## Exemplos (certo/errado)
-Leia `examples.md` antes da Fase 1: `Directory.Build.props` e `.csproj` antes e depois, `global.json`
+## Template canônico
+Saída: o mapa de alterações é o relatório de plano de `references/report.md` (a tabela "Onde a versão sobe"
+preenchida com os valores reais e uma tabela por arquivo). As regras por arquivo estão em `references/arquivos.md`:
+leia antes da Fase 0.
+
+## Exemplos
+Leia `references/examples.md` antes da Fase 1: `Directory.Build.props` e `.csproj` antes e depois, `global.json`
 ausente e existente, `Dockerfile` (tags da tabela e linhas que viram alerta), escolha de versões de
 pacote e os outros locais relatados.
 
@@ -177,7 +119,7 @@ pacote e os outros locais relatados.
 ## Checklist + Harness
 
 Checklist:
-- [ ] Fase 0 sem nenhuma escrita; relatório de plano apresentado no formato de `report.md`; execução só depois da aprovação explícita.
+- [ ] Fase 0 sem nenhuma escrita; relatório de plano apresentado no formato de `references/report.md`; execução só depois da aprovação explícita.
 - [ ] Solution escolhida em `app/src`, com as `E2E` descartadas e listadas no relatório.
 - [ ] `Directory.Build.props` com `TargetFramework` `net10.0` e `LangVersion` `14`; demais propriedades intactas (CONV-001).
 - [ ] Nenhum `.csproj` repete `TargetFramework` ou `LangVersion`; alertas e propriedades condicionais estão no relatório final.
@@ -203,6 +145,6 @@ indisponível) em vez de reprovar por conteúdo, não trate como passo concluíd
 vez e, se persistir, reporte ao usuário como Harness incompleto e pare — não declare a migração
 como concluída.
 
-Relatório final: ao concluir (ou ao parar), apresente as tabelas da seção "Relatório final" de
-`report.md`: onde a versão subiu (valor anterior e novo), o que foi feito por linha, arquivos
-editados, pacotes atualizados e mantidos, resultado do Harness e os alertas.
+## Relatório
+Ao concluir (ou ao parar), apresente as tabelas da seção "Relatório final" de `references/report.md`:
+onde a versão subiu (valor anterior e novo), o que foi feito por linha, arquivos editados, pacotes atualizados e mantidos, resultado do Harness e os alertas.
