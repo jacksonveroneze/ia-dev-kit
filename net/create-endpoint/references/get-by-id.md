@@ -61,67 +61,8 @@ internal static class {Operation}Endpoint
 ```
 Cadeia em `RouteMappings` (`prerequisites.md`, Bloco B): acrescentar `.AddGetById()`.
 
-## Exemplos (certo/errado)
-
-Errado — sem contexto: lógica e acesso a dados no endpoint, status à mão, sem autorização, nome copiado:
-```csharp
-app.MapGet("/api/accounts/{id}", async (Guid id, AppDbContext db) =>              // DbContext no endpoint (CONV-040)
-{
-    try                                                                           // try/catch (CONV-061)
-    {
-        var account = await db.Accounts.FindAsync(id);                            // sem use case, sem CancellationToken (CONV-044)
-        if (account is null) return Results.NotFound();                           // status à mão, deveria ser ToIResult()
-        return Results.Ok(account);                                               // expõe entidade (CONV-070)
-    }
-    catch (Exception ex) { return Results.Problem(ex.ToString()); }              // vaza detalhe interno (CONV-057)
-})
-.WithName("GetShortUrlById");                                                     // nome copiado; sem RequireAuthorization (CONV-079)
-```
-
-Certo — com contexto: `Account`:
-```csharp
-using Microsoft.AspNetCore.Mvc;
-using {ApiRootNamespace}.Endpoints.Extensions;
-using {ApplicationRootNamespace}.Features.Accounts.GetAccountById;
-using {AuthorizationPoliciesNamespace};
-using {DefaultResponsesNamespace};
-using {RouteNamesNamespace};
-
-namespace {ApiRootNamespace}.Endpoints.Accounts.v1;
-
-internal static class GetAccountByIdEndpoint
-{
-    extension(RouteGroupBuilder builder)
-    {
-        public RouteGroupBuilder AddGetById()
-        {
-            builder.MapGet("{id:guid}", async (
-                    [FromServices] IGetAccountByIdUseCase useCase,
-                    Guid id,
-                    CancellationToken cancellationToken) =>
-                {
-                    GetAccountByIdRequest input = new(id);
-
-                    var output = await useCase.ExecuteAsync(
-                        input, cancellationToken);
-
-                    return output.ToIResult();
-                })
-                .WithName(RouteNames.GetAccountById)
-                .Produces<GetAccountByIdResponse>()
-                .AddDefaultResponseEndpoints()
-                .RequireAuthorization(AuthorizationPolicies.AccountsRead);
-
-            return builder;
-        }
-    }
-}
-```
-
-Diferença: só adapta protocolo — monta o `Request`, chama o use case, devolve `ToIResult()` (CONV-040/036);
-nenhum `DbContext`, `try/catch` ou status manual; devolve o response da Application, não a entidade
-(CONV-037/070); nome de rota igual à operação; policy por constante (CONV-079); `CancellationToken`
-último e repassado (CONV-044/074); método de extensão em bloco `extension` (CONV-098).
+## Exemplos
+Ver `examples.md`, seção "Padrão GetById".
 
 ## Anti-patterns específicos deste padrão (além dos comuns do SKILL.md)
 - `Results.NotFound()`/`Results.Ok(output.Value)` no lugar de `output.ToIResult()`.

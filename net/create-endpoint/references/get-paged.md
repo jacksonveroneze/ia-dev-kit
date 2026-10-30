@@ -153,50 +153,8 @@ public sealed class {Operation}RestMapper : IRegister
 ```
 Cadeia em `RouteMappings` (`prerequisites.md`, Bloco B): acrescentar `.AddGetPaged()`.
 
-## Exemplos (certo/errado)
-
-Errado — sem contexto: liga o `PagedRequest` direto no `[AsParameters]`, não valida, ignora falha, `!` sem guard, sem autorização:
-```csharp
-app.MapGet("/api/accounts", async (
-    [AsParameters] GetAccountsPagedRequest request,                              // PagedRequest não é vinculável; sem RestRequest
-    IGetAccountsPagedUseCase useCase) =>                                         // sem CancellationToken (CONV-044)
-{
-    var output = await useCase.ExecuteAsync(request, default);                   // `default` no token; sem validação: pageSize=999999 chega ao repositório
-    return Results.Ok(output.Value!);                                            // `!` sem checar falha (CONV-003); expõe o response da Application
-});                                                                              // sem RequireAuthorization (CONV-079)
-```
-
-Certo — com contexto: `Account`, filtro por `Currency`:
-```csharp
-// GetAccountsPagedRestRequest.cs
-public sealed record GetAccountsPagedRestRequest(
-    int? Page = null,
-    int? PageSize = null,
-    string? OrderBy = null,
-    SortDirection? Order = null,
-    string? Currency = null);
-```
-```csharp
-// GetAccountsPagedRestMapper.cs — dentro de Register
-config.NewConfig<GetAccountsPagedRestRequest, GetAccountsPagedRequest>()
-    .IgnoreNullValues(true)
-    .Map(dest => dest.Page, src => src.Page)
-    .Map(dest => dest.PageSize, src => src.PageSize)
-    .Map(dest => dest.OrderBy, src => src.OrderBy)
-    .Map(dest => dest.Order, src => src.Order)
-    .Map(dest => dest.Currency, src => src.Currency);
-
-config.NewConfig<GetAccountsPagedResponse, GetAccountsPagedRestResponse>()
-    .Map(dest => dest.Data, src => src.Data)
-    .Map(dest => dest.Pagination, src => src.Pagination);
-```
-O endpoint segue o template com `GetAccountsPaged`, `AuthorizationPolicies.AccountsRead` e `Currency` como filtro.
-
-Diferença: `RestRequest` vinculável por construtor e mapeado com `IgnoreNullValues` (defaults preservados,
-CONV-037); validação do Request **antes** do use case, 400 sem chamá-lo (CONV-029/038); falha do use
-case por `ToIResult()` (CONV-036); valor não nulo garantido por `ThrowIfNull`, sem `!` (CONV-003);
-mapeamento explícito nos dois sentidos (CONV-031); policy por constante, `CancellationToken` último e
-repassado (CONV-079/044/074); método de extensão em bloco `extension` (CONV-098).
+## Exemplos
+Ver `examples.md`, seção "Padrão GetPaged".
 
 ## Anti-patterns específicos deste padrão (além dos comuns do SKILL.md)
 - `[AsParameters]` com o `Request` da Application; `RestRequest` com parâmetros não anuláveis ou sem default.
