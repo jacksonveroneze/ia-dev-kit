@@ -1,14 +1,14 @@
 ---
 name: create-entity
-description: 'Cria o esqueleto de uma entidade / aggregate root de domínio (.NET/C#, camada Domain, com identidade) — ex. Account, Order, Customer, Transaction, Invoice. Gera só construtor privado e factory estática; não gera métodos de mutação/comportamento. Use sempre que o usuário pedir para criar uma entity, entidade, aggregate, aggregate root ou modelo de domínio com identidade, mesmo sem usar o termo. Não use para value objects sem identidade, nem para DTOs/records de request/response.'
+description: 'Cria o esqueleto de uma entidade / aggregate root de domínio (.NET/C#, camada Domain, com identidade) — ex. Account, Order, Customer, Transaction, Invoice. Use sempre que o usuário pedir para criar uma entity, entidade, aggregate, aggregate root ou modelo de domínio com identidade, mesmo sem usar o termo. Não use para value objects sem identidade, nem para DTOs/records de request/response.'
 ---
 
 # Criar Entity / Aggregate Root (.NET / Clean Architecture)
 
-Gera uma entidade de domínio conforme a `dotnet-conventions.md` da raiz do projeto. Esta skill é
-a fábrica; as rules são o contrato — cite o CONV pelo ID sempre que justificar uma decisão.
+Gera uma entidade de domínio conforme a `dotnet-conventions.md` (`references/dotnet-conventions.md`).
+Esta skill é a fábrica; as rules são o contrato — cite o CONV pelo ID sempre que justificar uma decisão.
 
-Em conflito entre o Template canônico e os Exemplos abaixo, o Template vence — os exemplos são
+Em conflito entre o Template canônico e os Exemplos, o Template vence — os exemplos são
 reforço didático, não a fonte primária.
 
 ## O que gera
@@ -29,21 +29,20 @@ comportamento ficou fora do escopo.
 
 ## Contrato
 
-### Rules de entidade / Domain
+### Rules
+**Desta skill (entidade / Domain)**
 - **CONV-023** Entidade: setter privado, mutação só por método; construção via factory estática `Result<T>` validando invariantes. Sem ctor público sem parâmetros. *Nesta skill:* como nenhum método de mutação é gerado, `get`-only é o padrão; setter privado só onde a propriedade for descrita como mutável ao longo da vida da entidade (ver CoT).
 - **CONV-024** Domain NÃO DEVE referenciar EF/ORM nem atributo de persistência (`[Key]`, `[Table]`, `[Column]`). Mapeamento vive na Infrastructure.
 - **CONV-025** Value object: imutável, igualdade por valor (`record`/`IEquatable<T>`), auto-validado via factory. *Aqui:* todo valor da entidade é um VO (ex.: `Money`, `AccountNumber`); a entidade só consome, não define VO.
 - **CONV-026** Domain guarda só regra de negócio — sem orquestração, I/O ou DTO.
 - **CONV-085** Factory (`Create`/`Open` de VO ou entidade) retorna `Result<T>`: invariante violada é `FromInvalid(erro)`; sucesso é `WithSuccess(valor)`.
-- **CONV-021 (trecho de Domain)** Erro só do tipo que o declara: campo `private static readonly Error` na própria entidade. Erro compartilhado entre tipos (ex.: not-found) não nasce na entidade: fica em `Domain/Common/DomainErrors.cs`, classe estática por agregado (`{Aggregate}Error`).
-- **CONV-059 (trecho de Domain)** Dinheiro é encapsulado no VO `Money` (amount + currency); a entidade nunca guarda `decimal` cru para dinheiro.
-- **CONV-060 (trecho de Domain)** O instante entra como **parâmetro** da factory; `TimeProvider` nunca é injetado na entidade.
+- **CONV-021** Cada erro é `Error.Create("{Name}.{Reason}", ...)` declarado uma vez, com `Code` estável `{Tipo}.{Motivo}`; sem `Result.Fail("string")` solto, sem hierarquia de `Error`. Erro só do tipo que o declara: campo `private static readonly Error` na própria entidade. Erro compartilhado entre tipos (ex.: not-found) não nasce na entidade: fica em `Domain/Common/DomainErrors.cs`, classe estática por agregado (`{Aggregate}Error`).
+- **CONV-059** Dinheiro é `decimal`, nunca `float`/`double`; na entidade é encapsulado no VO `Money` (amount + currency), nunca `decimal` cru.
+- **CONV-060** Proibidos `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` e `DateTimeOffset.UtcNow`; tempo sempre UTC (`DateTimeOffset`). O instante entra como **parâmetro** da factory; `TimeProvider` nunca é injetado na entidade.
 - **Local desta skill (fora do CONV-063):** termo brasileiro sem tradução (`Cpf`, `Cnpj`, `Cep`) pode ficar no original.
 
-### Rules gerais (dotnet-conventions.md)
+**Gerais (dotnet-conventions.md)**
 - **CONV-020** falha esperada é `Result`; sem `throw` para invariante de nascimento. **CONV-069** sem `null` para erro de negócio.
-- **CONV-021** cada erro é `Error.Create("{Name}.{Reason}", ...)` declarado uma vez, com `Code` estável `{Tipo}.{Motivo}`. Sem `Result.Fail("string")` solto, sem hierarquia de `Error`.
-- **CONV-059** dinheiro é `decimal`, nunca `float`/`double`. **CONV-060** proibidos `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` e `DateTimeOffset.UtcNow`; tempo sempre UTC (`DateTimeOffset`).
 - **CONV-063** identificadores em inglês. **CONV-064** `sealed`. **CONV-068** `class` para tipo com identidade — nunca `record`.
 - **CONV-065** acesso mais restritivo. **CONV-015** `private static readonly Error` em PascalCase.
 - **CONV-067** guard clause no início da factory. **CONV-096** preferir imutabilidade (`get`-only).
@@ -62,189 +61,85 @@ O projeto Domain referencia `JacksonVeroneze.NET.Result` (`Result`, `Result<T>`,
 outro artefato fora do arquivo descrito em "O que gera": se um pré-requisito estiver ausente,
 ela para e relata o que falta e onde era esperado — sem apontar como resolver.
 
-### Inputs
+### Inputs (todos obrigatórios, exceto Identity, que tem padrão)
 1. **Name** — em inglês, PascalCase (`Account`, `Order`); termo brasileiro sem tradução fica no original.
 2. **Aggregate** — pasta/agregado dono (normalmente plural: `Accounts`).
-3. **Identity** — tipo do Id (`Guid` por padrão, gerado com `Guid.NewGuid()` dentro do `Create`; ou VO de id forte se o projeto usar — aí o Id é `Result<T>` validado antes da entidade).
+3. **Identity** — tipo do Id; se não informado, `Guid` (gerado com `Guid.NewGuid()` dentro do `Create`); ou VO de id forte se o projeto usar — aí o Id é `Result<T>` validado antes da entidade.
 4. **Estado** — propriedades e tipos (preferir VO; dinheiro é `Money`). Para cada propriedade, diga se ela é fixa no nascimento ou muda depois (mesmo sem comportamento gerado agora).
-5. **Invariantes de criação** — o que precisa valer para a entidade nascer válida.
+5. **Invariantes de criação** — o que precisa valer para a entidade nascer válida (ou o usuário dizer que não há).
 
-Faltando Name, estado ou invariante e sem inferência segura, pergunte antes de gerar. Não crie
-uma invariante que não foi pedida.
+Inválido: Name fora de PascalCase em inglês (salvo termo brasileiro sem tradução), Aggregate ausente,
+propriedade sem tipo ou sem indicação de fixa ou mutável, invariante não informada.
 
 ## Fluxo (ReAct)
-1. **Localizar o projeto Domain.** Encontre o `.csproj` do Domain.
-2. **Resolver identificação.** A partir do `.csproj`, resolva `RootNamespace` (preferencial: `dotnet msbuild <Domain.csproj> -getProperty:RootNamespace`; fallback: `<RootNamespace>` do `.csproj`, senão `<AssemblyName>`, senão o nome do arquivo `.csproj` sem extensão). Declare, num bloco só, antes de escrever qualquer coisa: `Name=`, `Aggregate=`, `RootNamespace=`, e o path final `{DomainProjectDir}/{Aggregate}/{Name}.cs`.
-3. **Checar existência.** Se `{Aggregate}/{Name}.cs` já existe, pare aqui — não sobrescreva, relate que o arquivo já existe.
-4. **Checar usings globais.** Se o Domain já declara `global using JacksonVeroneze.NET.Result`, não repita o `using` no arquivo (`IDE0005` é erro).
-5. **Conferir os value objects necessários.** Para cada valor que deveria ser VO, confirme que existe em `Domain/ValueObjects/`. Faltando algum, pare — relate qual VO falta e onde era esperado; não use primitivo cru no lugar dele e não crie o VO aqui.
-6. **Modelar** identidade, estado e invariantes de nascimento (CoT abaixo).
-7. **Escrever** o arquivo.
-8. **Verificar** pelo Checklist + Harness.
+1. **Validar inputs.** Faltando ou inválido algum: pare, liste só o que falta e não escreva nada; nunca infira. Não crie uma invariante que não foi pedida.
+2. **Localizar o projeto Domain.** Encontre o `.csproj` do Domain.
+3. **Resolver identificação.** A partir do `.csproj`, resolva `RootNamespace` (preferencial: `dotnet msbuild <Domain.csproj> -getProperty:RootNamespace`; fallback: `<RootNamespace>` do `.csproj`, senão `<AssemblyName>`, senão o nome do arquivo `.csproj` sem extensão). Declare, num bloco só, antes de escrever qualquer coisa: `Name=`, `Aggregate=`, `RootNamespace=`, e o path final `{DomainProjectDir}/{Aggregate}/{Name}.cs`.
+4. **Checar existência.** Se `{Aggregate}/{Name}.cs` já existe, pare aqui — não sobrescreva, relate que o arquivo já existe.
+5. **Checar usings globais.** Se o Domain já declara `global using JacksonVeroneze.NET.Result`, não repita o `using` no arquivo (`IDE0005` é erro).
+6. **Conferir os value objects necessários.** Para cada valor que deveria ser VO, confirme que existe em `Domain/ValueObjects/`. Faltando algum, pare — relate qual VO falta e onde era esperado; não use primitivo cru no lugar dele e não crie o VO aqui.
+7. **Modelar** identidade, estado e invariantes de nascimento (CoT abaixo).
+8. **Escrever** o arquivo pelo Template canônico (`references/template.md`).
+9. **Verificar** pelo Checklist + Harness e apresentar o relatório.
 
-## Raciocínio antes de escrever (CoT)
+## Raciocínio antes de agir (CoT)
 - Tem identidade e ciclo de vida? Se não, não é entidade.
-- Qual o mínimo de estado? O que é VO, o que é primitivo?
-- Para cada propriedade: ela é fixa no nascimento (`get`-only) ou o usuário disse que muda depois (`private set`, mesmo sem método gerado agora — deixa a costura pronta)?
-- Quais invariantes valem no nascimento? Cada uma vira `private static readonly Error {Name}.{Reason}` + guard clause com chaves retornando `FromInvalid`.
-- A factory precisa de um instante (ex.: `openedAt`)? Entra como parâmetro — nunca `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` nem `DateTimeOffset.UtcNow` dentro da entidade, e nunca `TimeProvider` injetado nela (CONV-060).
-- A entidade tenta I/O, orquestração ou mapeamento? Não é do Domain — remova.
-- O pedido incluiu comportamento (ex.: "Withdraw exige saldo suficiente")? Gere só a construção; não crie o método. Avise ao final que comportamento ficou fora do escopo.
+- Qual o mínimo de estado? O que é VO, o que é primitivo? Cada propriedade é fixa no nascimento (`get`-only) ou o usuário disse que muda depois (`private set`, mesmo sem método gerado agora — deixa a costura pronta)?
+- Quais invariantes valem no nascimento? Cada uma vira `private static readonly Error {Name}.{Reason}` + guard clause com chaves retornando `FromInvalid`. A factory precisa de um instante (ex.: `openedAt`)? Entra como parâmetro (CONV-060).
+- O pedido incluiu comportamento (ex.: "Withdraw exige saldo suficiente"), I/O, orquestração ou mapeamento? Gere só a construção, não crie o método nem o que não é do Domain, e avise ao final que comportamento ficou fora do escopo.
 
 ## Template canônico
-`{RootNamespace}` é placeholder: substitua pelo valor resolvido no passo 2 do Fluxo, nunca copie
-literalmente.
+Leia `references/template.md` antes de escrever. `{RootNamespace}` e os demais placeholders recebem os
+valores resolvidos no passo 3 do Fluxo; nunca copie literalmente.
 
-```csharp
-// using JacksonVeroneze.NET.Result;   // só se não houver global using (passo 4)
-
-namespace {RootNamespace}.{Aggregate};
-
-public sealed class {Name}
-{
-    private static readonly Error {Reason} =
-        Error.Create("{Name}.{Reason}", "<mensagem clara>");
-
-    public {IdType} Id { get; }
-
-    // get-only quando fixa no nascimento; private set só se o usuário descreveu mudança futura
-    public {PropType} {Prop} { get; }
-
-    private {Name}({IdType} id, /* ... */)
-    {
-        Id = id;
-        // atribuições
-    }
-
-    public static Result<{Name}> Create(/* VOs + dados + instante quando aplicável */)
-    {
-        if (/* invariante de nascimento violada */)
-        {
-            return Result<{Name}>.FromInvalid({Reason});
-        }
-
-        return Result<{Name}>.WithSuccess(
-            new {Name}(Guid.NewGuid(), /* ... */));
-    }
-}
-```
-
-## Exemplos (certo/errado)
-Pedido: "Account com AccountNumber, Balance (Money) e OpenedAt. Abre com depósito inicial não
-negativo." (Sem comportamento pedido — só construção.)
-
-Errado — sem contexto: setter e ctor públicos, atributo de EF, `decimal` cru, exceção, API
-inexistente:
-```csharp
-public class Account                                   // não-sealed, aberto a herança
-{
-    [Key] public Guid Id { get; set; }                 // atributo de EF no domínio
-    public decimal Balance { get; set; }                // primitivo, mutável de fora
-
-    public static Account Create(decimal balance)
-    {
-        if (balance < 0) throw new ArgumentException(); // exceção p/ regra; sem chaves
-        return new Account { Id = Guid.NewGuid(), Balance = balance };
-    }
-}
-```
-
-Certo — com contexto (`{DomainProjectDir}/Accounts/Account.cs`):
-```csharp
-using JacksonVeroneze.NET.Result;
-
-namespace {RootNamespace}.Accounts;
-
-public sealed class Account
-{
-    private static readonly Error InitialDepositNegative =
-        Error.Create("Account.InitialDepositNegative",
-            "Initial deposit cannot be negative.");
-
-    public Guid Id { get; }
-
-    public AccountNumber Number { get; }
-
-    public Money Balance { get; }
-
-    public DateTimeOffset OpenedAt { get; }
-
-    private Account(Guid id, AccountNumber number,
-        Money balance, DateTimeOffset openedAt)
-    {
-        Id = id;
-        Number = number;
-        Balance = balance;
-        OpenedAt = openedAt;
-    }
-
-    public static Result<Account> Open(
-        AccountNumber number, Money initialDeposit,
-        DateTimeOffset openedAt)
-    {
-        if (initialDeposit.Amount < 0)
-        {
-            return Result<Account>
-                .FromInvalid(InitialDepositNegative);
-        }
-
-        return Result<Account>.WithSuccess(
-            new Account(Guid.NewGuid(),
-                number, initialDeposit, openedAt));
-    }
-}
-```
-
-Diferença: `sealed class` com ctor privado (CONV-023/064); `Open` valida e retorna
-`Result<Account>` via `FromInvalid`/`WithSuccess` (CONV-085); usa VOs `Money`/`AccountNumber`
-(CONV-025/059); `openedAt` entra como parâmetro, zero `DateTime.Now` (CONV-060); sem atributo de
-EF (CONV-024); todas as propriedades `get`-only — nada muda depois do nascimento, porque nenhum
-comportamento foi pedido nem gerado; `Error` único, `Code` estável (CONV-021).
+## Exemplos
+Leia `references/examples.md` antes de escrever: `Account` com `AccountNumber`, `Balance` e `OpenedAt`
+(certo e errado) e um pedido incompleto.
 
 ## Anti-patterns (recusar)
-- Setter público, ctor público, ou `public Account() { }` — quebra invariante.
-- `class` sem `sealed`, ou `record` em vez de `class` para tipo com identidade (CONV-064/068).
-- `throw` para invariante de nascimento em vez de `Result<{Name}>.FromInvalid(...)` (CONV-020/085).
-- `Error` inline/repetido em vez de `private static readonly Error` único por invariante.
-- `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` ou `DateTimeOffset.UtcNow` dentro da entidade; `TimeProvider` injetado na entidade (CONV-060).
-- Atributo `[Key]`/`[Table]`/`[Column]` ou referência a `DbContext`/repositório.
-- Chamar serviço, repositório, mapper ou fazer I/O de dentro da entidade.
-- Expor coleção interna mutável (`List<T>`) — exponha como `IReadOnlyList<T>`.
-- Gerar método de comportamento/mutação (`Withdraw`, `Cancel`, ...) — fora do escopo desta skill.
-- `private set` numa propriedade sem nenhum método que a use e sem o usuário ter descrito mudança futura — vira código morto; use `get`-only.
-- Primitivo cru onde existe (ou cabe) VO — em especial `decimal`/`float`/`double` cru para dinheiro (CONV-059).
-- Membro expression-bodied (`=>`) em qualquer método, mesmo o `Create` (CONV-089).
-- Lib externa sem confirmação (CONV-087).
-- Namespace copiado dos exemplos ou placeholder `{RootNamespace}`/`{Aggregate}` deixado literal.
-- Criar o value object que falta, ou qualquer outro artefato fora do escopo, em vez de parar e relatar.
+- Escrever sem todos os inputs ou inferir o que falta → pare e liste só o que falta.
+- Setter público, ctor público, ou `public Account() { }` (quebra invariante) → ctor privado e factory estática `Result<{Name}>`; propriedades `get`-only.
+- `class` sem `sealed`, ou `record` para tipo com identidade (CONV-064/068) → `public sealed class`.
+- `throw` para invariante de nascimento (CONV-020/085) → `Result<{Name}>.FromInvalid(...)`.
+- `Error` inline/repetido → `private static readonly Error` único por invariante.
+- `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now`/`.UtcNow` na entidade, ou `TimeProvider` injetado (CONV-060) → instante como parâmetro da factory.
+- Atributo `[Key]`/`[Table]`/`[Column]` ou referência a `DbContext`/repositório (CONV-024) → nada de persistência no Domain; o mapeamento vive na Infrastructure.
+- Chamar serviço, repositório, mapper ou fazer I/O de dentro da entidade (CONV-026) → o Domain guarda só regra de negócio; remova.
+- Expor coleção interna mutável (`List<T>`) → `IReadOnlyList<T>`.
+- Gerar método de comportamento/mutação (`Withdraw`, `Cancel`, ...) → gere só a construção e avise que comportamento ficou fora do escopo.
+- `private set` sem método que a use e sem mudança futura descrita (código morto) → `get`-only.
+- Primitivo cru onde existe (ou cabe) VO, em especial `decimal`/`float`/`double` para dinheiro (CONV-059) → o VO (`Money`).
+- Membro expression-bodied (`=>`) em qualquer método, mesmo o `Create` (CONV-089) → corpo em bloco.
+- Lib externa sem confirmação (CONV-087) → não adicione; pare e relate.
+- Namespace copiado dos exemplos ou placeholder literal (`{RootNamespace}`, `{Aggregate}`) → valores resolvidos no passo 3.
+- Criar o VO que falta, ou qualquer artefato fora do escopo → pare e relate o que falta e onde era esperado.
 
 ## Checklist + Harness
 
 Checklist (mapeado a CONV):
+- [ ] Todos os inputs informados e válidos antes de qualquer escrita; nada inferido.
 - [ ] Arquivo em `{DomainProjectDir}/{Aggregate}/{Name}.cs`; namespace `{RootNamespace}.{Aggregate}` com RootNamespace resolvido do `.csproj` (CONV-013).
 - [ ] `sealed class`, um tipo por arquivo, file-scoped namespace (CONV-064/068/012/011).
 - [ ] Construtor privado; sem ctor público sem parâmetros; construção só via factory `Result<T>` (CONV-023).
 - [ ] Propriedade `get`-only por padrão; `private set` só onde o usuário descreveu mudança futura (CONV-023/096).
-- [ ] Cada invariante de nascimento tem `private static readonly Error` com `Code` `{Name}.{Reason}` e guard clause com chaves retornando `FromInvalid` (CONV-021/085/065/067).
-- [ ] Só as invariantes pedidas — nenhuma inventada.
+- [ ] Cada invariante tem `private static readonly Error` com `Code` `{Name}.{Reason}` e guard clause com chaves retornando `FromInvalid`; só as pedidas (CONV-021/085/065/067).
 - [ ] `Create`/`Open` retorna `Result<{Name}>`; `WithSuccess(value)` no caminho feliz (CONV-085).
 - [ ] Valor como VO; dinheiro é `Money` (CONV-025/059).
-- [ ] Instante (se houver) entra como parâmetro da factory; zero `DateTime.Now`/`.UtcNow`/`DateTimeOffset.Now`/`.UtcNow` e zero `TimeProvider` injetado (CONV-060).
-- [ ] Zero atributo/using de EF; zero I/O, orquestração ou DTO (CONV-024/026).
-- [ ] Zero método de comportamento/mutação gerado.
+- [ ] Instante entra como parâmetro da factory; zero `DateTime.Now`/`.UtcNow`/`DateTimeOffset.Now`/`.UtcNow` e zero `TimeProvider` injetado (CONV-060).
+- [ ] Zero atributo/using de EF; zero I/O, orquestração ou DTO; zero método de comportamento gerado (CONV-024/026).
 - [ ] Sem `null` para erro, sem `throw` para regra, sem `!` null-forgiving (CONV-069/020/003).
-- [ ] Corpo em bloco em todo método, nenhum `=>` (CONV-089).
-- [ ] `using` da lib só se não houver global using; `static readonly` em PascalCase (CONV-015).
-- [ ] Identificador em inglês, exceto termo brasileiro sem tradução (exceção local desta skill; CONV-063 não a prevê). Nenhum pacote novo (CONV-087).
+- [ ] Corpo em bloco em todo método, nenhum `=>` (CONV-089); `using` da lib só se não houver global using; `static readonly` em PascalCase (CONV-015).
+- [ ] Identificador em inglês, exceto termo brasileiro sem tradução (exceção local; CONV-063 não a prevê). Nenhum pacote novo (CONV-087).
 - [ ] Nenhum pré-requisito ausente foi criado por esta skill — o que faltava foi relatado, não gerado.
 
-Harness (gate — só conclui quando os dois passam):
+Harness (gate — só conclui quando passam):
 1. `dotnet build <Domain.csproj>` sem warning. Com CONV-002 isso cobre analyzer, `.editorconfig` (`IDE*`, inclusive `IDE0011` e `IDE0005`) e `BannedSymbols.txt`.
 2. `dotnet format <Domain.csproj> --verify-no-changes` sem diferença: pega espaço em branco, espaço no fim de linha e quebra de linha.
+3. `dotnet test` dos testes que já referenciam o tipo, se existirem: verdes.
 
-Se algum comando falhar por erro de ambiente/ferramenta (timeout, processo que não inicia, etc.)
-em vez de reprovar por conteúdo do arquivo, não trate como passo concluído: tente de novo uma
-vez e, se persistir, reporte ao usuário como Harness incompleto e pare — não declare a criação
+Falha de ambiente/ferramenta (timeout, processo que não inicia) em vez de reprovação por conteúdo:
+tente de novo uma vez e, se persistir, reporte "Harness incompleto" e pare — não declare a criação
 da entidade como concluída.
 
-Se algum teste já referencia o tipo, ele também precisa estar verde.
+## Relatório
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

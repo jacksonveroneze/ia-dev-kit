@@ -16,7 +16,7 @@ a estrutura depende do frontmatter, e a extração depende da estrutura.
 | M-01 | Ajustar `name` para o nome da pasta | Pasta fora de kebab-case: parar e relatar; não renomear |
 | M-02 | Reduzir a `description` ao quê e quando; remover dois-pontos e sinais de maior ou menor; manter os traços que discriminam o disparo e o "NÃO usar" | Sem "NÃO usar" na original: pendência |
 | M-03 | Renomear e reordenar os headings para a ordem de `anatomia.md`; mover os blocos literalmente | Seção ausente sem conteúdo de origem: `N/A - motivo` só se o motivo é evidente; senão, pendência |
-| M-04 | Mover o excesso (exemplos, tabelas longas, detalhes de stack) para `references/`, citando cada arquivo no corpo com a instrução de quando ler | Corpo continua acima do limite: pendência |
+| M-04 | Mover o excesso (exemplos, tabelas longas, detalhes de stack) para `references/`, citando cada arquivo no corpo com a instrução de quando ler. Template canônico com mais de uns 25 linhas vai para `references/template.md`, mantendo a seção no corpo com o ponteiro | Corpo continua acima do limite: pendência |
 | M-05 | Criar `references/examples.md` com os exemplos que já existem no corpo; criar `references/report.md` pelo modelo `modelo-report.md` | Sem exemplos de origem: pendência; não inventar |
 | M-09 | Para cada arquivo de pasta fora do padrão (ex. `resources/`): lido pelo agente vai para `references/`; copiado ou preenchido na saída vai para `assets/`; executável vai para `scripts/`. Mover com `git mv` e atualizar as citações no corpo | Função do arquivo ambígua: pendência; não mover |
 | M-06 | Trocar emoji e símbolos por texto ("Certo", "Errado", "Passou", "Falhou") | - |

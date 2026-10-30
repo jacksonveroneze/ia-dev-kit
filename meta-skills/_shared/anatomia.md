@@ -7,7 +7,11 @@ Mudou a anatomia: mude só aqui.
 - `SKILL.md`: corpo com até 150 linhas.
 - `references/report.md`: formato do relatório da skill (obrigatório; modelo em `modelo-report.md`).
 - `references/examples.md`: exemplos certo e errado da skill (obrigatório).
-- Opcionais: `references/stack-{nome}.md` (convenções de uma stack), `scripts/`, `assets/`.
+- Opcionais: `references/template.md` (ver abaixo), `references/stack-{nome}.md` (convenções de uma stack), `scripts/`, `assets/`.
+
+`references/template.md`: o Template canônico com mais de uns 25 linhas vai para este arquivo. A seção
+`## Template canônico` fica no corpo com o ponteiro, a instrução de ler antes de escrever e a regra de
+precedência sobre os Exemplos; o Fluxo cita o arquivo no passo de escrever.
 
 ## Pastas (só estas três)
 - `references/`: documentação que o agente **lê** sob demanda e carrega no contexto (exemplos, relatório, convenções). O corpo diz quando ler cada arquivo.
