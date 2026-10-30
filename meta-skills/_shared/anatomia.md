@@ -7,7 +7,13 @@ Mudou a anatomia: mude só aqui.
 - `SKILL.md`: corpo com até 150 linhas.
 - `references/report.md`: formato do relatório da skill (obrigatório; modelo em `modelo-report.md`).
 - `references/examples.md`: exemplos certo e errado da skill (obrigatório).
-- Opcionais: `references/stack-{nome}.md` (convenções de uma stack), `scripts/`.
+- Opcionais: `references/stack-{nome}.md` (convenções de uma stack), `scripts/`, `assets/`.
+
+## Pastas (só estas três)
+- `references/`: documentação que o agente **lê** sob demanda e carrega no contexto (exemplos, relatório, convenções). O corpo diz quando ler cada arquivo.
+- `assets/`: arquivos usados **na saída**, copiados ou preenchidos sem virar instrução (templates, `.editorconfig`, imagens).
+- `scripts/`: código que o agente **executa**.
+- `resources/` e outros nomes não são usados. Critério: lido pelo agente é `references/`; copiado para a saída é `assets/`; executado é `scripts/`.
 
 ## Estrutura do `SKILL.md` (ordem fixa, sem reordenar)
 Seção que não se aplica fica no lugar com `N/A - motivo`.
@@ -72,8 +78,8 @@ Os headings não mudam; muda o conteúdo.
 - Auditor: o Template vira o formato da saída; o Checklist vira a régua.
 
 ## Tamanho e divulgação progressiva
-Corpo com até 150 linhas. Exemplos, relatório, convenções de stack e scripts ficam em `references/` e
-`scripts/`, citados no corpo com a instrução de quando ler.
+Corpo com até 150 linhas. Exemplos, relatório e convenções de stack ficam em `references/`; arquivos de
+saída em `assets/`; código em `scripts/`. Todos citados no corpo com a instrução de quando usar.
 
 ## Adaptadores de stack
 Convenções específicas de uma stack (catálogo de regras, comandos de build, régua de verificação) ficam

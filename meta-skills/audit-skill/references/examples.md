@@ -33,8 +33,9 @@ Diferença: sem o trecho citado e o ajuste, o autor da skill não sabe o que mud
 
 ## Desvio versus observação
 
-Certo: skill usa `resources/` no lugar de `references/` e tem "Rules desta skill". Classificação:
-desvio mecânico (M-05), com ajuste proposto, porque a anatomia padroniza `references/`.
+Certo: skill guarda `examples.md` e `report.md` em `resources/`. Classificação: desvio mecânico (M-09 e
+M-05), com ajuste proposto, porque a anatomia só admite `references/`, `assets/` e `scripts/`. Os `.md`
+lidos pelo agente vão para `references/`; arquivos copiados para a saída iriam para `assets/`.
 
 Certo: skill de stack Java cita comandos Maven no Harness. Classificação: observação, pois a
 anatomia é agnóstica de stack e exige apenas um gate executável (J-12).

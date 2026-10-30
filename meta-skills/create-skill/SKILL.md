@@ -14,7 +14,7 @@ Anatomia, régua e comportamento comuns estão em `../_shared/`: leia `anatomia.
 
 ## O que gera
 - `{skills-dir}/{name}/SKILL.md`, `references/report.md` e `references/examples.md`, conforme `../_shared/anatomia.md`.
-- Opcionais: `references/stack-{nome}.md`, `scripts/`.
+- Opcionais: `references/stack-{nome}.md`, `scripts/`, `assets/`.
 
 Nada além disso: não executa a skill criada, não a registra em ferramenta, não instala dependências, não
 audita e não altera skill existente.

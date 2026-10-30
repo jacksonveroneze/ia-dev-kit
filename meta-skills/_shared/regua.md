@@ -16,6 +16,7 @@ audita usa como régua da skill auditada. Anatomia em `anatomia.md`; comportamen
 | M-06 | Sem emoji ou símbolo decorativo em nenhum arquivo da skill | `grep -rnP '[\x{2600}-\x{27BF}\x{1F300}-\x{1FAFF}]' $S` |
 | M-07 | Sem nome de ferramenta de agente específico no corpo | `grep -nEi 'AskUserQuestion|Skill tool|ferramenta Skill|TodoWrite' $S/SKILL.md` |
 | M-08 | Frontmatter presente e fechado, só com campos válidos | ler as primeiras linhas |
+| M-09 | Só as pastas `references/`, `assets/` e `scripts/` | `find $S -mindepth 1 -maxdepth 1 -type d` (qualquer outra, como `resources/`, falha) |
 
 ## Itens de julgamento (J): leitura do texto, com trecho citado
 

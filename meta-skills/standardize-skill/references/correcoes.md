@@ -6,7 +6,7 @@ a estrutura depende do frontmatter, e a extração depende da estrutura.
 ## Ordem de aplicação
 1. Frontmatter (M-01, M-02, M-08)
 2. Estrutura e ordem das seções (M-03)
-3. Extração para `references/` (M-04, M-05)
+3. Pastas e extração para `references/` (M-09, M-04, M-05)
 4. Texto (M-06, M-07 e, com escopo `completo`, itens J)
 
 ## Itens mecânicos (aplicados no escopo `mecanico`)
@@ -18,6 +18,7 @@ a estrutura depende do frontmatter, e a extração depende da estrutura.
 | M-03 | Renomear e reordenar os headings para a ordem de `anatomia.md`; mover os blocos literalmente | Seção ausente sem conteúdo de origem: `N/A - motivo` só se o motivo é evidente; senão, pendência |
 | M-04 | Mover o excesso (exemplos, tabelas longas, detalhes de stack) para `references/`, citando cada arquivo no corpo com a instrução de quando ler | Corpo continua acima do limite: pendência |
 | M-05 | Criar `references/examples.md` com os exemplos que já existem no corpo; criar `references/report.md` pelo modelo `modelo-report.md` | Sem exemplos de origem: pendência; não inventar |
+| M-09 | Para cada arquivo de pasta fora do padrão (ex. `resources/`): lido pelo agente vai para `references/`; copiado ou preenchido na saída vai para `assets/`; executável vai para `scripts/`. Mover com `git mv` e atualizar as citações no corpo | Função do arquivo ambígua: pendência; não mover |
 | M-06 | Trocar emoji e símbolos por texto ("Certo", "Errado", "Passou", "Falhou") | - |
 | M-07 | Trocar nome de ferramenta de agente por verbo neutro ("pergunte ao usuário", "execute o comando") | - |
 | M-08 | Corrigir frontmatter: abrir e fechar com `---`, manter só campos válidos | - |
