@@ -1,6 +1,6 @@
 ---
 name: create-refit-interface
-description: 'Cria a interface Refit (.NET/C#) para chamadas HTTP a uma API externa, com um ou mais métodos, e os records dos contratos de retorno. Só segue com todos os dados informados, o diretório da interface, o nome, o diretório dos models e, por método, a rota e o retorno (item ou coleção, com os campos). Use sempre que o usuário pedir uma interface Refit, um client Refit, um cliente HTTP tipado ou a integração com uma API externa a partir de rotas, mesmo sem citar Refit. Não use para porta ou adaptador da Application, nem para registro de DI ou HttpClient.'
+description: 'Cria a interface Refit (.NET/C#) para chamadas HTTP a uma API externa, com um ou mais métodos, e os records dos contratos de retorno. Use sempre que o usuário pedir uma interface Refit, um client Refit, um cliente HTTP tipado ou a integração com uma API externa a partir de rotas, mesmo sem citar Refit. Não use para porta ou adaptador da Application, nem para registro de DI ou HttpClient.'
 ---
 
 # Criar interface Refit (.NET)
@@ -67,7 +67,7 @@ sem item/coleção, contrato sem nome ou campo sem tipo.
 4. **Checar `global using`** de `Refit`, `System.Text.Json.Serialization` e do namespace dos models (`IDE0005` é erro).
 5. **Escrever** pelo Template canônico e **verificar** pelo Checklist + Harness.
 
-## Raciocínio antes de escrever (CoT)
+## Raciocínio antes de agir (CoT)
 - Todos os dados foram informados, sem nada inferido, inclusive item/coleção e o diretório dos models?
 - Campo monetário em `double`/`float`? Use `decimal` e relate (CONV-059).
 
@@ -107,17 +107,21 @@ internal sealed record {Model}
 ```
 `{Path}` é o caminho sem a query; `{Field}` é `{field}` em PascalCase; repita o bloco por campo.
 
-## Exemplos (certo/errado)
-Leia `examples.md` antes de escrever: `ICotacaoApi` com dois métodos e um pedido incompleto.
+## Exemplos
+Leia `references/examples.md` antes de escrever: `ICotacaoApi` com dois métodos e um pedido incompleto.
 
 ## Anti-patterns (recusar)
 - Começar sem todos os dados, inferir o que falta (diretório, item ou coleção, campos) ou usar valor de exemplo → peça só o que falta.
 - Propriedade sem `JsonPropertyName`, ou record com construtor posicional → propriedades no corpo, cada uma com `[JsonPropertyName("campo")]`.
-- Registrar o client, `AddRefitClient`, base address; criar o tipo do corpo → fora do escopo.
+- Registrar o client, `AddRefitClient`, base address; criar o tipo do corpo → fora do escopo: gere só a interface e os records, e use o tipo do corpo informado (inexistente: pare e relate).
 - `Newtonsoft` ou `Refit.Newtonsoft.Json` (CONV-071) → System.Text.Json.
 - `CancellationToken` ausente ou com `= default` (CONV-044/074) → `cancellationToken` por último.
 - `double`/`float` para dinheiro (CONV-059); `class` mutável, sem `sealed` ou `public` sem necessidade (CONV-064/065/068) → `decimal`; `internal sealed record`.
-- Retornar `HttpResponseMessage`, `ApiResponse<T>` ou `Result`; sobrescrever arquivo existente; adicionar pacote (CONV-087); parâmetros na mesma linha; placeholder literal.
+- Retornar `HttpResponseMessage`, `ApiResponse<T>` ou `Result` → `Task<{Model}>`, `Task<IReadOnlyList<{Model}>>` ou `Task`.
+- Sobrescrever arquivo existente → pare e relate qual existe.
+- Adicionar pacote (CONV-087) → não adicione; pare e relate o que falta.
+- Parâmetros na mesma linha → um parâmetro por linha, indentado.
+- Placeholder literal → substitua pelos valores resolvidos no passo 2.
 
 ## Checklist + Harness
 
@@ -135,4 +139,5 @@ Falha de ambiente/ferramenta (timeout, processo que não inicia) em vez de repro
 tente de novo uma vez e, se persistir, reporte "Harness incompleto" e pare — não declare a criação
 como concluída.
 
-Ao concluir (ou parar), apresente o relatório no formato de `report.md`.
+## Relatório
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.
