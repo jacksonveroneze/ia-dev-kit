@@ -27,3 +27,6 @@ Não publicado.
 Erro: <mensagem do conector>
 Como proceder? (não tento de novo sem perguntar)
 ```
+
+## Ao parar
+Input ausente ou sem autorização: uma linha com o que faltou e onde era esperado (card, texto ou autorização); nada foi lido nem escrito.
