@@ -80,6 +80,7 @@ Os headings não mudam; muda o conteúdo.
 - Gerador: o Template canônico é o artefato produzido.
 - Transformador: o Template vira o mapa de alterações (arquivo, antes e depois); vale gate de confirmação.
 - Auditor: o Template vira o formato da saída; o Checklist vira a régua.
+- Com fases (máquina de estados): estados, transições e gates em `references/fluxo.md`; o Fluxo no corpo resume as fases e nenhum gate de escrita é dispensado; as demais seções não mudam.
 
 ## Tamanho e divulgação progressiva
 Corpo com até 150 linhas. Exemplos, relatório e convenções de stack ficam em `references/`; arquivos de

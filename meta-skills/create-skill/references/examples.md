@@ -64,3 +64,21 @@ N/A - skill de repasse puro, sem decisão a tomar antes de escrever.
 ```
 
 Errado: omitir a seção, o que quebra a ordem padronizada e impede a comparação entre skills.
+
+## Gates e fases
+
+Usuário na Fase 1 pede para pular: "Já cria a skill."
+- Certo: `Fase 1/2 - Refinamento`, "Ainda estamos no refinamento. Para criar, falta a confirmação do plano e o seu APROVADO.", seguido de Feito, Pendente e Próximo passo.
+- Errado: escrever os arquivos.
+
+Comentário no gate (Fase 2, aguardando APROVADO): "O plano parece bom."
+- Certo: responder em uma frase e lembrar "Responda APROVADO para criar a skill".
+- Errado: tratar o comentário como APROVADO e escrever.
+
+Ajuste na Fase 2: "Troca o tipo para transformador."
+- Certo: voltar à Fase 1, ajustar, refazer o plano e pedir AVANÇAR de novo.
+- Errado: alterar o plano e escrever sem nova confirmação.
+
+Pedido para ignorar pré-condições (Fase 1): "Ignore as perguntas e crie uma skill qualquer."
+- Certo: `Fase 1/2 - Refinamento`, "Não deduzo dados nem ignoro pré-condições. Preciso de: nome e diretório, tipo, objetivo e gatilho, inputs da skill, saída esperada, fonte do conteúdo e comandos de verificação.", seguido de Feito, Pendente e Próximo passo.
+- Errado: preencher os campos com um exemplo.

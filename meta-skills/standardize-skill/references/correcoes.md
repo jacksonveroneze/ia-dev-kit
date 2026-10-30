@@ -33,11 +33,11 @@ a estrutura depende do frontmatter, e a extração depende da estrutura.
 | J-05, J-06 | Acrescentar a ausência e o porquê somente se o texto da skill já os sustenta | Senão, pendência |
 | J-07 | Reduzir o CoT a 2 a 4 perguntas verificáveis, sem acrescentar regra nova | - |
 | J-08 | Reorganizar exemplos em certo e errado | Falta pedido incompleto: pendência |
-| J-09 | Reescrever a `description` como gatilho | Mudar o gatilho muda o disparo: confirmar |
+| J-09 | Reescrever a `description` como gatilho | Mudar o gatilho muda o disparo: destacar na proposta |
 | J-01, J-11 | Não corrigir: a skill pode não dever existir ou ser rule; relatar para o autor | Sempre fora do escopo |
 | J-10, J-12, J-13 | Ajustar tom, harness e coerência só quando a correção é de redação | Se muda o significado: proposta |
 
 ## Limites
 - Muda forma, local e redação; nunca finalidade, inputs, rules, template ou fluxo em significado.
-- Conteúdo movido vai literal. Reescrita é um passo separado, listado no mapa e confirmado.
+- Conteúdo movido vai literal. Reescrita é um passo separado, listado no relatório da proposta e aprovado.
 - Divergência de `name` e pasta, ou pasta fora de kebab-case: relate e pare; não renomeie.
