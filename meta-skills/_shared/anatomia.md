@@ -1,0 +1,80 @@
+# Anatomia da skill (fonte única)
+
+Compartilhado por `create-skill` (aplica ao escrever) e `audit-skill` (confere ao auditar). Texto puro.
+Mudou a anatomia: mude só aqui.
+
+## Arquivos de toda skill
+- `SKILL.md`: corpo com até 150 linhas.
+- `references/report.md`: formato do relatório da skill (obrigatório; modelo em `modelo-report.md`).
+- `references/examples.md`: exemplos certo e errado da skill (obrigatório).
+- Opcionais: `references/stack-{nome}.md` (convenções de uma stack), `scripts/`.
+
+## Estrutura do `SKILL.md` (ordem fixa, sem reordenar)
+Seção que não se aplica fica no lugar com `N/A - motivo`.
+
+```
+---
+name: {kebab-case, igual à pasta, até 64 caracteres}
+description: '{o quê e quando, sem o como; até 1024 caracteres; sem dois-pontos e sem sinais de maior ou menor}'
+---
+# {Título}                          (propósito e distância que cobre)
+## O que gera
+## Escopo (quando usar / NÃO usar)
+## Contrato
+### Rules                           (locais da skill; depois as gerais do projeto)
+### Pré-condições
+### Inputs                          (todos obrigatórios; o que é inválido)
+## Fluxo (ReAct)                    (passo 1: validar inputs, parar e listar o que falta)
+## Raciocínio antes de agir (CoT)   (2 a 4 perguntas verificáveis)
+## Template canônico                (saída com {Placeholders})
+## Exemplos                         (aponta para references/examples.md)
+## Anti-patterns (recusar)
+## Checklist + Harness
+## Relatório                        (aponta para references/report.md)
+```
+
+## Técnica de cada seção
+
+| Seção | Técnica | Conteúdo |
+|---|---|---|
+| Frontmatter | Gatilho | `name` e `description`, sem o como |
+| Título e propósito | Contexto mínimo | A distância que a skill cobre |
+| O que gera | Saída explícita | Arquivos, caminhos e nomes |
+| Escopo | Restrição negativa | Quando usar, quando NÃO usar e a skill irmã |
+| Contrato: Rules | Grounding | Locais da skill, depois as gerais do projeto |
+| Contrato: Pré-condições | Fail-fast | O que precisa existir antes |
+| Contrato: Inputs | Fail-fast | Todos obrigatórios; o que é inválido |
+| Fluxo (ReAct) | Fases | Passo 1 valida inputs; depois declarar, agir, verificar |
+| Raciocínio (CoT) | CoT guiado | De 2 a 4 perguntas verificáveis |
+| Template canônico | Saída estruturada | Saída com `{Placeholders}`, nunca copiada literalmente |
+| Exemplos | Few-shot | Aponta para `references/examples.md` |
+| Anti-patterns | Restrição negativa | Cada item com a alternativa |
+| Checklist + Harness | Autoverificação | Checklist manual e gate executável |
+| Relatório | Saída estruturada | Aponta para `references/report.md` |
+
+Por que esta ordem: contrato antes de exemplo; certo antes de errado; gate e relatório por último
+(recência); ReAct no fluxo externo, CoT dentro do passo de agir; referência pesada em `references/`.
+
+## Teste da distância
+O agente teria produzido isso sem a skill? Se sim, a skill não deve existir: ocupa contexto sem cobrir
+distância nenhuma. Skill de boas práticas genéricas reprova no teste.
+
+## Frontmatter
+- `name`: kebab-case, igual ao nome da pasta, até 64 caracteres.
+- `description`: é o gatilho, não documentação. Diga o quê e quando; mantenha os traços que discriminam
+  o disparo, os sinônimos do artefato e o "quando NÃO usar" apontando a skill irmã. Corte detalhe de
+  implementação. Até 1024 caracteres, sem dois-pontos e sem sinais de maior ou menor.
+
+## Tipos de skill
+Os headings não mudam; muda o conteúdo.
+- Gerador: o Template canônico é o artefato produzido.
+- Transformador: o Template vira o mapa de alterações (arquivo, antes e depois); vale gate de confirmação.
+- Auditor: o Template vira o formato da saída; o Checklist vira a régua.
+
+## Tamanho e divulgação progressiva
+Corpo com até 150 linhas. Exemplos, relatório, convenções de stack e scripts ficam em `references/` e
+`scripts/`, citados no corpo com a instrução de quando ler.
+
+## Adaptadores de stack
+Convenções específicas de uma stack (catálogo de regras, comandos de build, régua de verificação) ficam
+em `references/stack-{nome}.md`. O núcleo da skill permanece agnóstico.

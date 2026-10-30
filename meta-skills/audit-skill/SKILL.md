@@ -1,154 +1,99 @@
 ---
 name: audit-skill
-description: 'Audita outra skill: executa a skill indicada de forma padronizada (sem perguntas, sem sair do escopo), N vezes em contexto limpo, e emite um relatório com critérios passou/falhou, classificação de cada falha e variação entre execuções. Use quando o usuário pedir para testar, auditar, avaliar ou validar uma skill (ex. "audite a create-value-object", "teste a skill X"). Não use para criar ou editar skills (skill-creator) nem para executar a skill em produção.'
+description: 'Audita uma skill existente quanto à aderência à anatomia padronizada e às boas práticas do projeto, e opcionalmente a executa N vezes em contexto limpo para medir comportamento e variação. Emite um relatório com critérios passou ou falhou, classificação de cada falha e ajustes propostos, sem alterar a skill auditada. Use quando o usuário pedir para auditar, validar, avaliar, revisar ou testar uma skill (ex. audite a create-entity, valide se a skill X segue o padrão). Não use para criar ou corrigir skills (create-skill cria) nem para executar a skill em produção.'
 ---
 
 # Auditar uma skill
 
-Esta skill é o **avaliador**. Ela não gera o artefato da skill auditada: delega a um **executor** isolado e depois mede o resultado contra critérios que o executor nunca viu.
+Você atua como desenvolvedor sênior e arquiteto fazendo code review de uma skill. Esta skill só audita:
+mede a skill alvo contra a régua e relata os desvios com evidência. Não cria, não edita e não corrige.
 
-Princípio: o prompt do teste **não dita** o que a skill deve decidir (caminho, nome do tipo, namespace, códigos de erro, tipo de retorno). Se ditasse, o teste mediria obediência ao prompt, não a skill.
+Anatomia, régua e comportamento comuns estão em `../_shared/`: leia `anatomia.md`, `regua.md` e
+`comportamento.md` antes de auditar. São a fonte única do padrão.
 
-## Inputs
+## O que gera
+- O relatório de auditoria, no formato de `references/report.md`, apresentado na conversa.
+- Opcional, só se o usuário informar o caminho: o relatório salvo como `.md` nesse caminho.
 
-1. **Skill alvo** — nome da skill a auditar (obrigatório).
-2. **Tarefa** — o pedido em linguagem natural que seria dado à skill (obrigatório). Ex.: "Crie um value object para representar o nome. Input: name: string | required".
-3. **Critérios** — caminho de um arquivo de caso (`tests/{skill}/case-NN.md`) ou lista inline. Se ausente, derive-os do `SKILL.md` alvo (Passo 3) e **mostre-os no relatório**.
-4. **N** — número de execuções. Padrão: 3.
-5. **Estado inicial** — `limpo` (padrão) ou descrição de um cenário (ex.: "`ValueObjects/Name.cs` já existe").
+Nada além disso: não altera a skill alvo, não cria skill, não corrige desvio, não grava arquivo sem caminho informado.
 
-Faltando Skill alvo ou Tarefa: pare e relate o que faltou. Não pergunte nada.
+## Escopo (quando usar / NÃO usar)
+- **Usar:** validar aderência de uma skill ao padrão; testar o comportamento dela por execução.
+- **NÃO usar:** criar skill (use `create-skill`); corrigir ou padronizar skill (use `standardize-skill`); executar a skill em produção (use a própria skill).
 
-## Regras do executor (injetadas em TODA execução, literalmente)
+## Contrato
 
-```
-Use a skill {skill}. {tarefa}
+### Rules
+- **Régua única:** os critérios são os de `../_shared/regua.md` e a ordem de seções é a de `../_shared/anatomia.md`. Não crie critério próprio fora deles.
+- **Evidência obrigatória:** todo veredito cita comando e saída (mecânico) ou trecho do arquivo (julgamento). Sem evidência, o item é "não verificado", nunca "passou".
+- **Mecânico antes de julgamento:** rode os comandos primeiro; leia o texto depois. Não confie na memória nem no relato de terceiros.
+- **Somente leitura:** a skill alvo não é alterada. Proponha o ajuste; a aplicação é fora do escopo.
+- **Contra o padrão, não contra o gosto:** desvio é o que a régua define. Variação legítima de stack vai como observação, não como falha.
+- **Execução isolada:** o executor nunca recebe critérios nem o conteúdo da skill alvo (`references/execucao.md`).
+- **Comportamento comum:** tom, gate de inputs, relatório e falha de ferramenta conforme `../_shared/comportamento.md`.
 
-Regras:
-- Invoque a skill pela ferramenta Skill, como faria normalmente. Não leia
-  o SKILL.md dela com Read, cat ou similar.
-- Não pergunte nada. Se faltar informação que a skill não resolve sozinha,
-  pare e relate o que era esperado e onde.
-- Não crie nem altere nada fora do escopo da skill.
-- Antes de escrever o arquivo, declare: nome do tipo, namespace, caminho
-  e se o arquivo já existe.
+### Pré-condições
+- A skill alvo existe e seu `SKILL.md` é legível.
+- Os arquivos de `../_shared/` existem. Ausentes: pare e relate onde eram esperados.
+- Modo completo: ferramenta para executar em contexto limpo, ou aceitar o viés da execução inline (registrado).
 
-Ao final, informe: valores resolvidos, arquivos criados ou reaproveitados,
-o resultado do harness da skill (build, format, testes) e cada decisão
-que você tomou sem respaldo explícito na skill (ex.: normalizações,
-sobrescritas, limites, validações extras).
-```
+### Inputs
+1. **Skill alvo** (obrigatório): nome ou caminho do diretório.
+2. **Modo** (padrão `estatico`): `estatico` (aderência) ou `completo` (aderência mais execução).
+3. Somente no modo `completo`, obrigatórios: **Tarefa** (pedido em linguagem natural dado à skill) e, com padrão, **N** (3), **Estado inicial** (`limpo`) e **Critérios** (arquivo de caso ou derivados do contrato).
 
-Adapte só o trecho "declare: ..." ao que a skill alvo resolve (ex.: para `create-entity`, acrescente "agregado e campos de identidade"). Nunca acrescente dica de como resolver.
+Inválido: skill alvo inexistente, modo fora dos dois, modo `completo` sem Tarefa, N menor que 1.
 
-### Como a skill alvo é invocada
+## Fluxo (ReAct)
+1. **Validar inputs.** Faltando ou inválido: pare e liste só o que falta, antes de qualquer outro passo.
+2. **Localizar.** Resolva a skill alvo e os arquivos de `../_shared/`. Ausente: pare e relate o que procurou e onde.
+3. **Declarar**, num bloco só: skill alvo, modo e quantidade de itens da régua.
+4. **Checagens mecânicas.** Rode os comandos dos itens M de `../_shared/regua.md`; registre comando e saída.
+5. **Checagens de julgamento.** Leia o `SKILL.md` e `references/` da alvo; aplique os itens J, citando o trecho.
+6. **Classificar** cada falha conforme `references/veredito.md`.
+7. **Execução** (só no modo `completo`): siga `references/execucao.md`.
+8. **Veredito e relatório** conforme `references/veredito.md` e `references/report.md`. Proponha ajustes e não aplique.
 
-O executor **invoca a skill alvo pela ferramenta `Skill`**, exatamente como o Claude Code faria numa sessão real. Isso testa também o que o arquivo não mostra: se a `description` dispara a skill e se o conteúdo carregado pelo mecanismo de skills basta para a execução.
+## Raciocínio antes de agir (CoT)
+- Todo item do relatório tem evidência (comando ou trecho)?
+- O desvio é do padrão definido ou da minha preferência?
+- A falha vem do texto da skill ou de ambiente e fixture?
+- Estou prestes a corrigir a skill? Se sim, pare: só proponho.
 
-- O avaliador **nunca** cola o conteúdo do `SKILL.md` alvo no prompt do executor, nem indica o caminho do arquivo.
-- O executor **não** lê o `SKILL.md` alvo com `Read`/`cat`. A leitura do arquivo é tarefa só do avaliador, para extrair o contrato (Passo 2).
-- Se a skill alvo não aparecer na lista de skills disponíveis do executor, ou se a chamada `Skill` falhar, a auditoria **para e relata** (skill não instalada, nome errado ou sem permissão). Não há fallback para ler o arquivo: isso mascararia justamente o problema de descoberta/carregamento da skill.
-- O subagente precisa ter a ferramenta `Skill` (use um tipo com todas as ferramentas, como `general-purpose`).
+## Template canônico
+Saída: o relatório de `references/report.md`, com as seções nesta ordem: cabeçalho, veredito, régua
+mecânica, régua de julgamento, falhas, observações, execução (modo `completo`) e ajustes recomendados.
+Severidade, veredito e classificação de falhas: `references/veredito.md`.
 
-## Fluxo
-
-1. **Localizar a skill alvo.** Confirme que ela consta nas skills disponíveis e leia o `SKILL.md` inteiro **só para o avaliador** (extrair contrato e critérios). Se não existir ou não estiver instalada, pare e relate o que procurou e onde.
-2. **Extrair o contrato.** Do `SKILL.md` alvo, levante:
-   - Rules/CONV citadas e o que cada uma exige.
-   - Inputs e o que a skill diz resolver sozinha (ReAct/CoT).
-   - Checklist, Harness e Anti-patterns.
-   - **Lacunas**: decisões plausíveis que o texto não fixa (ex.: `Trim`, `ToString` mascarado, limite de tamanho). São as variáveis que você vigiará entre execuções.
-3. **Montar os critérios** em quatro grupos. Cada item é marcado como `determinístico` (checável por comando/grep) ou `julgamento` (lido do transcript):
-   - **Fluxo** — invocou a skill pela ferramenta `Skill` (sem ler o `SKILL.md` dela); declarou valores resolvidos antes de escrever; checou duplicidade; não perguntou; não inventou contexto.
-   - **Estrutura** — arquivo, pasta, namespace, modificadores, construtor, proibições (`!`, `=>`, etc.), conforme o contrato.
-   - **Comportamento** — o que o artefato faz, conforme o contrato; nenhuma regra além das que a skill manda.
-   - **Harness** — build sem warnings, format sem diff, testes verdes.
-
-   Não inclua critério que o contrato da skill não sustenta. Se o usuário pediu um e o contrato não o cobre, marque como **"fora do contrato"** e reporte como lacuna da skill, não como falha do modelo.
-4. **Preparar o estado.** Antes de cada execução, garanta o estado inicial pedido. Prefira isolamento por worktree (`isolation: "worktree"`) para as execuções não se contaminarem. Sem worktree, `git clean -fd && git checkout .` entre execuções.
-5. **Executar N vezes.** Para cada execução, dispare um subagente em contexto limpo com as regras do executor acima.
-   - O subagente **não recebe** os critérios, este `SKILL.md`, o conteúdo nem o caminho do `SKILL.md` alvo. Ele só recebe o prompt do executor e invoca a skill pela ferramenta `Skill`.
-   - Em sequência se compartilharem pastas; em paralelo só com worktrees isoladas.
-   - Sem subagente disponível, execute inline, também invocando a skill pela ferramenta `Skill`, e registre no relatório o viés (o avaliador viu os critérios e o `SKILL.md`).
-6. **Coletar evidências por execução:**
-   - Transcript final do executor (declaração pré-escrita, resumo, decisões sem respaldo).
-   - Chamadas de ferramenta do executor: existe chamada `Skill` com o nome da skill alvo e **não** existe `Read`/`cat` do `SKILL.md` dela. Se a skill não disparou pela `Skill`, registre como falha de Fluxo (origem provável: `description` da skill ambígua ou fraca).
-   - `git status --porcelain` e diff: arquivos criados/alterados.
-   - Saída de `dotnet build`, `dotnet format --verify-no-changes` e testes, **rodados pelo avaliador**, sem confiar no relato do executor.
-7. **Checagens determinísticas.** Rode `grep`/scripts para o que for mecânico (modificadores, `!`, `=>`, padrão de código de erro por regex, número de arquivos novos, caminho exato). Registre o comando e o resultado.
-8. **Checagens por julgamento.** Leia o transcript: declarou antes de escrever? Verificou duplicidade? Perguntou algo? Inventou contexto? Cite o trecho que sustenta cada veredito (uma linha).
-9. **Classificar cada falha** em exatamente uma origem:
-   - **Skill ambígua ou incompleta** — o texto permite mais de uma leitura ou não cobre o caso. *Pede ajuste de arquivo.*
-   - **Regra ausente ou errada nas conventions** — o CONV não existe, conflita ou está desatualizado. *Pede ajuste de arquivo.*
-   - **Erro do modelo** — a instrução era clara e foi ignorada. *Não pede ajuste; se recorrer, reavalie a clareza.*
-   - **Ambiente/fixture** — build quebrado por motivo alheio à skill.
-10. **Comparar execuções.** Para cada critério e cada lacuna do passo 2, compare as N execuções. Decisão que varia (ex.: `Trim` numa, não em outra) = **decisão solta na skill**, mesmo que todas passem.
-11. **Emitir o relatório** (formato abaixo). Não altere a skill alvo: proponha o ajuste, não aplique.
-
-## Formato do relatório
-
-```
-# Auditoria: {skill} — {data}
-Tarefa: {tarefa}   Estado inicial: {estado}   N: {N}   Executor: {subagente|inline}
-
-## Veredito
-{APROVADA | APROVADA COM RESSALVAS | REPROVADA} — {uma frase}
-
-## Valores resolvidos (por execução)
-| Item | Exec 1 | Exec 2 | Exec 3 |
-|---|---|---|---|
-| Tipo | | | |
-| Namespace | | | |
-| Caminho | | | |
-| Arquivo já existia? | | | |
-
-## Critérios
-| Grupo | Critério | Tipo | Exec 1 | Exec 2 | Exec 3 |
-|---|---|---|---|---|---|
-(✅ passou / ❌ falhou / ➖ fora do contrato)
-
-## Falhas
-| # | Critério | Exec | Origem | Evidência | Ajuste proposto |
-|---|---|---|---|---|---|
-
-## Decisões sem respaldo na skill
-| Decisão | Exec 1 | Exec 2 | Exec 3 | Estável? |
-|---|---|---|---|---|
-
-## Lacunas da skill (decisões soltas)
-- {lacuna}: {como variou} → {texto sugerido para a skill}
-
-## Harness
-| Execução | build | format | testes |
-|---|---|---|---|
-
-## Ajustes recomendados
-1. {arquivo}: {mudança}  (origem: skill | conventions)
-```
-
-Veredito:
-- **APROVADA** — todos os critérios passam em todas as execuções e nenhuma lacuna varia.
-- **APROVADA COM RESSALVAS** — critérios passam, mas há decisão solta ou item fora do contrato.
-- **REPROVADA** — qualquer falha de origem *skill* ou *conventions*, ou falha em ≥1 execução de critério de Estrutura/Harness.
-
-## Cenários de borda (rode quando o usuário pedir bateria completa)
-
-- **Artefato já existe** — esperado: parar e relatar, sem sobrescrever.
-- **Input incompleto** — esperado: parar e relatar o que faltou e onde, sem perguntar e sem inventar.
-- **Pedido fora do escopo da skill** (ex.: entidade pedida a uma skill de VO) — esperado: recusar e apontar a skill correta.
+## Exemplos
+Leia `references/examples.md` antes de auditar: evidência boa e ruim, desvio mecânico versus de julgamento e pedido incompleto.
 
 ## Anti-patterns (recusar)
+- Auditar sem todos os inputs ou assumir o modo: pare e liste o que falta.
+- Veredito sem evidência: cite comando e saída ou o trecho do arquivo.
+- Criar, editar ou corrigir a skill alvo: proponha o ajuste no relatório e pare.
+- Tratar variação legítima de stack como falha: registre como observação.
+- Passar critérios, caminho ou conteúdo da skill alvo ao executor: ele só recebe o pedido e invoca a skill.
+- Aceitar execução única como prova de estabilidade: use N maior que 1.
+- Confiar no relato do executor sobre build e testes: rode você mesmo.
+- Culpar o modelo quando o texto da skill permite duas leituras: classifique como lacuna da skill.
+- Emoji ou símbolo decorativo no relatório: use texto puro.
 
-- Passar critérios, caminho, nome do tipo ou códigos de erro ao executor.
-- Colar o conteúdo do `SKILL.md` alvo no prompt do executor, ou mandá-lo ler o arquivo, em vez de invocar a skill pela ferramenta `Skill`.
-- Cair em fallback silencioso (ler o arquivo) quando a chamada `Skill` falha: pare e relate.
-- Confiar no relato do executor sobre build/testes em vez de rodar.
-- Aceitar execução única como prova de estabilidade.
-- Corrigir a skill alvo durante a auditoria.
-- Culpar o modelo quando o texto da skill permite duas leituras.
-- Criar critério que o contrato da skill não sustenta e contá-lo como falha.
-- Deixar o executor escrever os testes que o avaliarão: use testes de contrato fixos, fornecidos pelo caso.
+## Checklist + Harness
 
-## Arquivo de caso (opcional)
+Checklist:
+- [ ] Inputs completos e válidos antes de auditar; nada inferido.
+- [ ] Todos os itens M com comando e saída; todos os itens J com trecho citado.
+- [ ] Cada falha classificada, com evidência e ajuste proposto.
+- [ ] Skill alvo intacta.
+- [ ] Veredito coerente com `references/veredito.md`; relatório em texto puro.
 
-Se o caso vier de `tests/{skill}/case-NN.md`, o arquivo contém: tarefa, estado inicial, critérios e (opcional) testes de contrato a copiar para o projeto de testes **após** a execução. Sem arquivo de caso, use os critérios derivados no passo 3 e sugira salvá-los como `case-01.md` no relatório.
+Harness (gate):
+1. `git status --porcelain` sem alteração no diretório da skill alvo.
+2. Relatório com todas as seções de `references/report.md`.
+3. No modo `completo`: N execuções registradas e comandos de verificação rodados pelo avaliador.
+
+Falha de ferramenta: conforme `../_shared/comportamento.md`; reporte "Harness incompleto" e não emita veredito.
+
+## Relatório
+Ao concluir ou parar, apresente o relatório no formato de `references/report.md`.
