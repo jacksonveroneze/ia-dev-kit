@@ -63,7 +63,7 @@ sem a chamada da dependência ou com dependência fora da lista.
 5. **Checar `global using`** para não repetir `using` (`IDE0005` é erro).
 6. **Escrever** pelo Template canônico e **verificar** pelo Checklist + Harness.
 
-## Raciocínio antes de escrever (CoT)
+## Raciocínio antes de agir (CoT)
 - Todos os dados vieram do usuário, inclusive o Retorno de cada método e a dependência que ele chama?
 - O método repassa uma única chamada async sem nada depois? Sem `async`/`await` (CONV-088). Mapeia, trata erro ou loga depois? Com `await`.
 - A descrição manda log ou captura de erro? Se não, o método não tem nenhum dos dois.
@@ -112,8 +112,8 @@ Repasse puro — uma única chamada, sem mapeamento, log ou tratamento — não 
 método não-`async` tem corpo só `return {depName}.{DepMethod}({args}, cancellationToken);` (CONV-088).
 Um bloco por método, separados por linha em branco, na interface e na classe.
 
-## Exemplos (certo/errado)
-Leia `resources/examples.md` antes de escrever: busca por ID com tratamento de 404, busca de coleção
+## Exemplos
+Leia `references/examples.md` antes de escrever: busca por ID com tratamento de 404, busca de coleção
 com log e um pedido incompleto.
 
 ## Anti-patterns (recusar)
@@ -142,4 +142,5 @@ Falha de ambiente/ferramenta (timeout, processo que não inicia) em vez de repro
 tente de novo uma vez e, se persistir, reporte "Harness incompleto" e pare — não declare a criação
 como concluída.
 
-Ao concluir (ou parar), apresente o relatório no formato de `resources/report.md`.
+## Relatório
+Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

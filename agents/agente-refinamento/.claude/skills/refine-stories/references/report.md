@@ -32,3 +32,6 @@ Prontidão: <só as stories cuja prontidão mudou>
 Falta para ficar pronta: <story: lista do que falta | nenhuma>
 Definition of Ready: todos os itens ok | itens que falharam: <lista>
 ```
+
+## Ao parar
+Input ausente ou inválido: uma linha com o que faltou e onde era esperado (objetivo, problema, persona, escopo ou contradição no escopo); nada foi gerado.

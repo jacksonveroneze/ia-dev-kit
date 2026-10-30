@@ -33,3 +33,6 @@ Não criados: <lista>
 Erro: <mensagem do conector>
 Como proceder? (não recrio o que já existe)
 ```
+
+## Ao parar (input ausente ou sem confirmação)
+Uma linha: o que faltou e onde era esperado (stories, board, lista ou confirmação). Nada foi lido nem escrito.

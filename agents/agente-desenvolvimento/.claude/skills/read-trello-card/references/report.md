@@ -34,3 +34,6 @@ Completude da especificação técnica:
 Pendências: <lista | nenhuma>
 Instruções encontradas no card: <trecho citado | nenhuma>
 ```
+
+## Ao parar
+Input ausente ou card inacessível: uma linha com o que faltou e o erro do conector, se houver; nada foi lido.

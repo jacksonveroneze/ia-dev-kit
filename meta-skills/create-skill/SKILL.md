@@ -1,171 +1,104 @@
 ---
 name: create-skill
-description: 'Cria, edita e otimiza as SKILLS de estereótipo deste projeto — value-object, entity, repository, use-case de leitura e de escrita, mapper, validator, endpoint, persistence-config, register-dependencies e afins. Uma skill descreve COMO montar um estereótipo conforme a dotnet-conventions, carregada sob demanda. Use SEMPRE que o usuário pedir para criar uma skill, documentar como fazer um artefato, ou transformar uma correção recorrente em procedimento reutilizável; e quando estiver em dúvida entre skill e rule (este arquivo traz o critério de decisão).'
+description: 'Cria uma nova skill para agentes de código (Claude, Devin e afins), em qualquer stack, seguindo a anatomia padronizada e a mesma ordem de seções em todas. Cada skill criada valida os inputs antes de agir, para e lista o que falta, e termina com um relatório do que executou. Use sempre que o usuário pedir para criar uma skill, documentar um procedimento reutilizável para o agente, ou transformar uma correção recorrente em skill; e em dúvida entre skill e rule. Não use para auditar, corrigir ou editar skill existente, nem para executar uma skill, nem para escrever regras invariantes permanentes.'
 ---
 
-# Meta-skill: criação de Skills
+# Meta-skill: criação de skills
 
-Uma **skill** captura a distância entre o que um code agent produz por padrão e o que
-**este projeto** exige, para um estereótipo específico. Ela não ensina boas práticas
-genéricas — ensina a fazer *igual ao resto da base*, segundo a `dotnet-conventions`.
+Você atua como desenvolvedor sênior e arquiteto de software que escreve procedimentos para outros
+agentes executarem. Uma skill captura a distância entre o que um agente produz por padrão e o que este
+projeto exige. Esta skill só cria; não audita nem edita.
 
-O teste que decide se uma skill deve existir é único:
+Anatomia, régua e comportamento comuns estão em `../_shared/`: leia `anatomia.md`, `comportamento.md` e
+`regua.md` antes de escrever. Eles são a fonte única e valem para toda skill criada.
 
-> **O agente teria produzido isso sem a skill?**
-> Se sim, a skill não deve existir. Está ocupando contexto sem cobrir distância nenhuma.
-
-Skills públicas nascem de material público — a mesma origem da massa de treinamento. A
-distância que cobrem tende a zero. **Não baixe skills prontas de arquitetura.** O
-conteúdo específico sai do nosso próprio código, das correções e da `dotnet-conventions`.
-
-## Skill ou Rule? Decida antes de escrever
-
-Declare a decisão no início do trabalho (chain of thought):
-
-| Sinal | Artefato | Onde |
-|---|---|---|
-| "Para montar Y…" — procedimento de um estereótipo | **Skill** | Este arquivo |
-| "Nunca…" / "Toda classe X deve…" — invariante transversal | **Rule** | `create-rule` → entrada `CONV-NNN` na `dotnet-conventions` |
-
-- **Skill** custa contexto **apenas quando dispara** → pode ser longa e detalhada.
-- **Rule** ocupa contexto **de forma permanente** → curta e negativa (`dotnet-conventions`).
-- Invariante transformada em skill **nunca carrega no momento em que importa**.
-- Procedimento transformado em rule **consome contexto antes da primeira linha**.
-
-Se o pedido for uma invariante, **pare aqui** e vá para `create-rule`.
-
-## Pré-condição inegociável: contexto íntegro
-
-**Não gere skill a partir de contexto compactado.** A skill nasce das tentativas erradas,
-das correções intermediárias e da redação exata que funcionou — material que a
-compactação destrói, deixando só o resumo do que deu certo.
-
-- Se a sessão foi compactada: **não crie a skill agora.** Registre que ficou pendente.
-- Se a tarefa não coube num contexto: o problema é a tarefa. Quebre-a antes.
-
-## Processo (ReAct: observar → decidir → escrever → verificar)
-
-### 1. Observar a correção
-Reúna, da sessão atual: o que o agente produziu por padrão (❌), o que a arquitetura
-exigia (✅) e **por quê** — qual estereótipo/CONV ele ignorou ou reinventou. O erro quase
-sempre tem direção fixa: **excesso**. O agente anexa responsabilidades que a arquitetura
-já absorve noutro lugar (transporte, persistência, mapeamento, erro). Nomeie as anexações.
-
-### 2. Confirmar que é skill, não rule
-Reaplique a tabela. Em dúvida, prefira rule para invariantes de fronteira e skill para
-"como montar o artefato".
-
-### 3. Escrever a SKILL.md
-Preencha a estrutura obrigatória (abaixo). Corpo imperativo. Explique o **porquê** de cada
-restrição citando o CONV — o modelo adere mais a uma restrição que entende do que a um
-"MUST" sem motivo.
-
-### 4. Verificar contra a régua
-Antes de dar por pronta, valide o output que a skill produziria pelas 6 dimensões,
-ancoradas na `dotnet-conventions`:
-
-| Dimensão | Pergunta (CONV) |
-|---|---|
-| Estereótipo | Usou o artefato e o naming do projeto (`{Operation}UseCase`/`Request`/`Response`, VO com factory `Result`) ou criou um paralelo? (CONV-016/017/023/025) |
-| Dependências | Respeitou a regra de dependência e as portas? Zero infra concreta na Application. (CONV-005..008/030/072) |
-| Erro/fluxo | `Result` tipado em vez de exceção; erro da taxonomia; nada de `null` para erro. (CONV-019/021/069) |
-| Tempo/async | `CancellationToken` ponta a ponta e nomeado; `TimeProvider`; sem sync-over-async. (CONV-044/074/060/045) |
-| Observabilidade/segurança | `ILogger<T>` estruturado; sem PII/CPF; sem vazar interno. (CONV-062/054/057) |
-| Configuração | CPM; props no `Directory.Build.props`; binding tipado. (CONV-058/001) |
-
-## Estrutura obrigatória da skill gerada — ordem canônica
-
-Cinco princípios fixam a ordem: **contrato antes de exemplo**; **correto antes de errado**;
-**recência para o gate** (checklist/harness por último); **ReAct externo, CoT interno**;
-**progressive disclosure** (referência pesada em `references/`, não no corpo).
-
-Ordem fixa das seções do corpo (não reordenar):
-```
 ## O que gera
+- `{skills-dir}/{name}/SKILL.md`, `references/report.md` e `references/examples.md`, conforme `../_shared/anatomia.md`.
+- Opcionais: `references/stack-{nome}.md`, `scripts/`, `assets/`.
+
+Nada além disso: não executa a skill criada, não a registra em ferramenta, não instala dependências, não
+audita e não altera skill existente.
+
 ## Escopo (quando usar / NÃO usar)
+- **Usar:** criar uma skill nova; decidir entre skill e rule antes de escrever.
+- **NÃO usar:** auditar, revisar, corrigir ou padronizar skill existente; executar uma skill; escrever invariante permanente ("nunca X", "toda classe Y deve Z"), que é rule e vai para o arquivo de instruções permanentes do projeto (`AGENTS.md`, `CLAUDE.md` ou equivalente).
+
 ## Contrato
-### Rules enforçadas (CONV)
+
+### Rules
+- **Teste da distância:** aplique o de `../_shared/anatomia.md`. Reprovando, não crie.
+- **Skill ou rule:** procedimento ("para montar Y") é skill e custa contexto só quando dispara. Invariante ("nunca X") é rule, fica sempre em contexto e por isso é curta e negativa. Invariante escrita como skill nunca carrega quando importa.
+- **Conformidade:** a skill criada cumpre `../_shared/regua.md` (itens M e J) e `../_shared/comportamento.md`.
+- **Gate de inputs:** conforme `../_shared/comportamento.md`; sem todos os inputs, não escreve nada.
+- **Conteúdo do projeto:** vem do código, das correções e das convenções (ver Fonte da verdade em `comportamento.md`).
+
 ### Pré-condições
-### Inputs
+- Tipo definido (gerador, transformador ou auditor; ver `anatomia.md`).
+- Diretório de destino conhecido e gravável, e skill de mesmo nome inexistente.
+- Skill nascida de correção em sessão exige contexto íntegro. Com sessão compactada, não crie agora e registre como pendente; se a tarefa não coube num contexto, quebre a tarefa antes.
+
+### Inputs (todos obrigatórios)
+1. Nome (kebab-case) e diretório de destino.
+2. Tipo: gerador, transformador ou auditor.
+3. Objetivo em uma frase e gatilho (quando dispara e quando não dispara, sem nomear outras skills).
+4. Inputs que a skill criada exigirá do usuário, com o formato de cada um.
+5. Saída esperada: artefatos, caminhos e convenções de nome.
+6. Fonte do conteúdo: convenções, código de referência ou a correção da sessão.
+7. Comandos de verificação (build, teste, lint) ou "nenhum", com o motivo.
+
+Inválido: nome fora de kebab-case, tipo fora dos três, gatilho sem "NÃO usar", fonte inexistente, skill sem
+inputs definidos, ou pedido que o teste da distância reprova.
+
 ## Fluxo (ReAct)
-## Raciocínio antes de escrever (CoT)
+1. **Validar inputs.** Faltando ou inválido algum: pare e liste só o que falta, antes de qualquer outro passo.
+2. **Triar.** Aplique o teste da distância e a decisão skill ou rule. Sendo rule, pare e relate com a justificativa.
+3. **Observar.** Leia a fonte. Se vem de correção: o que o agente fez, o que o projeto exigia e por quê. O erro típico é excesso, o agente anexa responsabilidades que a arquitetura já absorve noutro lugar. Nomeie as anexações.
+4. **Declarar**, num bloco só, antes de escrever: nome, caminho, tipo, gatilho, inputs da skill, seções `N/A`, comandos de verificação. Em skill transformadora ou destrutiva, peça confirmação do bloco.
+5. **Checar existência.** Skill já existente: pare e relate; esta skill não altera skill existente.
+6. **Escrever** pela estrutura de `../_shared/anatomia.md`, com `references/examples.md` e `references/report.md`.
+7. **Verificar** pelo Checklist e pelo Harness; só então relate.
+
+## Raciocínio antes de agir (CoT)
+- Todos os inputs vieram do usuário, sem eu preencher nada por conveniência?
+- O agente produziria isso sozinho? Se sim, o que a skill acrescenta?
+- É procedimento (skill) ou invariante (rule)?
+- A skill que vou escrever para e lista o que falta quando falta input?
+
 ## Template canônico
-## Exemplos (few-shot ❌/✅)
+Saída: a skill na estrutura e na ordem de seções de `../_shared/anatomia.md` (bloco "Estrutura do
+`SKILL.md`"), com `{Placeholders}` resolvidos pelos inputs. O `references/report.md` da skill segue o modelo
+de `../_shared/modelo-report.md`.
+
+## Exemplos
+Leia `references/examples.md` antes de escrever: gate de inputs bem e mal escrito, pedido incompleto,
+negativa com e sem alternativa, `description` como gatilho e seção `N/A`.
+
 ## Anti-patterns (recusar)
+- Escrever sem todos os inputs ou preencher o que falta por conta própria: pare e liste o que falta.
+- Auditar, corrigir ou editar skill existente: não altere; relate que está fora do escopo e pare.
+- Citar ou indicar outra skill no texto da skill criada: descreva só o escopo dela (J-14).
+- Skill sem `references/report.md` ou `references/examples.md`: crie os dois.
+- Skill de boas práticas genéricas: reprovada no teste da distância, não crie.
+- Invariante escrita como skill: mova para o arquivo de regras permanentes do projeto.
+- Seções fora de ordem, renomeadas ou omitidas sem `N/A - motivo`: siga `../_shared/anatomia.md`.
+- Criar a skill a partir de contexto compactado: registre como pendente.
+- Violar qualquer item de `../_shared/regua.md` (emoji, corpo acima de 150 linhas, negativa sem alternativa, tom informal): corrija antes de relatar.
+
 ## Checklist + Harness
-```
-Onde cada técnica cai: CoT → *Raciocínio*; few-shot → *Exemplos*; ReAct → *Fluxo*;
-o-que/como-não-fazer → *Anti-patterns* + a metade `❌` dos *Exemplos*; verificação →
-*Checklist* (manual, mapeado a CONV) **e** *Harness* (gate automatizado — build/test/analyzer
-que **prova** a conformidade; a skill só conclui quando passa).
 
-### frontmatter
-- **name**: kebab-case, igual ao nome da pasta.
-- **description**: é o **gatilho**, não documentação. Diga **o quê + quando**, não o *como*
-  interno. Mantenha os traços que **discriminam o disparo** (ex.: "de domínio", "com
-  identidade", "sem identidade"), os sinônimos do estereótipo e o "quando NÃO usar"
-  apontando a skill irmã. Corte detalhe de implementação (`sealed`, `Result`, setter
-  privado) — não muda quando dispara. Restrições do empacotador: a `description` **não pode
-  conter `:` nem `<` `>`** (use "retornando Result", não `Result<T>`).
+Checklist:
+- [ ] Todos os inputs informados e válidos antes de qualquer escrita; nada inferido.
+- [ ] Passou no teste da distância e é skill, não rule.
+- [ ] Skill nova: o diretório de destino não continha skill de mesmo nome.
+- [ ] Skill gerada cumpre os itens J de `../_shared/regua.md`.
+- [ ] Nada fora do escopo foi criado ou alterado.
 
-### Corpo — regras de conteúdo
-**Toda negativa vem com a alternativa no mesmo bloco.** Proibição isolada faz o modelo cair
-na segunda opção mais provável — normalmente tão ruim quanto a primeira. Nunca "não faça X"
-sem, ao lado, "faça Y assim".
+Harness (gate):
+1. Rodar os comandos dos itens M de `../_shared/regua.md` na skill criada; todos devem passar.
+2. Conferir que `references/report.md` e `references/examples.md` existem e estão citados.
 
-**Declare a ausência.** A responsabilidade de um artefato se define pela preocupação que ele
-**recusa** porque a arquitetura já a absorve. Liste o que o estereótipo **não** faz e qual
-camada/porta assume o trabalho.
+Falha de ferramenta: conforme `../_shared/comportamento.md` ("Harness incompleto"). Esta skill não
+declara a skill criada aprovada; a validação independente é fora do escopo dela.
 
-**O par ❌/✅ é o few-shot.** Mostre o código que sai sem contexto e o que sai com a
-`dotnet-conventions`, lado a lado, com a diferença anotada e o CONV citado. É o mecanismo de
-aprendizado mais forte da skill.
-
-## Exemplo de skill bem formada (few-shot)
-
-Trecho do estereótipo *use-case de leitura*:
-
-❌ Sem contexto — anexou infra e lançou exceção para fluxo:
-```csharp
-public sealed class GetAccountByIdUseCase(AppDbContext db)     // depende de infra concreta
-{
-    public async Task<GetAccountByIdResponse> HandleAsync(Guid id)
-    {
-        var account = await db.Accounts.FindAsync(id)           // EF na Application
-            ?? throw new KeyNotFoundException();                // exceção para fluxo esperado
-        return new GetAccountByIdResponse(account.Id, account.Balance.Amount);
-    }
-}
-```
-✅ Com contexto — depende da porta, retorna `Result`, ignora transporte:
-```csharp
-public sealed class GetAccountByIdUseCase(IAccountRepository accounts)
-{
-    public async Task<Result<GetAccountByIdResponse>> HandleAsync(
-        GetAccountByIdRequest request, CancellationToken cancellationToken)
-    {
-        var account = await accounts.GetByIdAsync(request.Id, cancellationToken);
-        if (account is null)
-            return Result.Fail<GetAccountByIdResponse>(
-                new NotFoundError($"Account {request.Id} not found."));
-
-        return Result.Ok(account.Adapt<GetAccountByIdResponse>());
-    }
-}
-```
-Diferença: depende da porta `IAccountRepository`, não de `AppDbContext` (CONV-030/072);
-retorna `Result` com `NotFoundError` em vez de exceção (CONV-019/021); não conhece HTTP
-(CONV-072); `cancellationToken` nomeado e sem default (CONV-074); mapeia via Mapster (CONV-031).
-
-## O que esta meta-skill NÃO faz
-- **Não** gera skills de boas práticas genéricas (usar DI, preferir async). Falhariam o teste "teria produzido sem a skill?".
-- **Não** copia skills de outro projeto/arquitetura. Só skill de *ferramenta* (operar uma CLI/lib) se reaproveita.
-- **Não** cria skill de invariante — isso é `create-rule`.
-- **Não** escreve skill a partir de contexto compactado.
-- **Não** infla a `description` com o *como* nem com contexto irrelevante que competiria pela atenção e reduziria a chance da skill certa carregar.
-
-## Fonte da verdade
-Os estereótipos e fronteiras vivem na `dotnet-conventions` (CONV) e no `CLAUDE.md`. Em
-conflito entre esta skill e esses documentos, **eles vencem** — e abra um débito para
-corrigir a skill. Skill é código: envelhece, contradiz a si mesma quando partes evoluem em
-ritmos diferentes, e precisa de review.
+## Relatório
+Ao concluir ou parar, apresente o relatório no formato de `references/report.md`.

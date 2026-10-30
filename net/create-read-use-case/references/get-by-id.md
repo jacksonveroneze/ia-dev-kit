@@ -103,73 +103,8 @@ public sealed class {Operation}Mapper : IRegister
 ```
 `{Aggregate}Response` e `{Aggregate}ResponseMapper` (Common): template em `prerequisites.md` (Bloco B).
 
-## Exemplos (certo/errado)
-
-Errado — sem contexto: MediatR, `DbContext` na Application, exceção para not-found, erro e log no
-use case:
-```csharp
-public class GetAccountByIdHandler(AppDbContext db, ILogger<GetAccountByIdHandler> logger)   // infra na Application (CONV-030/072); logger
-    : IRequestHandler<GetAccountByIdQuery, GetAccountByIdResponse>                            // MediatR, não IUseCase
-{
-    private static readonly Error NotFound = Error.Create("x", "y");                          // erro local; deveria ser DomainErrors
-
-    public async Task<GetAccountByIdResponse> Handle(                                          // deveria ser ExecuteAsync
-        GetAccountByIdQuery q, CancellationToken ct)
-    {
-        var a = await db.Accounts.FindAsync(q.Id)
-            ?? throw new NotFoundException();                                                  // exceção p/ fluxo (CONV-020)
-        logger.LogInformation("found {Balance}", a.Balance);                                   // log + dado sensível (CONV-054)
-        return new GetAccountByIdResponse(a.Id, a.Balance.Amount, a.Balance.Currency);         // campos duplicados no response
-    }
-}
-```
-
-Certo — com contexto: `Account` (demais arquivos: o template com `GetAccountById`/`AccountResponse`):
-```csharp
-using MapsterMapper;
-using {ApplicationRootNamespace}.Abstractions.Repositories.Accounts;
-using {DomainErrorsNamespace};
-using {EntityNamespace};
-
-namespace {ApplicationRootNamespace}.Features.Accounts.GetAccountById;
-
-public sealed class GetAccountByIdUseCase(
-    IMapper mapper,
-    IAccountRepository repository) : IGetAccountByIdUseCase
-{
-    public async Task<Result.Result<GetAccountByIdResponse>> ExecuteAsync(
-        GetAccountByIdRequest request,
-        CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-
-        var entity = await repository
-            .GetByIdAsync(request.Id, cancellationToken);
-
-        if (entity is null)
-        {
-            return Result.Result<GetAccountByIdResponse>
-                .FromNotFound(DomainErrors.AccountError.NotFound);
-        }
-
-        var response = mapper
-            .Map<Account, GetAccountByIdResponse>(entity);
-
-        return Result.Result<GetAccountByIdResponse>
-            .WithSuccess(response);
-    }
-}
-```
-```csharp
-// GetAccountByIdMapper.cs — dentro de Register
-config.NewConfig<Account, GetAccountByIdResponse>()
-    .Map(dest => dest.Data, src => src);
-```
-
-Diferença: depende da porta e de `IUseCase<,>`, não do `DbContext`/MediatR (CONV-027/030/072); o erro
-vem de `DomainErrors`, sem logger (CONV-021/027); `FromNotFound` em vez de exceção (CONV-020);
-`Response` é só envelope e o dado é do `Common`; operação nomeada `GetAccountById`, verbo + agregado +
-qualificador (CONV-016).
+## Exemplos
+Ver `examples.md`, seção "Padrão GetById".
 
 ## Anti-patterns específicos deste padrão (além dos comuns do SKILL.md)
 - Exceção ou `null` para not-found; `Error`/`NotFoundError` declarado no use case (o erro vem de `DomainErrors.{Aggregate}Error.NotFound`).

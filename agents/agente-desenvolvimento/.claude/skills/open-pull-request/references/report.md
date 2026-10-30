@@ -47,3 +47,6 @@ Não criado: <lista>
 Erro: <mensagem>
 Como proceder? (não refaço o que já existe)
 ```
+
+## Ao parar
+Input ausente ou sem autorização: uma linha com o que faltou e onde era esperado (repositório, base, tipo, resumo, arquivos esperados ou autorização); nada foi lido nem escrito.
