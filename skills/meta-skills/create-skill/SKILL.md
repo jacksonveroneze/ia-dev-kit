@@ -98,7 +98,7 @@ negativa com e sem alternativa, `description` como gatilho, seção `N/A` e os g
 - Invariante escrita como skill → mova para o arquivo de regras permanentes do projeto.
 - Seções fora de ordem, renomeadas ou omitidas sem `N/A - motivo` → siga `../_shared/anatomia.md`.
 - Criar a skill a partir de contexto compactado → registre como pendente.
-- Violar qualquer item de `../_shared/regua.md` (emoji, corpo acima de 150 linhas, negativa sem alternativa, tom informal) → corrija antes de relatar.
+- Violar qualquer item de `../_shared/regua.md` (emoji, corpo acima do limite de linhas do M-04, negativa sem alternativa, tom informal) → corrija antes de relatar.
 
 ## Checklist + Harness
 

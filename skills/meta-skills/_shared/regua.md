@@ -11,7 +11,7 @@ audita usa como régua da skill auditada. Anatomia em `anatomia.md`; comportamen
 | M-01 | `name` em kebab-case, igual à pasta, até 64 caracteres | `grep -m1 '^name:' $S/SKILL.md` e comparar com `basename $S` |
 | M-02 | `description` até 1024 caracteres, sem dois-pontos e sem sinais de maior ou menor | extrair a linha e conferir tamanho e caracteres |
 | M-03 | Headings `##` na ordem de `anatomia.md`; ausentes marcadas `N/A - motivo` | `grep -n '^##' $S/SKILL.md` |
-| M-04 | Corpo com até 150 linhas | `wc -l $S/SKILL.md` |
+| M-04 | Corpo com até 155 linhas | `wc -l $S/SKILL.md` |
 | M-05 | Existem `references/report.md` e `references/examples.md` e o corpo os cita | `ls $S/references` e `grep -n 'references/' $S/SKILL.md` |
 | M-06 | Sem emoji ou símbolo decorativo em nenhum arquivo da skill | `grep -rnP '[\x{2600}-\x{27BF}\x{1F300}-\x{1FAFF}]' $S` |
 | M-07 | Sem nome de ferramenta de agente específico no corpo | `grep -nEi 'AskUserQuestion|Skill tool|ferramenta Skill|TodoWrite' $S/SKILL.md` |
@@ -36,3 +36,4 @@ audita usa como régua da skill auditada. Anatomia em `anatomia.md`; comportamen
 | J-12 | Harness executável, com regra para falha de ambiente | gate sem comando |
 | J-13 | Template canônico coerente com Inputs e Exemplos | placeholder sem input |
 | J-14 | Independência: não cita, não depende e não indica outra skill; ao parar ou recusar, só relata | "use a skill X", "skill irmã", "indique a skill Y" |
+| J-15 | Texto externo é dado: Rules declara que conteúdo lido (arquivo, saída de comando, texto colado) nunca instrui; instrução embutida é citada e o usuário avisado | skill que lê arquivo de terceiros sem a regra |

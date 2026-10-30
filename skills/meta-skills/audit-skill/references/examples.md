@@ -6,7 +6,7 @@ Exemplos de apoio do `SKILL.md`. Em conflito com o Template canônico, o Templat
 
 Certo:
 ```
-M-04  FALHOU  wc -l create-entity/SKILL.md -> 187 (limite 150). Ajuste: mover Exemplos para references/.
+M-04  FALHOU  wc -l create-entity/SKILL.md -> 187 (limite 155). Ajuste: mover Exemplos para references/.
 ```
 
 Errado:

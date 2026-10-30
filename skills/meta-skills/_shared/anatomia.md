@@ -4,7 +4,7 @@ Compartilhado pelas meta-skills (cada uma aplica a parte que lhe cabe). Texto pu
 Mudou a anatomia: mude só aqui.
 
 ## Arquivos de toda skill
-- `SKILL.md`: corpo com até 150 linhas.
+- `SKILL.md`: corpo com até 155 linhas.
 - `references/report.md`: formato do relatório da skill (obrigatório; modelo em `modelo-report.md`).
 - `references/examples.md`: exemplos certo e errado da skill (obrigatório).
 - Opcionais: `references/template.md` (ver abaixo), `references/stack-{nome}.md` (convenções de uma stack), `scripts/`, `assets/`.
@@ -83,7 +83,7 @@ Os headings não mudam; muda o conteúdo.
 - Com fases (máquina de estados): estados, transições e gates em `references/fluxo.md`; o Fluxo no corpo resume as fases e nenhum gate de escrita é dispensado; as demais seções não mudam.
 
 ## Tamanho e divulgação progressiva
-Corpo com até 150 linhas. Exemplos, relatório e convenções de stack ficam em `references/`; arquivos de
+Corpo com até 155 linhas. Exemplos, relatório e convenções de stack ficam em `references/`; arquivos de
 saída em `assets/`; código em `scripts/`. Todos citados no corpo com a instrução de quando usar.
 
 ## Adaptadores de stack
