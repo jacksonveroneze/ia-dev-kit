@@ -20,3 +20,6 @@ DIVIDIR: Story N passa de 8 pontos (<motivo>)
 ## Suposições
 - <célula vazia de horas usada>
 ```
+
+## Ao parar
+Input ausente ou inválido (sem stories, sem critério de aceite, tabela sem nenhum dev): uma linha com o que faltou e onde era esperado; nada foi estimado.

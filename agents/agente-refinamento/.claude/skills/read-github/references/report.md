@@ -16,3 +16,6 @@ Repositório: <org/repo> | Ref: <branch, tag ou commit> | Pasta: <pasta ou todo 
 ## Lacunas
 - <o que não foi encontrado ou não pôde ser lido>
 ```
+
+## Ao parar
+Input ausente: uma linha com o que faltou e onde era esperado (repositório ou pergunta); nada foi buscado. Sem acesso de leitura: o relatório com o que foi tentado em Lacunas.
