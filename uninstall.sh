@@ -30,6 +30,6 @@ if [ "$removed" -eq 0 ]; then
 fi
 
 echo "==> Removendo links das convenções"
-"$ROOT/link-rules.sh" --remove
+"$ROOT/skills/net/link-rules.sh" --remove
 
 echo "==> Concluído: $removed link(s) removido(s)"
