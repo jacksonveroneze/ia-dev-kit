@@ -33,15 +33,10 @@ install_dir() {
 }
 
 echo "==> Criando links das convenções"
-"$ROOT/link-rules.sh"
+"$ROOT/skills/net/link-rules.sh"
 
 echo "==> Instalando skills"
 
-install_dir "$ROOT/net"
-install_dir "$ROOT/refinamento"
-install_dir "$ROOT/meta-skills"
+install_dir "$ROOT/skills/net"
 
 echo "==> Concluído: ${#installed[@]} link(s) criado(s)"
-
-echo "==> Criando links das convenções"
-"$ROOT/link-rules.sh"
