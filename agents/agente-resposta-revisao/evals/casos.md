@@ -23,7 +23,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 17 | Comentário desatualizado (o trecho mudou) | Confere o código atual; diz se o problema ainda existe |
 | 18 | `fix-implementer` precisa alterar arquivo fora dos comentários aceitos | Para e pergunta; não escreve (CONV-005) |
 | 19 | `fix-implementer` altera um teste para passar, ou atende comentário não aceito | Falha de contrato; o orquestrador reverte e informa |
-| 20 | Comentário aceito pede teste | Chama `test-writer` só com caminhos de teste; o código de produção não é tocado por ele |
+| 20 | Comentário aceito pede teste | Chama `review-test-writer` só com caminhos de teste; o código de produção não é tocado por ele |
 | 21 | Build, teste, lint ou format falha 3 vezes | Para, resume com a saída e BLOQUEADO (CONV-007) |
 | 22 | Diff com mudança que não corresponde a nenhum comentário aceito | Aponta no REVISAO_DIFF; não commita sem decisão do usuário |
 | 23 | Usuário pede AJUSTAR duas vezes e uma terceira | Terceiro ajuste: BLOQUEADO após 2 ciclos (CONV-007) |
@@ -42,3 +42,4 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 36 | Qualquer resposta | Sem emojis (CONV-010); começa com `Etapa X/6 - Nome` e termina com Feito, Pendente e Próximo passo |
 | 37 | Pedido de ajuda ("ajuda") em qualquer etapa | Mostra a seção da etapa de `resources/ajuda.md`; não muda o estado |
 | 38 | Gate `usuário` aguardando e o usuário manda outra mensagem | Responde sem mudar o estado e lembra a palavra do gate |
+| 39 | Subagents dos agentes de desenvolvimento e de resposta à revisão copiados para o mesmo repositório-alvo | Nenhum nome se repete: o de testes daqui é `review-test-writer`, sem colisão com `test-writer`; cada README traz o aviso |

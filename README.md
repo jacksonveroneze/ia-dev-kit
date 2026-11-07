@@ -90,7 +90,9 @@ Em [`skills/meta-skills/`](skills/meta-skills). Material comum (anatomia, régua
 
 ## Agentes
 
-Os agentes rodam no Claude Code a partir da própria pasta. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. O refinamento gera cards em linguagem de negócio, sem detalhe técnico de código; a especificação técnica e a label `agent-ready` que o agente de desenvolvimento exige são feitas em outro passo. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
+Os agentes rodam no Claude Code aberto na raiz do repositório-alvo (o que será alterado), com o `.claude/agents/` do agente copiado, as skills instaladas por `install.sh` e o `AGENTS.md` do agente importado no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`); o passo a passo está no `README.md` de cada agente. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. O refinamento gera cards em linguagem de negócio, sem detalhe técnico de código; a especificação técnica e a label `agent-ready` que o agente de desenvolvimento exige são feitas em outro passo. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
+
+**Um agente por sessão.** Cada sessão do Claude Code usa UM agente por vez: cinco `AGENTS.md` importados no mesmo `CLAUDE.md` se contradizem (estados, gates e palavras de gate diferentes) e compartilham o mesmo `estado.json`. Importe só o `AGENTS.md` do agente em uso, ou use uma pasta ou worktree por agente (por exemplo, com `git-worktrees`). Os nomes dos subagents também precisam ser únicos no repositório-alvo: o subagent de testes do agente de resposta à revisão se chama `review-test-writer` para não colidir com o `test-writer` do agente de desenvolvimento.
 
 ### [agente-refinamento](agents/agente-refinamento)
 
@@ -155,7 +157,7 @@ Ajuda o autor a responder às revisões do próprio PR: triagem de cada comentá
 | Skill [`reply-review-comment`](skills/git/reply-review-comment) | Responde nas threads, após autorização. |
 | Subagent [`comment-triager`](agents/agente-resposta-revisao/.claude/agents/comment-triager.md) | Avalia cada comentário contra o código e a spec (somente leitura). |
 | Subagent [`fix-implementer`](agents/agente-resposta-revisao/.claude/agents/fix-implementer.md) | Corrige só os arquivos dos comentários aceitos. |
-| Subagent [`test-writer`](agents/agente-resposta-revisao/.claude/agents/test-writer.md) | Escreve testes quando a correção pedir. |
+| Subagent [`review-test-writer`](agents/agente-resposta-revisao/.claude/agents/review-test-writer.md) | Escreve testes quando a correção pedir. |
 
 ## Modelos para o repositório-alvo
 

@@ -17,7 +17,7 @@ O agente nunca deduz dado que você não informou. Em qualquer fase, diga **ajud
 
 ## O que o card tem
 
-História, critérios de aceite Dado/Quando/Então, subtasks de alto nível, dependência, estimativa e dev sugerido. Não leva arquivo, contrato, comando nem label de prontidão para codificar (CONV-017).
+História, critérios de aceite Dado/Quando/Então, subtasks de alto nível, dependência (gravada como link do card anterior), fora de escopo, estimativa e dev sugerido. Não leva arquivo, contrato, comando nem label de prontidão para codificar (CONV-017).
 
 ## Como usar
 
@@ -63,4 +63,4 @@ Skill é capacidade e funciona sozinha; o processo mora só no `AGENTS.md`. As s
 
 ## Testes
 
-Rode `evals/casos.md` a cada mudança e a cada modelo. Críticos: 31 (não deduzir), 26 e 27 (confirmação antes de escrever), 36 e 37 (sem detalhe técnico).
+Rode `evals/casos.md` a cada mudança e a cada modelo. Críticos: 31 (não deduzir), 26 e 27 (confirmação antes de escrever), 36 e 37 (sem detalhe técnico), 49 (sem publicar com fora de escopo a definir).

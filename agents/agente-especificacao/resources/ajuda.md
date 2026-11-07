@@ -13,8 +13,8 @@ Fonte da CONV-011. Mostre só a seção pedida (a da etapa atual; "como usar" mo
 
 ## Etapa 1 - Leitura e validação
 - Informe o link do card, o repositório e a branch base. A pasta atual deve ser o repositório.
-- O agente confere se o card de negócio está completo (história, critérios de aceite, subtasks, dependência e fora de escopo) e depois o ambiente: repositório e branch certos, árvore limpa, base atualizada, acesso de escrita ao GitHub, destino livre e lista `Especificado` no board. Também avisa se `specs/constitution.md` não existir (não bloqueia).
-- Qualquer falha: o agente lista o que corrigir e oferece comentar no card. Tudo certo: mostra o relatório e espera AVANÇAR.
+- O agente confere se o card de negócio está completo (história, critérios de aceite, subtasks, dependência e fora de escopo) e depois o ambiente: repositório e branch certos, árvore limpa, base atualizada, acesso de escrita ao GitHub, destino livre, cards de dependência (lidos pelo link; dependência só com título vira pendência para você) e lista `Especificado` no board. Também avisa, sem bloquear, se `specs/constitution.md` não existir e se o card não estiver na lista `Refinado`.
+- Qualquer falha: o agente lista o que corrigir e oferece comentar no card. Tudo certo: mostra o relatório e espera AVANÇAR. Card fora de `Refinado`: o agente avisa e pede que você confirme, em frase própria, que quer seguir assim; só depois o AVANÇAR vale.
 
 EXEMPLO (fictício): "Especifica este card: https://trello.com/c/AbCd1234, repositório acme/contas, base develop"
 
@@ -37,4 +37,4 @@ EXEMPLO (fictício): "Especifica este card: https://trello.com/c/AbCd1234, repos
 
 ## Etapa 6 - Entrega
 - O agente confere a consistência e mostra o preview dos três arquivos, do PR, do comentário, da label `agent-ready` e do movimento do card para a lista `Especificado` (lista atual e destino).
-- Nada é gravado até você responder APROVAR ARTEFATOS. O PR vai para a branch base; o movimento do card é o último passo, depois da label. Card já em `Especificado`: o agente avisa e não move. Lista `Especificado` inexistente: o agente para e pergunta, sem criar. A revisão e o merge são seus. A spec só vale para codificar depois do merge.
+- Nada é gravado até você responder APROVAR ARTEFATOS. O PR vai para a branch base, em uma branch `spec/<slug>`; o agente confere o nome da branch no preview junto do título e da descrição e para se divergir, porque o desenvolvimento acha a spec por esse nome. O movimento do card é o último passo, depois da label. Card já em `Especificado`: o agente avisa e não move. Lista `Especificado` inexistente: o agente para e pergunta, sem criar. A revisão e o merge são seus. A spec só vale para codificar depois do merge.

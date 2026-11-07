@@ -13,13 +13,15 @@ Arquivos a criar ou alterar:
 - src/Contas.Application/Features/Limites/ConsultarLimite/ConsultarLimiteUseCase.cs (criar)
 Caminhos de teste permitidos:
 - tests/Contas.Application.Tests/Features/Limites/ConsultarLimite/
+Testes: CA-01 -> Execute_ClienteComLimite_RetornaValor; CA-02 -> Execute_ClienteSemLimite_RetornaErroLimiteNaoEncontrado
+Comandos: build dotnet build Contas.sln; teste dotnet test Contas.sln; lint a definir; format a definir
 Atrás de feature flag: não
 Definição de pronto:
 - [ ] Os dois critérios cobertos por testes
 - [ ] Build, teste, lint e format passando
 Status: pendente
 ```
-Por que está certo: uma fatia mergeável, arquivos copiados do plano, critérios declarados.
+Por que está certo: uma fatia mergeável, arquivos copiados do plano, critérios declarados, cada critério com seu teste e os comandos do plano (o que o plano não trouxe fica `a definir`, nunca inventado).
 
 ## Errado
 - T-02 que só compila com T-03 e nenhuma flag no plano.

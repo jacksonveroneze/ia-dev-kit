@@ -14,6 +14,11 @@ Valores fictícios. Nunca copie literalmente.
 - Correto: `Story 3 - Página de listagem | Ordem: 3º | Depende de: Story 2 (consulta de produtos disponível)`
 - Errado: stories soltas, sem ordem e sem dependências.
 
+## Fora de escopo
+Informado no escopo: "fora de escopo: relatório em Excel". A Story 1 gera o PDF; a Story 2 envia o PDF por e-mail e nada foi dito sobre ela.
+- Correto: Story 1 `Fora de escopo: relatório em Excel.`; Story 2 `Fora de escopo: a definir` (o orquestrador pergunta ao usuário antes de publicar).
+- Errado: omitir o campo; inventar `Fora de escopo: envio por WhatsApp`; escrever "nada fora de escopo".
+
 ## Estimativa e dev
 - Correto (nada informado): `Estimativa: a definir | Dev sugerido: a definir`.
 - Correto (informado `3 pontos, Ana - backend`): `Estimativa: 3 pontos | Dev sugerido: Ana - backend`.

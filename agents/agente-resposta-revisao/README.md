@@ -12,7 +12,7 @@ O fluxo é uma máquina de estados definida em `resources/fluxo.md`. No modo rí
 |---|---|---|---|
 | 1 Leitura e preflight | Lê os comentários do PR e confere o ambiente (PR seu e aberto, branch, árvore limpa, base, comandos, linha de base verde) | `read-review-comments` | AVANÇAR |
 | 2 Triagem | Para cada comentário: o que pede, se parece correto à luz do código, da spec e do plano, e uma recomendação. Você decide | `comment-triager` | APROVAR TRIAGEM |
-| 3 Correção | Corrige só os concordados; roda build, teste, lint e format (3 tentativas) | `fix-implementer`, `test-writer` | AVANÇAR |
+| 3 Correção | Corrige só os concordados; roda build, teste, lint e format (3 tentativas) | `fix-implementer`, `review-test-writer` | AVANÇAR |
 | 4 Revisão do diff | Você vê o diff por comentário aceito (2 ciclos de ajuste) | | APROVAR CORREÇÕES (ou AJUSTAR) |
 | 5 Commit e resposta | Commits adicionais na branch do PR, push normal e respostas nas threads | `reply-review-comment` | AUTORIZAR PUSH, depois APROVAR RESPOSTAS |
 | 6 Concluído | Resumo do que foi feito e do que aguarda retorno | | |
@@ -41,11 +41,15 @@ O `AGENTS.md` não muda. Valem sempre, em qualquer modo, as guardas: preflight, 
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do PR**, na branch do PR, com a árvore limpa.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-review-comments`, `reply-review-comment`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-review-comments`, `reply-review-comment`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`. Os nomes dos subagents precisam ser únicos no repositório-alvo (veja o aviso abaixo).
 3. Deixe a CLI `gh` autenticada com permissão de escrita no repositório.
 4. Diga: `Responde as revisões do PR <URL ou org/repo#número>`.
 5. Responda cada gate que o agente pedir.
 6. Adicione `estado.json` e `rascunho/` ao `.gitignore` do repositório (uma vez). O agente os cria e atualiza sozinho, e retoma a sessão por eles.
+
+## Aviso: nomes de subagent únicos
+
+Os subagents deste agente (`comment-triager`, `fix-implementer`, `review-test-writer`) são copiados para `.claude/agents/` do repositório-alvo. Dois agentes do kit não podem trazer o mesmo nome no mesmo repositório, senão um sobrescreve o outro. Por isso o subagent de testes se chama `review-test-writer` e não `test-writer`, que é o nome usado pelo agente de desenvolvimento. Não renomeie para um nome já usado.
 
 ## Estrutura
 
@@ -56,7 +60,7 @@ resources/         fluxo.md (estados, transições, gates, modo), preflight.md,
                    convencoes.md, criterio-resposta.md, ajuda.md
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
-.claude/agents/    comment-triager, fix-implementer, test-writer
+.claude/agents/    comment-triager, fix-implementer, review-test-writer
 ```
 
 Skill é capacidade e funciona sozinha; o processo mora só em `AGENTS.md` e `resources/`. As skills `read-review-comments` e `reply-review-comment` ficam em `skills/git` do kit.

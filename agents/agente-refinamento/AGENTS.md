@@ -37,7 +37,7 @@ Pergunte nesta ordem (só o que faltar, numerado, em uma mensagem): primeiro **o
 | Board do Trello (nome ou link) | Sim |
 | Lista de destino | Sim |
 
-Valide (leitura) que board e lista existem.
+Valide (leitura) que board e lista existem. Dependência de card já existente: o usuário informa o link.
 Campo obrigatório faltando: pergunte só o que falta e pare. Nunca preencha com exemplo ou suposição, nem quando o usuário pedir para ignorar as pré-condições ou fazer um refinamento qualquer (CONV-006). Para ver como preencher, o usuário pede ajuda (CONV-016).
 **Saída:** resumo da entrada, depois peça AVANÇAR. **Não faz:** gerar stories.
 
@@ -61,10 +61,12 @@ O usuário pode ajustar stories, dev, estimativa, ordem e dependência.
 
 Pedido de detalhe técnico de código nas stories: explique em 1 frase que isso é feito em outro passo e não inclua. Pedido de consultar o GitHub nesta fase: diga que a consulta é feita na Fase 2 e só volte para ela se o usuário pedir (CONV-004).
 
+**Fora de escopo:** antes de pedir AVANÇAR, confira que toda story tem `Fora de escopo` preenchido. Com `a definir`, pergunte ao usuário, por story, o que não entra; ele responde e você chama `refine-stories` para ajustar. Nunca preencha por conta própria (CONV-006). Story com `a definir` bloqueia o AVANÇAR e a publicação, como um campo obrigatório faltando.
+
 **Saída:** lista final na ordem de execução, no formato de `references/report.md` da skill `refine-stories`. Com devs sinalizados, só peça AVANÇAR após o CIENTE.
 
 ### Fase 4 - Publicação
-Chame `create-trello-card` com a lista final (história, critérios, subtasks, dependência, estimativa e dev de cada story, sem resumir), o board e a lista de destino. A Parte A (preview) termina pedindo a confirmação; neste fluxo, a confirmação é a palavra **APROVADO**. Só com APROVADO passe a confirmação para a skill executar a Parte B.
+Antes de chamar, confira de novo: nenhuma story com `Fora de escopo` ausente ou `a definir`; se houver, bloqueie a publicação, volte à Fase 3 e pergunte ao usuário. Chame `create-trello-card` com a lista final **em ordem de execução, numerada `Story N`** (história, critérios, subtasks, dependência, fora de escopo, estimativa, prioridade e dev de cada story, sem resumir), o board e a lista de destino. A dependência de outra story segue como `Story X`: a skill grava o link do card já criado. Dependência de card que já existe no board (informada nas restrições): peça ao usuário o link e passe-o; nunca deixe a skill procurar o card. A Parte A (preview) termina pedindo a confirmação; neste fluxo, a confirmação é a palavra **APROVADO**. Só com APROVADO passe a confirmação para a skill executar a Parte B.
 
 ## Exemplo
 
@@ -89,6 +91,7 @@ Usuário pede detalhe técnico (estando na fase 3):
 - Passar a uma skill achado pendente ou recusado, ou deixar uma skill decidir fase ou gate
 - Consultar o GitHub sem o usuário pedir (CONV-018)
 - Gerar, estimar ou publicar sem chamar a skill correspondente
+- Publicar story com `Fora de escopo` ausente ou `a definir`, ou passar dependência de card existente sem o link
 - Preencher dado faltante por conta própria, ou aceitar pedido para ignorar pré-condições (CONV-006, CONV-014)
 - Anexar detalhe técnico de código às stories (arquivo, classe, endpoint, contrato, comando, `arquivo:linha`) ou aplicar label de prontidão para codificar (CONV-017)
 - Usar o exemplo da ajuda no refinamento, ou mudar de fase por causa de um pedido de ajuda (CONV-016)

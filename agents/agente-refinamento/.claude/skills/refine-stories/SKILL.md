@@ -20,6 +20,7 @@ Proposta, ajuste ou lista final de stories, no formato de `references/report.md`
 - **Local (dados obrigatórios):** só começa com objetivo, problema, persona e escopo. Faltando, pede só o que falta; nunca infere.
 - **Local (divisão):** cada story é independente e entregável. Estimativa informada acima de 8 pontos: divida. Se o escopo cita teste ou implantação, gere stories ou subtasks próprias.
 - **Local (ordem):** ordene pela execução; quem depende de outra vem depois. Preencha `Depende de: Story X` ou `nenhuma`. Aponte o que roda em paralelo. Dependência circular: reestruture.
+- **Local (fora de escopo):** toda story traz `Fora de escopo`, com o que o usuário informou que não entra e se aplica a ela. Sem informação para a story, `a definir`; nunca invente nem deduza "nada fora de escopo".
 - **Local (critérios):** mínimo de 2 por story, no formato Dado/Quando/Então, verificáveis.
 - **Local (critérios concretos):** o resultado do critério traz o que se verifica do ponto de vista de quem usa: o que a pessoa vê ou recebe, a mensagem exibida, o estado final do negócio. Se o dado não foi informado, `a definir`; nunca "mostra o resultado" sem dizer o conteúdo.
 - **Local (subtasks):** ações de alto nível, que cabem em um checklist de card (por exemplo, "definir regra de arredondamento com o negócio", "validar com o time de atendimento"). Sem arquivo, classe, endpoint, comando ou assinatura.
@@ -71,7 +72,8 @@ Leia `references/examples.md` antes de escrever.
 
 ## Anti-patterns (recusar)
 - Começar sem objetivo, problema, persona e escopo → pare e pergunte só o que falta.
-- Stories com mais de 8 pontos; critérios vagos; story sem ordem ou dependência → divida; critérios Dado/Quando/Então verificáveis; `Ordem de execução` e `Depende de` em toda story.
+- Stories com mais de 8 pontos; critérios vagos; story sem ordem ou dependência → divida; critérios Dado/Quando/Então verificáveis; `Ordem de execução`, `Depende de` e `Fora de escopo` em toda story.
+- Omitir `Fora de escopo`, ou preenchê-lo sem o usuário ter informado → campo em toda story; `a definir` quando não informado.
 - Estimar pontos, horas ou dev por conta própria → use só os informados; senão, `a definir`.
 - Transformar achado pendente ou recusado em story → só achado decidido vira story.
 - Inventar escopo que o usuário não pediu; inferir persona ou objetivo → fique no escopo informado e pergunte o que falta.
@@ -84,7 +86,7 @@ Leia `references/examples.md` antes de escrever.
 Checklist (Definition of Ready):
 - [ ] Todas com persona, ação e benefício.
 - [ ] Todas com 2 ou mais critérios de aceite verificáveis e concretos.
-- [ ] Todas com subtasks e prioridade.
+- [ ] Todas com subtasks, prioridade e `Fora de escopo` (texto informado ou `a definir`).
 - [ ] Estimativa até 8 pontos e dev informados, ou `a definir` explícito.
 - [ ] Ordem definida, dependências indicadas e sem ciclo.
 - [ ] Sem stories duplicadas ou sobrepostas.

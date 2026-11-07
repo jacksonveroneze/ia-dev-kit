@@ -14,7 +14,7 @@ O fluxo é uma máquina de estados definida em `resources/fluxo.md`. Todo avanç
 
 | Etapa | O que acontece | Usa | Gate |
 |---|---|---|---|
-| 1 Leitura e validação | Lê o card, confere se está completo e roda o preflight | `read-story-card` | AVANÇAR |
+| 1 Leitura e validação | Lê o card, confere se está completo e roda o preflight (13 verificações; card fora de `Refinado` vira aviso e pede sua confirmação) | `read-story-card` | AVANÇAR |
 | 2 Contexto | Lê o código e os guias do repositório, incluindo `specs/constitution.md` se existir | `context-explorer` | AVANÇAR |
 | 3 Spec | Rascunho do quê e porquê; você refina | `write-spec` | APROVAR SPEC |
 | 4 Plano | Rascunho do como; você refina | `write-plan` | APROVAR PLANO |
@@ -34,7 +34,7 @@ specs/<card-id>-<slug>/
   tasks.md    tarefas (T) do tamanho de um PR, com os arquivos de cada uma
 ```
 
-Formato e rastreabilidade em `resources/estrutura-specs.md`. Sinal de "pronto para codificar": `Status: aprovada` nos arquivos e a label `agent-ready` no card. A spec só vale depois do merge do PR.
+Formato e rastreabilidade em `resources/estrutura-specs.md`. A branch do PR é `spec/<slug>` (o agente confere o nome no preview), porque o desenvolvimento procura a spec por ele. Sinal de "pronto para codificar": `Status: aprovada` nos arquivos e a label `agent-ready` no card. A spec só vale depois do merge do PR.
 
 ## Flexibilidade
 

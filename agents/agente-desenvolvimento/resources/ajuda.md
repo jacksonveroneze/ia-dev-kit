@@ -10,10 +10,12 @@ Fonte da CONV-011. Mostre só a seção pedida (a da etapa atual; "como usar" mo
 - O card vai para Em andamento quando você der AVANÇAR no fim da Etapa 1 e para Em review quando o PR for aberto. O agente nunca move o card para Done.
 - O processo está em `resources/fluxo.md`: estados, transições e gates. Para tirar uma aprovação manual, troque o gate da transição por `auto`.
 - O progresso fica em `estado.json`; se a sessão cair, o agente retoma de onde parou.
+- Próxima tarefa do mesmo card (T-02 depois de T-01 concluída): espere o merge se ela depende da T-01; volte para a branch base e atualize-a (manual, o agente não faz); responda DESCARTAR quando o agente perguntar pelo `estado.json` da T-01 (ou apague o arquivo); rode de novo com `tarefa T-02`.
+- Card movido para Done antes de todas as tarefas serem integradas bloqueia no preflight (P11). O remédio é seu: mover o card de volta; o agente não faz isso.
 
 ## Etapa 1 - Leitura e validação
 - Informe o link do card e, opcionalmente, a tarefa. A pasta atual deve ser o repositório da spec, na branch base.
-- O agente confere a label `agent-ready` e depois o ambiente: repositório e branch certos, árvore limpa, base atualizada, ferramentas, acesso ao GitHub, os três arquivos da spec na base com `Status: aprovada`, card em Especificado, tarefa livre (sem PR aberto e não concluída), dependências, comandos do plano definidos, arquivos da tarefa e build, teste, lint e format passando antes de qualquer mudança.
+- O agente confere a label `agent-ready` e depois o ambiente: repositório e branch certos, árvore limpa, base atualizada, ferramentas, acesso ao GitHub, os três arquivos da spec na base com `Status: aprovada`, card em Especificado, tarefa livre (sem PR aberto e não concluída), PR da spec não aberto, dependências, comandos do plano definidos, arquivos da tarefa e build, teste, lint e format passando antes de qualquer mudança.
 - Qualquer falha: o agente lista o que corrigir e oferece comentar no card. Tudo certo: mostra o relatório, a tarefa escolhida e o preview de mover o card para Em andamento, e espera AVANÇAR.
 
 EXEMPLO (fictício): "Implementa este card: https://trello.com/c/AbCd1234, tarefa T-02"

@@ -15,6 +15,7 @@ EPIC: <nome> - <objetivo em 1 frase>
 - Critério 2: ...
 **Subtasks:**
 - [ ] <ação de alto nível, sem detalhe técnico>
-**Fora de escopo desta story:** <lista>
+**Fora de escopo:** <lista | a definir>
 ```
+`Fora de escopo` aparece em toda story: use o fora de escopo informado que se aplica a ela; se nada foi informado para a story, `a definir` (nunca invente nem escreva "nada fora de escopo" por dedução). `Depende de` cita a story pelo número e diz em palavras o que ela entrega.
 Placeholders recebem o conteúdo real; nunca copie literalmente. Termine a proposta com a sequência em uma linha: `Story 1 -> Story 2 -> (Story 3 e Story 4 em paralelo)`.

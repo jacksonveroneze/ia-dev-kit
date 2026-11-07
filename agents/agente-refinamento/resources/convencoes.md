@@ -30,5 +30,6 @@ Fonte única das regras. Skills e agentes citam por número. Ao citar em uma res
 
 ## Padrões
 - Estimativa em pontos: 1, 2, 3, 5 ou 8. Mais de 8: dividir.
-- Card no Trello: título `[Story N] <título>`, label `Epic: <nome>`, membro = dev, descrição com história, critérios de aceite e dependência.
-- Cards criados na ordem de execução, com a dependência na descrição.
+- Card no Trello: título `[Story N] <título>`, label `Epic: <nome>`, membro = dev, descrição com história, critérios de aceite, dependência, fora de escopo, estimativa e prioridade.
+- Cards criados na ordem de execução. A dependência de outra story é gravada como link do card dela, já criado; `nenhuma` quando não há; dependência de card fora da lista só com o link informado pelo usuário.
+- `Fora de escopo` é obrigatório em toda story. `a definir` bloqueia a publicação até o usuário informar (CONV-006).
