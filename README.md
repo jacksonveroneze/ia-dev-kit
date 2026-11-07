@@ -1,4 +1,4 @@
-# ia-skills
+# ia-dev-kit
 
 Coleção de skills e agentes de IA (Claude Code, Codex, Copilot) para acelerar o ciclo de desenvolvimento de times .NET: do refinamento de histórias no Trello à abertura do PR, passando pela geração de código padronizado em Clean Architecture.
 
