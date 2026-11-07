@@ -6,20 +6,16 @@ Fonte única de devs, capacidade e estimativa. O agente só atribui devs desta t
 
 | Dev | Skills (onde rende melhor) | Capacidade (pontos por sprint) | Username no Trello |
 |---|---|---|---|
-| Jorge | backend .NET, APIs, banco de dados, AWS | 8 | |
-| Mario | Banco de dados, AWS | 5 | |
-| Pedro | frontend Angular e React | 3 | |
-| Eduardo | tester, QA | 3 | |
-| Jackson | Devops | 1 | jacksonveroneze |
+| Jackson | Backend .NET, APIs, banco de dados, AWS, Devops, Frontend, QA, Tester | 50 | jacksonveroneze |
 
 ## Horas por pontos (estimativa manual)
 
 Horas de trabalho efetivo por dev. Célula vazia vira `(suposição)` na estimativa.
 
-| Pontos | Jorge | Mario | Pedro | Eduardo | Jackson |
-|---|---|---|---|---|---|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 5 | | | | | |
-| 8 | | | | | |
+| Pontos | Jackson |
+|---|---|
+| 1 | 2 |
+| 2 | 5 |
+| 3 | 10 |
+| 5 | 15 |
+| 8 | 20 |
