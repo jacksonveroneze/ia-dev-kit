@@ -1,18 +1,18 @@
 ---
 name: refine-stories
-description: 'Gera e ajusta epic, stories, critérios de aceite, subtasks, especificação técnica para codificar, ordem de execução e dependências no refinamento Scrum, a partir de objetivo, problema, persona e escopo. Funciona sozinha, sem depender de arquivo, de fases ou de outra skill. Use sempre que o usuário pedir para quebrar um objetivo em stories, escrever ou ajustar critérios de aceite ou a especificação técnica, definir ordem ou dependências, ou revisar stories já geradas, mesmo sem citar o nome da skill. Não use para estimar pontos, horas ou dev, buscar informação técnica ou criar cards.'
+description: 'Gera e ajusta epic, stories, critérios de aceite, subtasks, ordem de execução e dependências no refinamento Scrum, a partir de objetivo, problema, persona e escopo, sempre em linguagem de negócio e sem detalhe técnico de código. Funciona sozinha, sem depender de arquivo, de fases ou de outra skill. Use sempre que o usuário pedir para quebrar um objetivo em stories, escrever ou ajustar critérios de aceite, definir ordem ou dependências, ou revisar stories já geradas, mesmo sem citar o nome da skill. Não use para estimar pontos, horas ou dev, buscar informação técnica, escrever especificação técnica ou criar cards.'
 ---
 
 # Refinar stories
 
-Transforma objetivo, problema, persona e escopo em stories prontas para desenvolver, com a especificação que permite a um dev ou a um agente de código implementar sem fazer perguntas. Também ajusta stories existentes. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório.
+Transforma objetivo, problema, persona e escopo em stories claras, ordenadas e verificáveis, escritas em linguagem de negócio. Também ajusta stories existentes. Não detalha implementação: isso é feito em outro passo. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório.
 
 ## O que gera
-Proposta, ajuste ou lista final de stories, no formato de `references/report.md`. Nada além disso: não estima por conta própria, não busca informação técnica, não cria cards e não inventa escopo.
+Proposta, ajuste ou lista final de stories, no formato de `references/report.md`. Nada além disso: não estima por conta própria, não busca informação técnica, não escreve especificação técnica, não cria cards e não inventa escopo.
 
 ## Escopo (quando usar / NÃO usar)
-- **Usar:** quebrar um objetivo em stories; escrever e ajustar critérios, subtasks, especificação técnica, ordem e dependências; verificar se as stories estão prontas para desenvolver e para codificar.
-- **NÃO usar:** estimar pontos, horas ou dev; buscar informação em código ou produção; criar cards.
+- **Usar:** quebrar um objetivo em stories; escrever e ajustar critérios, subtasks, ordem e dependências; verificar se as stories estão prontas para o time.
+- **NÃO usar:** estimar pontos, horas ou dev; buscar informação em código ou produção; especificar implementação (arquivos, contratos, comandos); criar cards.
 
 ## Contrato
 
@@ -21,15 +21,11 @@ Proposta, ajuste ou lista final de stories, no formato de `references/report.md`
 - **Local (divisão):** cada story é independente e entregável. Estimativa informada acima de 8 pontos: divida. Se o escopo cita teste ou implantação, gere stories ou subtasks próprias.
 - **Local (ordem):** ordene pela execução; quem depende de outra vem depois. Preencha `Depende de: Story X` ou `nenhuma`. Aponte o que roda em paralelo. Dependência circular: reestruture.
 - **Local (critérios):** mínimo de 2 por story, no formato Dado/Quando/Então, verificáveis.
-- **Local (subtasks):** ações técnicas concretas, que cabem em um checklist de card.
-- **Local (tipo):** cada story é `código` ou `sem código`. Só story de código leva a especificação técnica.
-- **Local (especificação técnica):** preencha cada item só com o que veio informado (achados e contexto de implementação), citando a fonte. Item sem fonte: `a definir`. Item que você propõe por analogia a uma referência informada: marque `(proposto, confirmar)` e cite a referência. Nunca invente caminho, assinatura, regra ou comando.
-- **Local (autocontida):** a story e a especificação devem ser entendidas lendo só o card, por quem não viu esta conversa. Proibido referir: outra story pela sua saída ("a mesma da Story 1"), sugestão numerada, relatório, fase ou decisão da conversa. Dependência de outra story: copie o que o executor precisa (campos, tipos, caminhos exatos) ou nomeie o tipo e o caminho que ela cria; se não souber, `a definir`. Cite só fontes externas ao card: arquivo e linha, ou "informado pelo usuário".
-- **Local (critérios concretos):** o resultado do critério traz o que se verifica: campos devolvidos, código ou mensagem de erro, estado final. Se o dado não foi informado, `a definir`; nunca "devolve o sumário" sem dizer o conteúdo.
-- **Local (testes e verificação):** `Testes` e o comando de build são obrigatórios. Testes: casos a cobrir, ou, se o usuário decidiu não testar, `sem testes por decisão do usuário (risco: critérios sem verificação automática)`. Comandos: build no mínimo; teste e lint se informados.
-- **Local (convenções do repositório):** se foi informado que o repositório tem guia, skill ou regra para este tipo de mudança, escreva como instrução em Restrições ("Siga: <guia> (arquivo:linha)"), não só como fonte.
-- **Local (prontidão):** story de código é `pronta` só se todos os itens obrigatórios da especificação (repositório e branch base, referência, contrato, regras, arquivos, testes e comando de build) têm valor com fonte e nenhum está `a definir` nem `(proposto, confirmar)`. Senão é `precisa de humano`, com a lista do que falta. Story sem código: `não se aplica`.
-- **Local (achados técnicos):** usa só o que veio informado e decidido. Sugestão pendente ou recusada não vira story. Riscos viram subtasks ou critérios. Metas medidas (por exemplo, latência p95) viram critérios mensuráveis, citando a fonte informada.
+- **Local (critérios concretos):** o resultado do critério traz o que se verifica do ponto de vista de quem usa: o que a pessoa vê ou recebe, a mensagem exibida, o estado final do negócio. Se o dado não foi informado, `a definir`; nunca "mostra o resultado" sem dizer o conteúdo.
+- **Local (subtasks):** ações de alto nível, que cabem em um checklist de card (por exemplo, "definir regra de arredondamento com o negócio", "validar com o time de atendimento"). Sem arquivo, classe, endpoint, comando ou assinatura.
+- **Local (sem detalhe técnico):** a story não traz caminho de arquivo, nome de classe, endpoint, contrato de campos e tipos, SQL, comando, branch nem repositório. Se o usuário informar algo assim, não copie para a story: registre só o efeito de negócio. Se o item for essencial, aponte ao usuário que ele pertence ao passo técnico.
+- **Local (autocontida):** a story deve ser entendida lendo só o card, por quem não viu esta conversa. Proibido referir: outra story pela sua saída ("a mesma da Story 1"), sugestão numerada, relatório, fase ou decisão da conversa. Dependência de outra story: descreva em palavras o que ela entrega e de que o card precisa.
+- **Local (achados decididos):** usa só o que veio informado e decidido (regra atual, riscos, metas medidas, evoluções aceitas), reescrito em linguagem de negócio, sem arquivo e linha. Sugestão pendente ou recusada não vira story. Riscos viram subtasks ou critérios. Metas medidas (por exemplo, tempo de resposta) viram critérios mensuráveis.
 - **Local (estimativa e dev):** usa só os informados. Sem eles, escreve `a definir`; nunca estima.
 - **Local (ajuste):** mostra só o que mudou, com a contagem atual de stories.
 - **Local (não inventar):** escopo que o usuário não pediu não entra.
@@ -46,9 +42,8 @@ Obrigatórios:
 3. **Escopo** e **fora de escopo**.
 
 Opcionais:
-- **Restrições:** prazo, tecnologia, dependências.
-- **Achados técnicos decididos:** regra atual, riscos, metas medidas, evoluções aceitas, cada um com a fonte.
-- **Contexto de implementação:** repositório e branch base, implementação de referência (arquivo e linha), contrato de entrada e saída, regras de validação, estrutura e comandos de teste, build e lint, restrições do projeto, cada um com a fonte.
+- **Restrições:** prazo, dependências, regras de negócio.
+- **Achados decididos:** regra atual, riscos, metas medidas, evoluções aceitas.
 - **Estimativas e devs** por story.
 - **Stories existentes**, para ajustar.
 
@@ -58,15 +53,15 @@ Faltando: pergunte só o que falta. Inválido: escopo contraditório com o objet
 1. **Conferir os inputs.** Faltando ou inválido: pare e pergunte, antes de gerar.
 2. **Declarar** 3 tópicos curtos: Como dividiu, Dependências e ordem, Riscos.
 3. **Gerar** as stories pelo Template canônico.
-4. **Especificar** cada story de código com o contexto de implementação informado; o que faltar vira `a definir`.
-5. **Verificar** pelo Checklist + Harness (Definition of Ready) e calcular a prontidão de cada story; corrigir o que falhou.
-6. **Em ajuste:** aplique o pedido, mostre só o que mudou, reordene se preciso e refaça a verificação e a prontidão.
+4. **Verificar** pelo Checklist + Harness (Definition of Ready); corrigir o que falhou.
+5. **Em ajuste:** aplique o pedido, mostre só o que mudou, reordene se preciso e refaça a verificação.
 
 ## Raciocínio antes de agir (CoT)
 - Cada story entrega valor sozinha (senão, junte ou reparta)? Qual depende de qual, e existe ciclo?
-- O critério cabe em Dado/Quando/Então, alguém consegue verificá-lo e o resultado diz o que se verifica (campos, código, mensagem)?
-- Isto está no escopo informado ou estou inventando? Este achado técnico foi decidido, ou ainda está pendente?
-- Cada item da especificação tem fonte informada (senão, `a definir` ou `(proposto, confirmar)`)? Um dev que só lê este card implementa sem perguntar, e nenhuma frase só faz sentido para quem viu a conversa ("a mesma da Story 1", "sugestão aceita")? Reescreva com o conteúdo.
+- O critério cabe em Dado/Quando/Então, alguém consegue verificá-lo e o resultado diz o que se verifica?
+- Isto está no escopo informado ou estou inventando? Este achado foi decidido, ou ainda está pendente?
+- Escrevi algo que só um dev entenderia (arquivo, classe, endpoint)? Reescreva em linguagem de negócio.
+- Alguma frase só faz sentido para quem viu a conversa ("a mesma da Story 1", "sugestão aceita")? Reescreva com o conteúdo.
 
 ## Template canônico
 Leia `references/template.md` antes de escrever. Placeholders recebem o conteúdo real; nunca copie literalmente. Termine a proposta com a sequência em uma linha: `Story 1 -> Story 2 -> (Story 3 e Story 4 em paralelo)`.
@@ -80,29 +75,28 @@ Leia `references/examples.md` antes de escrever.
 - Estimar pontos, horas ou dev por conta própria → use só os informados; senão, `a definir`.
 - Transformar achado pendente ou recusado em story → só achado decidido vira story.
 - Inventar escopo que o usuário não pediu; inferir persona ou objetivo → fique no escopo informado e pergunte o que falta.
-- Preencher caminho, assinatura, regra ou comando da especificação sem fonte; marcar `pronta` com item `a definir` ou `(proposto, confirmar)` → `a definir` ou `(proposto, confirmar)` com a referência; prontidão `precisa de humano` com a lista do que falta.
-- Spec que depende da conversa: referir outra story, sugestão numerada, relatório ou fase em vez de escrever o conteúdo → escreva o conteúdo (campos, tipos, caminhos) ou `a definir`.
-- Critério com resultado vago; story de código sem `Testes` ou sem comando de build → resultado concreto (campos, código, mensagem); `Testes` e build obrigatórios.
+- Escrever arquivo, classe, endpoint, contrato técnico, comando ou `arquivo:linha` na story → linguagem de negócio; o detalhe técnico é de outro passo.
+- Story que depende da conversa: referir outra story, sugestão numerada, relatório ou fase em vez de escrever o conteúdo → escreva o conteúdo.
+- Critério com resultado vago → resultado concreto, do ponto de vista de quem usa.
 - Abreviações como `S5`; repetir a proposta inteira a cada ajuste; usar emoji → `Story 5`; em ajuste, só o que mudou; texto puro.
 
 ## Checklist + Harness
 Checklist (Definition of Ready):
-- [ ] Todas com tipo, persona, ação e benefício.
-- [ ] Todas com 2 ou mais critérios de aceite verificáveis.
+- [ ] Todas com persona, ação e benefício.
+- [ ] Todas com 2 ou mais critérios de aceite verificáveis e concretos.
 - [ ] Todas com subtasks e prioridade.
 - [ ] Estimativa até 8 pontos e dev informados, ou `a definir` explícito.
 - [ ] Ordem definida, dependências indicadas e sem ciclo.
 - [ ] Sem stories duplicadas ou sobrepostas.
 - [ ] Tudo dentro do escopo informado; só achados decididos usados.
-- [ ] Story de código com a especificação técnica completa e prontidão calculada, com a lista do que falta nas que precisam de humano.
 - [ ] Cada story autocontida: nenhuma referência à conversa, a outra story pela saída ou a sugestão numerada.
-- [ ] Critérios com resultado verificável concreto; `Testes` e comando de build presentes.
+- [ ] Nenhum detalhe técnico de código nas stories.
 
 Item falhou? Aponte e proponha a correção.
 
 Harness (gate — só conclui quando passa):
-1. Cada story de código tem a prontidão calculada; toda `pronta` tem os itens obrigatórios da especificação com valor e fonte, e nenhum `a definir` nem `(proposto, confirmar)` (conferido story a story).
-2. Busca no texto das stories por frases que dependem da conversa (`a mesma da`, `sugestão`, `conforme decidido`, `S` seguido de número): nenhuma ocorrência.
+1. Busca no texto das stories por frases que dependem da conversa (`a mesma da`, `sugestão`, `conforme decidido`, `S` seguido de número): nenhuma ocorrência.
+2. Busca por detalhe técnico (caminho com `/` ou extensão de arquivo como `.cs`, `.ts`, `.py`, `arquivo:linha`, `endpoint`, `SELECT`, comandos como `dotnet` ou `npm`): nenhuma ocorrência.
 3. Nenhuma story acima de 8 pontos, e a ordem e as dependências conferidas sem ciclo.
 
 Sem ferramenta externa: a regra de falha de ambiente não se aplica; a skill só gera texto.

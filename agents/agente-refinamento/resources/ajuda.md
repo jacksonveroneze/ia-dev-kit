@@ -3,7 +3,7 @@
 Fonte da CONV-016. Mostre só a seção pedida (a da fase atual; "como usar" mostra a Geral). Todo exemplo é fictício: nunca entra no refinamento.
 
 ## Geral (como usar)
-- Fluxo: Entrada, Contexto, Refinamento, Revisão, Publicação.
+- Fluxo: Entrada, Refinamento, Revisão, Publicação.
 - Gates: AVANÇAR (próxima fase), CIENTE (aceitar alerta de carga), APROVADO (liberar escrita no Trello).
 - Peça "ajuda" em qualquer fase. Para ajustar algo, diga o que mudar.
 - O agente não deduz nada: faltou dado, ele pergunta.
@@ -21,25 +21,21 @@ EXEMPLO (fictício):
 | Escopo* | Filtro por período, listagem paginada |
 | Fora de escopo* | Extrato de cartão, exportação em CSV |
 | Restrições | Prazo de 2 sprints |
-| Contexto técnico | API `api-extrato`, GitHub e Datadog, pergunta: "como o período é validado hoje?" |
 | Board* | Time Exemplo |
 | Lista de destino* | Backlog |
 
-## Fase 2 - Contexto
-- Opcional. Sem contexto, o agente registra `Contexto: não solicitado`.
-- Para pedir: API (cadastrada em `dados/fontes.md`), fontes (GitHub, Datadog) e a pergunta sobre a regra.
-- Você recebe regra atual, produção, riscos, sugestões e lacunas, tudo com fonte.
-- Marque cada sugestão como aceita ou recusada. Só as aceitas viram story.
+## Fase 2 - Refinamento
+- Opcional, só a pedido: para o agente consultar o GitHub, informe a API (cadastrada em `dados/fontes.md`) e a pergunta sobre a regra atual. Sem pedido, ele não consulta.
+- Com a consulta, você recebe regra atual, riscos, sugestões e lacunas, tudo com fonte. Serve para você decidir; a fonte não vai para as stories. Marque cada sugestão como aceita ou recusada; só as aceitas viram story.
 
-EXEMPLO (fictício): "Contexto da `api-extrato`, GitHub e Datadog. Como o período máximo é validado hoje?"
+EXEMPLO (fictício): "Consulta a `api-extrato` no GitHub. Como o período máximo é validado hoje?"
 
-## Fase 3 - Refinamento
-- O agente gera epic, stories, critérios de aceite, subtasks, ordem, dependências, estimativa e dev sugerido.
+- O agente gera epic, stories, critérios de aceite, subtasks, ordem, dependências, estimativa e dev sugerido, em linguagem de negócio.
+- Detalhe técnico de código (arquivos, contratos, comandos) não entra: é feito em outro passo.
 - Nada é publicado. Você revisa na fase seguinte.
-- Story de código também recebe a especificação técnica (referência, contrato, regras, arquivos, testes), só com o que foi informado ou lido no contexto. O que faltar fica `a definir`.
 - Story acima de 8 pontos é dividida. Dev com 2 ou mais stories gera alerta de carga.
 
-## Fase 4 - Revisão
+## Fase 3 - Revisão
 Ajuste em linguagem natural.
 
 EXEMPLOS (fictícios):
@@ -48,14 +44,11 @@ EXEMPLOS (fictícios):
 - "Move a Story 4 para antes da Story 2."
 - "Aumenta a Story 1 para 5 pontos."
 
-- "Confirmo o arquivo `X` proposto para a Story 2."
-- "O contrato da Story 1 é: entrada período, saída lista de totais."
+O agente mostra só o que mudou. Alerta de carga: responda CIENTE por dev sinalizado. Tudo certo: AVANÇAR.
 
-O agente mostra só o que mudou, a prontidão de cada story e o que falta para ficar pronta. Alerta de carga: responda CIENTE por dev sinalizado. Tudo certo: AVANÇAR.
-
-## Fase 5 - Publicação
-- O agente mostra o preview (título, dev, pontos, subtasks, dependência, labels) e checa cards duplicados.
-- A descrição do card leva a especificação técnica completa. Stories prontas recebem a label `agent-ready`.
+## Fase 4 - Publicação
+- O agente mostra o preview (título, dev, pontos, subtasks, dependência) e checa cards duplicados.
+- A descrição do card leva história, critérios de aceite e dependência. A label é a do epic.
 - Nada é criado até você responder APROVADO.
 - Card duplicado: escolha pular, atualizar ou criar mesmo assim.
 - Falha no meio: o agente para e não recria o que já existe.

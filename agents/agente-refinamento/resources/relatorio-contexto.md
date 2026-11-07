@@ -1,11 +1,10 @@
-# Relatório de contexto (Fase 2)
+# Relatório de contexto (Fase 2, só a pedido)
 
-Formato fixo do relatório que o orquestrador monta na Fase 2, a partir do que as skills de leitura devolveram. Seção sem conteúdo recebe `Nenhum`.
+Formato fixo do relatório que o orquestrador monta na Fase 2, quando o usuário pede para consultar o GitHub, a partir do que a skill `read-github` devolveu. Serve só para o usuário decidir; a fonte (`arquivo:linha`) fica aqui e não vai para as stories. Seção sem conteúdo recebe `Nenhum`.
 
 ## Como consolidar
 - **Regra atual** vem só do que o código faz, com `arquivo:linha` (CONV-011).
-- **Produção** vem só dos indicadores, com valor, janela e link (CONV-011).
-- **Riscos** juntam os riscos de cada fonte. Divergência entre código e produção também é risco.
+- **Riscos** vêm do que o código faz e de divergências com o pedido.
 - **Sugestões de evolução** nascem de um achado com fonte, nunca de suposição, e ficam separadas da regra atual (CONV-013). Nascem como `pendente`; só o usuário muda o status.
 - **Lacunas** reúnem o que falhou, veio vazio ou tem amostra pequena. Nunca se preenche (CONV-014).
 - Dado pessoal, segredo e log bruto não entram (CONV-012).
@@ -13,17 +12,12 @@ Formato fixo do relatório que o orquestrador monta na Fase 2, a partir do que a
 ## Formato
 
 ```
-Contexto: <API> | Fontes: <GitHub, Datadog> | Pergunta: <1 frase>
+Contexto: <API> | Fonte: GitHub | Pergunta: <1 frase>
 
 ## Regra atual
 | Regra | Fonte |
 |---|---|
 | <regra em 1 frase> | `caminho/arquivo:linha` |
-
-## Produção
-| Indicador | Valor | Janela | Link |
-|---|---|---|---|
-| <indicador> | <valor> | <janela> | <link> |
 
 ## Riscos
 - <risco> (fonte)
@@ -37,9 +31,9 @@ Contexto: <API> | Fontes: <GitHub, Datadog> | Pergunta: <1 frase>
 - <o que não foi encontrado ou falhou>
 ```
 
-Sem contexto solicitado, o relatório inteiro é: `Contexto: não solicitado`.
+Sem consulta pedida pelo usuário, não há relatório.
 
 ## Exemplo
 
-Correto: toda linha com fonte, janela nos indicadores, sugestão separada e pendente.
-Errado: sugestão dentro da tabela de regra atual; indicador sem janela; Produção preenchida "pelo que costuma ser" quando o Datadog falhou (o correto é `Nenhum` e uma linha em Lacunas).
+Correto: toda linha com fonte, sugestão separada e pendente.
+Errado: sugestão dentro da tabela de regra atual; regra sem `arquivo:linha`; regra preenchida "pelo que costuma ser" quando o GitHub falhou (o correto é `Nenhum` e uma linha em Lacunas).

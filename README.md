@@ -44,20 +44,19 @@ Em [`skills/meta-skills/`](skills/meta-skills). Material comum (anatomia, régua
 
 ## Agentes
 
-Os agentes rodam no Claude Code a partir da própria pasta. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. Os dois se complementam: o refinamento gera cards com a label `agent-ready` que o agente de desenvolvimento consome. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
+Os agentes rodam no Claude Code a partir da própria pasta. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. O refinamento gera cards em linguagem de negócio, sem detalhe técnico de código; a especificação técnica e a label `agent-ready` que o agente de desenvolvimento exige são feitas em outro passo. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
 
 ### [agente-refinamento](agents/agente-refinamento)
 
-Conduz o refinamento de histórias em 5 fases (entrada, contexto, refinamento, revisão e publicação) e cria os cards no Trello. Roda no Claude Code e no GitHub Copilot.
+Conduz o refinamento de histórias em 4 fases (entrada, refinamento, revisão e publicação), com consulta opcional ao GitHub a pedido do usuário, e cria os cards no Trello. Roda no Claude Code e no GitHub Copilot.
 
 | Componente | Função |
 |---|---|
-| Skill [`refine-stories`](agents/agente-refinamento/.claude/skills/refine-stories) | Gera epic, stories, critérios de aceite, subtasks, especificação técnica, ordem e dependências. |
+| Skill [`refine-stories`](agents/agente-refinamento/.claude/skills/refine-stories) | Gera epic, stories, critérios de aceite, subtasks, ordem e dependências, em linguagem de negócio. |
 | Skill [`estimate-stories`](agents/agente-refinamento/.claude/skills/estimate-stories) | Estima pontos e horas, sugere o dev e sinaliza carga versus capacidade. |
 | Skill [`read-github`](agents/agente-refinamento/.claude/skills/read-github) | Lê um repositório e explica a regra atual com arquivo e linha, riscos e lacunas. |
 | Skill [`publish-trello`](agents/agente-refinamento/.claude/skills/publish-trello) | Cria um card por story e verifica o resultado, após confirmação. |
 | Subagent [`github-researcher`](agents/agente-refinamento/.claude/agents/github-researcher.md) | Pesquisa em GitHub (somente leitura) na fase de contexto. |
-| Subagent [`datadog-analyst`](agents/agente-refinamento/.claude/agents/datadog-analyst.md) | Consulta métricas, traces e logs no Datadog, com dado pessoal mascarado. |
 
 ### [agente-desenvolvimento](agents/agente-desenvolvimento)
 
