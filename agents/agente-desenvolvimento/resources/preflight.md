@@ -12,12 +12,12 @@ Os artefatos são lidos pelo git na branch base (`git show HEAD:specs/<card-id>-
 | P2 | Branch atual é a base da spec | `git branch --show-current` | difere da `Base` do cabeçalho da spec |
 | P3 | Árvore limpa | `git status --porcelain` | há saída |
 | P4 | Base atualizada | `git fetch origin <base>`; comparar `git rev-parse HEAD` e `origin/<base>` | HEAD atrás ou divergente |
-| P5 | Sem trabalho em andamento | `estado.json` ausente ou do mesmo card e da mesma tarefa; `git branch -a` | outro card ou outra tarefa em andamento |
+| P5 | Sem trabalho em andamento | `estado.json` ausente, ou do mesmo card e da mesma tarefa, ou com `estado` CONCLUIDO (de outra tarefa, do mesmo card ou não); `git branch -a` (branch de execução cujo PR já foi mergeado não conta) | `estado.json` de outro card ou de outra tarefa fora de CONCLUIDO; branch de outra execução com PR não mergeado. CONCLUIDO de outra tarefa só passa depois do DESCARTAR do usuário (ver Regras) |
 | P6 | `estado.json` fora do versionamento | `git check-ignore estado.json` | não está no `.gitignore` |
 | P7 | Ferramentas | `command -v git`, `command -v gh` e o executável de cada comando do plano (build, teste, lint, format) | algum ausente |
 | P8 | Acesso ao GitHub com escrita | `gh auth status`; `gh repo view <repo> --json viewerPermission` | sem login ou permissão menor que WRITE |
 | P9 | Artefatos existem na base | `git ls-tree -r origin/<base> --name-only -- specs/` filtrado por `<card-id>` | não há exatamente uma pasta `specs/<card-id>-<slug>/` com `spec.md`, `plan.md` e `tasks.md` |
-| P10 | Spec aprovada e mergeada | `git show` do cabeçalho dos três arquivos; `gh pr list --state all --head spec/<slug> --json number,state` | algum com `Status` diferente de `aprovada`, ou `Card` diferente do link, ou PR da spec aberto ou inexistente |
+| P10 | Spec aprovada e na base | `git show origin/<base>:specs/<card-id>-<slug>/<arquivo>` do cabeçalho dos três arquivos; `gh pr list --state all --head spec/<slug> --json number,state` | algum com `Status` diferente de `aprovada`, ou `Card` diferente do link, ou há PR da spec ABERTO (`state` OPEN) para o `<slug>` |
 | P11 | Card pronto | resultado de `read-trello-card` (labels) e a lista atual do card, lida em somente leitura pelo conector do Trello | sem a label `agent-ready`; lista diferente de Especificado, exceto quando a lista é Em andamento ou Em review e existe PR de outra tarefa do mesmo card; lista Done sempre falha |
 | P12 | Tarefa escolhida livre | `tasks.md`: a `T-nn` existe e está `Status: pendente`; `gh pr list --state all --search "<card-id> T-nn" --json number,state,title,headRefName`; `git branch -a` | não existe; já tem PR aberto; já tem PR mergeado (concluída); branch da tarefa já existe |
 | P13 | Dependências da tarefa concluídas | cada `T` em `Depende de` da tarefa tem PR mergeado (mesma busca de P12); cada arquivo ou tipo que o plano diz vir de outra tarefa ou story existe na base | dependência sem PR mergeado, ou ausente na base |
@@ -27,6 +27,9 @@ Os artefatos são lidos pelo git na branch base (`git show HEAD:specs/<card-id>-
 | P17 | Linha de base verde | rodar os comandos do plano na árvore limpa, um por vez | algum falha, ou a árvore fica suja depois |
 
 As verificações de P1 a P16 são somente leitura e são a exceção listada à regra de comandos do plano (CONV-013). Nenhuma delas altera arquivo, branch ou card.
+
+## Prova de que a spec foi mergeada
+A prova são os três arquivos `specs/<card-id>-<slug>/{spec,plan,tasks}.md` presentes na base (P9) com `Status: aprovada` (P10). O PR da spec não é a prova: PR mergeado, fechado sem merge ou inexistente (a branch `spec/<slug>` pode ter sido apagada) não decide nada se os arquivos estão na base. O P10 só falha pelo PR quando há um PR da spec aberto para o `<slug>`, porque a spec ainda pode mudar.
 
 ## Escolha da tarefa
 - Tarefa informada pelo usuário: P12 e P13 valem para ela.
@@ -47,5 +50,7 @@ Preview do card: <Parte A de move-trello-card: lista atual -> Em andamento>
 ## Regras
 - Falha na base (P17) não é culpa da tarefa: pare antes de qualquer código.
 - Não corrija nada por conta própria (nem `git pull`, nem trocar de branch, nem editar o `.gitignore`). Informe o que o usuário deve fazer.
-- Spec em `rascunho`, PR de spec aberto ou campo `a definir` nos artefatos: o problema é de quem especifica; não complete nem leia a spec de outra branch.
+- Spec em `rascunho`, PR de spec aberto (`spec/<slug>`) ou campo `a definir` nos artefatos: o problema é de quem especifica; não complete nem leia a spec de outra branch.
+- `estado.json` com `estado` CONCLUIDO de outra tarefa (típico da segunda tarefa do mesmo card): P5 passa, mas o agente pergunta antes se pode descartá-lo e só segue com a palavra DESCARTAR; sem ela não sobrescreve nada. Quem preferir pode remover o arquivo à mão. Voltar à base e atualizá-la (P2, P4) continua sendo do usuário.
+- Card em Done antes de todas as `T-nn` estarem integradas: P11 falha. O remédio é humano (mover o card de volta); o agente não move o card e não relaxa a regra.
 - Para incluir uma verificação, acrescente a linha aqui; o orquestrador a executa sem mudança no `AGENTS.md`.

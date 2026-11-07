@@ -14,11 +14,17 @@ Valores fictícios. Nunca copie literalmente.
 |---|---|---|---|
 | CA-01 | Execute_ClienteComLimite_RetornaValor | unidade | tests/Contas.Application.Tests/Features/Limites/ConsultarLimite/ConsultarLimiteUseCaseTests.cs |
 
+## Comandos
+- Build: dotnet build Contas.sln
+- Teste: dotnet test Contas.sln
+- Lint: a definir
+- Format: a definir
+
 ## Rollout e rollback
 - Entrada: atrás de feature flag desligada por padrão.
 - Reversão: desligar a flag.
 ```
-Por que está certo: cada linha tem origem, o caminho segue o padrão do resumo do código, há reversão.
+Por que está certo: cada linha tem origem, o caminho segue o padrão do resumo do código, os comandos vêm do repositório (o que não foi encontrado, como lint e format, fica `a definir`) e há reversão.
 
 ## Errado
 - Caminho inventado que o resumo do código não confirma.

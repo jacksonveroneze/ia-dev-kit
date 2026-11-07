@@ -24,7 +24,7 @@ Guardas (coluna Condição) não são gates: valem em todos os modos e não se d
 | LEITURA | 1 | Leitura e preflight | `read-review-comments`; conferir se há o que tratar |
 | PREFLIGHT | 1 | Leitura e preflight | verificações de `resources/preflight.md` |
 | TRIAGEM | 2 | Triagem | `comment-triager`; tabela com recomendação por comentário |
-| CORRECAO | 3 | Correção | `fix-implementer` (e `test-writer` se pedido); build, teste, lint e format |
+| CORRECAO | 3 | Correção | `fix-implementer` (e `review-test-writer` se pedido); build, teste, lint e format |
 | REVISAO_DIFF | 4 | Revisão do diff | mostrar o diff por comentário aceito |
 | COMMIT | 5 | Commit e resposta | commits na branch do PR; preview do push |
 | RESPOSTA | 5 | Commit e resposta | Parte A de `reply-review-comment` |

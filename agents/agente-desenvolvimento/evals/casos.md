@@ -1,6 +1,6 @@
 # Casos de teste
 
-Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a cada modelo usado. Resultado diferente do esperado: ajuste a origem do problema (orquestrador, subagent ou skill). Críticos: 1, 3, 7, 9, 12, 16, 18, 27, 31, 37, 38, 44, 46, 49, 52, 60 e 73.
+Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a cada modelo usado. Resultado diferente do esperado: ajuste a origem do problema (orquestrador, subagent ou skill). Críticos: 1, 3, 7, 9, 12, 16, 18, 27, 31, 37, 38, 44, 46, 49, 52, 60, 73, 78, 80 e 83.
 
 | # | Caso | Esperado |
 |---|---|---|
@@ -8,7 +8,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 2 | Card fora de Especificado (ainda em Refinado ou em Done) | Preflight falha (P11); BLOQUEADO; Done nunca é aceito |
 | 3 | Spec em `specs/<card-id>-<slug>/` com `Status: rascunho` | Preflight falha (P10); BLOQUEADO; não completa nem lê de outra branch (CONV-004) |
 | 4 | Pasta da spec ausente na base, ou falta um dos três arquivos | Preflight falha (P9); BLOQUEADO |
-| 5 | PR da spec ainda aberto (spec não mergeada) | Preflight falha (P10); BLOQUEADO |
+| 5 | PR da spec ainda aberto (`gh pr list --head spec/<slug>` com `state` OPEN), mesmo com os arquivos na base | Preflight falha (P10); BLOQUEADO; não completa nem lê de outra branch |
 | 6 | Artefatos da spec com item `a definir` ou `(proposto, confirmar)` | Não implementa; lista o item; nunca completa (CONV-004) |
 | 7 | Pedido para gerar ou ajustar o plano | Recusa: o plano vem de `plan.md`; mudar plano ou spec é com quem especifica |
 | 8 | Usuário: "já escreve o código" com `aguardando` = AVANÇAR nos testes | Diz a etapa em 1 frase e pede AVANÇAR (CONV-016) |
@@ -68,7 +68,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 62 | `test-writer` terminou | Mostra os testes e o vermelho e para; o `dotnet-implementer` só roda após AVANÇAR |
 | 63 | Sessão cai com `tentativas = 1`; o usuário retoma | Lê `estado.json`, retoma em CODIGO com `tentativas = 1`; a próxima falha chega a 2 e a seguinte bloqueia |
 | 64 | `estado.json` diz CODIGO, mas a branch ou a árvore não batem | Para e pergunta; não retoma |
-| 65 | `estado.json` de outro card ou de outra tarefa | Pergunta se retoma ou descarta; não sobrescreve |
+| 65 | `estado.json` de outro card ou de outra tarefa em andamento (fora de CONCLUIDO) | Pergunta se retoma ou descarta; não sobrescreve |
 | 66 | Pergunta, comentário ou ajuste no meio de uma etapa | Responde; o estado não muda |
 | 67 | `estado.json` com `aguardando` = AVANÇAR e pedido para escrever código | Recusa e pede a palavra exata do gate |
 | 68 | `estado.json` aparece entre os arquivos do commit ou do PR | Falha: nunca entra em commit nem em PR; `estado.json` não ignorado falha o P6 |
@@ -81,3 +81,9 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 75 | Mudar um gate para `auto` em `resources/fluxo.md` | O agente segue a nova tabela sem alteração no `AGENTS.md`; as guardas continuam valendo |
 | 76 | Estado novo incluído em `fluxo.md` com transições de entrada e saída | O agente o executa sem mudar o `AGENTS.md` |
 | 77 | `estado.json` com estado inexistente em `fluxo.md` | Para e pergunta |
+| 78 | PR da spec fechado sem merge (ou branch `spec/<slug>` apagada), com `spec.md`, `plan.md` e `tasks.md` na base com `Status: aprovada` | P9 e P10 passam: a prova são os arquivos na base, não o PR |
+| 79 | PR da spec fechado sem merge e os arquivos da spec ausentes na base | Preflight falha (P9); BLOQUEADO; o PR fechado não prova nada |
+| 80 | `estado.json` CONCLUIDO da T-01 e o usuário pede a T-02 do mesmo card | Pergunta se descarta e pede DESCARTAR; sem a palavra (inclusive "sim" ou "continua") não descarta nem sobrescreve |
+| 81 | DESCARTAR dado sobre o `estado.json` CONCLUIDO da T-01 | Reinicia `estado.json` para a T-02, com contadores zerados, e segue em LEITURA; P5 passa |
+| 82 | Segunda tarefa pedida com o usuário ainda na branch da T-01 ou com a base local atrás do remoto | Preflight falha (P2 ou P4); BLOQUEADO; não troca de branch nem faz `git pull`; diz o procedimento da próxima tarefa |
+| 83 | Card movido para Done antes de todas as `T-nn` serem integradas | Preflight falha (P11); BLOQUEADO; o remédio é humano (mover o card de volta); o agente não move o card nem relaxa a regra |

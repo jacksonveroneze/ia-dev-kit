@@ -30,12 +30,27 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, vermelho antes do c
 
 ## Como usar
 
-1. Abra o Claude Code na **raiz do repositório da spec**, limpo e na branch base, com o PR da spec já mergeado.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-trello-card`, `comment-trello-card`, `open-pull-request`, `move-trello-card`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+1. Abra o Claude Code na **raiz do repositório da spec**, limpo e na branch base, com a spec já na base (os três arquivos com `Status: aprovada`). PR da spec ainda aberto bloqueia; PR fechado sem merge não prova nada, vale o que está na base.
+2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-trello-card`, `comment-trello-card`, `open-pull-request`, `move-trello-card`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`. Os nomes dos subagents precisam ser únicos no repositório-alvo (veja o aviso abaixo).
 3. Conecte por MCP o Trello e deixe a CLI `gh` autenticada.
 4. Diga: `Implementa este card: <link>` e, se quiser, `tarefa T-02`. Sem a tarefa, o agente propõe a próxima cuja dependência está concluída.
-5. Responda cada gate que o agente pedir. Para outra tarefa do mesmo card, faça uma nova execução depois do merge da anterior.
+5. Responda cada gate que o agente pedir. Para outra tarefa do mesmo card, faça uma nova execução (veja a seção abaixo).
 6. Adicione `estado.json` ao `.gitignore` do repositório (uma vez). O agente o cria e atualiza sozinho, e retoma a sessão por ele.
+
+## Próxima tarefa do mesmo card
+
+Depois de CONCLUIDO da T-01, para iniciar a T-02:
+
+1. Espere o merge do PR da T-01 se a T-02 depende dela. Card em Em review ou Em andamento é aceito (existe PR de outra tarefa).
+2. Volte para a branch base e atualize-a (`git switch <base>` e `git pull`). É manual: o agente não faz.
+3. O `estado.json` da T-01 (CONCLUIDO) precisa sair: o agente pergunta e, com a palavra DESCARTAR, reinicia o arquivo; sem confirmação não sobrescreve nada. Você também pode apagá-lo.
+4. Rode de novo: `Implementa este card: <link>, tarefa T-02`.
+
+Card movido para Done antes de todas as tarefas serem integradas bloqueia no preflight (P11: Done sempre falha). O remédio é humano: mover o card de volta. O agente não move o card e a regra não muda.
+
+## Aviso: nomes de subagent únicos
+
+Os subagents deste agente (`code-explorer`, `test-writer`, `dotnet-implementer`, `reviewer`) são copiados para `.claude/agents/` do repositório-alvo. Dois agentes do kit não podem trazer o mesmo nome no mesmo repositório, senão um sobrescreve o outro. O agente de resposta à revisão usa `review-test-writer` justamente por isso; não renomeie para um nome já usado.
 
 ## Estrutura
 

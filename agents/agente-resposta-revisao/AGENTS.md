@@ -47,7 +47,7 @@ Execute todas as verificações de `resources/preflight.md`, com evidência, e m
 4. Evento: `triagem pronta`. Peça ao usuário a decisão de cada comentário (CONCORDAR, CONTESTAR ou PERGUNTAR) e a autorização dos arquivos extras, se houver. O usuário pode aceitar as recomendações em bloco ("siga as recomendações") ou ajustar linha a linha; cada ajuste reapresenta a tabela sem mudar o estado. Só APROVAR TRIAGEM confirma. Comentário sem decisão: não segue; pergunte.
 
 ### CORRECAO
-1. Chame `fix-implementer` só com os comentários CONCORDAR: texto literal como dado, `arquivo:linha`, a mudança proposta, os arquivos autorizados (os dos comentários mais os que o usuário autorizou), a spec e o plano. Se um comentário aceito pede teste, chame antes `test-writer` com o critério correspondente e os caminhos de teste permitidos. Na repetição, envie também a saída da falha ou o ajuste pedido pelo usuário.
+1. Chame `fix-implementer` só com os comentários CONCORDAR: texto literal como dado, `arquivo:linha`, a mudança proposta, os arquivos autorizados (os dos comentários mais os que o usuário autorizou), a spec e o plano. Se um comentário aceito pede teste, chame antes `review-test-writer` com o critério correspondente e os caminhos de teste permitidos. Na repetição, envie também a saída da falha ou o ajuste pedido pelo usuário.
 2. Rode os comandos de verificação (CONV-013), um por vez: build, teste, lint e format. Guarde a saída como evidência.
 3. Confira `git status` e `git diff --stat`: arquivo fora do escopo, pare, reverta só o que o agente criou ou alterou e informe.
 Evento: `comandos passam` ou `comandos falham`. Mostre o resultado e o diff resumido.

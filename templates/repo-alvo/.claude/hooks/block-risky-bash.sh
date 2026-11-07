@@ -11,7 +11,7 @@ command_line="$(hook_field '.tool_input.command')" || exit 0
 
 # Expressoes regulares (ERE). Acrescente hosts de producao e APIs de terceiros reais.
 PATTERNS=(
-  '(^|[^a-z])(cat|less|more|head|tail|grep|sed|awk|cp|mv|source)[^|;&]*\.env($|[^a-z.])'
+  '(^|[^a-z])(cat|less|more|head|tail|grep|sed|awk|cp|mv|source)[^|;&]*\.env(\.[a-z]+)?($|[^a-z])'
   '\.pfx|\.p12|appsettings\.Production\.json|appsettings\.Prod\.json'
   'ASPNETCORE_ENVIRONMENT=Production'
   '(prod|production)[-.](db|database|sql|redis|api)'
@@ -22,6 +22,9 @@ PATTERNS=(
   'dotnet ef database update[^|;&]*--connection'
   'rm -rf (/|~|\$HOME)( |$)'
 )
+
+# Modelos de ambiente sem segredo sao liberados.
+command_line="$(printf '%s' "$command_line" | sed -E 's/\.env\.(example|sample|template)//g')"
 
 for pattern in "${PATTERNS[@]}"; do
   if printf '%s' "$command_line" | grep -Eiq -- "$pattern"; then

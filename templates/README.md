@@ -38,7 +38,7 @@ Se o repositório já tem algum desses arquivos, mescle manualmente. Faça tudo 
 
 ## Permissões e hooks
 
-- `permissions.allow`: leitura, build, test, format do .NET e `gh` de leitura. `ask`: `git push`, commit, merge e `gh` que escreve. `deny` (vence `ask` e `allow`): ler ou editar `.env`, chaves, certificados e `appsettings.Production.json`; `git push --force`, push em `main`/`develop`, `git reset --hard`.
+- `permissions.allow`: leitura, build, test, format do .NET e `gh` de leitura. `ask`: `git push`, commit, merge e `gh` que escreve. `deny` (vence `ask` e `allow`): ler ou editar `.env`, `.env.local`, `.env.production` e demais variantes com ambiente (menos `.env.example`, `.env.sample` e `.env.template`, que os hooks liberam), chaves, certificados e `appsettings.Production.json`; `gh pr merge`, `git branch -d`/`-D`, `git push --force`, push em `main`/`develop` (inclusive `HEAD:main`), `git reset --hard`. `git branch` fica no `allow` só nas formas de leitura.
 - `PreToolUse` bloqueia (código de saída 2, com o motivo) leitura e edição de arquivos sensíveis e comandos Bash que casem com a lista `PATTERNS` de `block-risky-bash.sh`. Substitua os hosts `a-definir-*` pelos de produção e de APIs de terceiros reais.
 - `PostToolUse` roda `dotnet format` no `.cs` editado. Nunca bloqueia; avisa em caso de falha.
 - `Stop` e `Notification` chamam `notify.sh` (`notify-send` no Linux, `osascript` no macOS, `echo` como fallback).

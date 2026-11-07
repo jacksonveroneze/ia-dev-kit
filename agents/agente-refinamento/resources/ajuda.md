@@ -47,8 +47,9 @@ EXEMPLOS (fictícios):
 O agente mostra só o que mudou. Alerta de carga: responda CIENTE por dev sinalizado. Tudo certo: AVANÇAR.
 
 ## Fase 4 - Publicação
-- O agente mostra o preview (título, dev, pontos, subtasks, dependência) e checa cards duplicados.
-- A descrição do card leva história, critérios de aceite e dependência. A label é a do epic.
+- O agente mostra o preview (título, dev, pontos, subtasks, dependência, fora de escopo) e checa cards duplicados.
+- A descrição do card leva história, critérios de aceite, dependência (com o link do card da story anterior), fora de escopo, estimativa e prioridade. A label é a do epic.
+- Story com Fora de escopo `a definir` não é publicada: o agente pergunta antes.
 - Nada é criado até você responder APROVADO.
 - Card duplicado: escolha pular, atualizar ou criar mesmo assim.
 - Falha no meio: o agente para e não recria o que já existe.

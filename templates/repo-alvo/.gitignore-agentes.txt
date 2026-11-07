@@ -5,5 +5,5 @@ estado.json
 rascunho/
 # Configuracao local do Claude Code (preferencias pessoais, nao compartilhadas).
 .claude/settings.local.json
-# Worktrees locais de trabalho paralelo.
+# Worktrees locais de trabalho paralelo, caso sejam criadas dentro do repositorio.
 .worktrees/

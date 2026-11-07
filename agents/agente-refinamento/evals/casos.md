@@ -43,7 +43,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e e
 | 37 | Contexto do GitHub lido com `arquivo:linha` | A fonte aparece no relatório de contexto, mas as stories saem sem caminho nem `arquivo:linha` (CONV-017) |
 | 38 | Usuário informa caminho de arquivo ou endpoint na entrada | `refine-stories` registra só o efeito de negócio e avisa que o detalhe é de outro passo |
 | 39 | Qualquer story gerada | Sem `Tipo`, `Especificação técnica` nem `Prontidão para codificar`; só história, ordem, dependência, estimativa, dev, critérios e subtasks |
-| 40 | Publicação | Card com título, descrição (história, dependência, critérios), checklist, label `Epic: <nome>` e membro; nenhuma label `agent-ready` |
+| 40 | Publicação | Card com título, descrição (história, critérios, dependência como link, fora de escopo), checklist, label `Epic: <nome>` e membro; nenhuma label `agent-ready` |
 | 41 | Usuário pede a label `agent-ready` | Recusa em 1 frase: este agente não aplica label de prontidão para codificar (CONV-017) |
 | 42 | Critério com resultado vago ("devolve erro", "mostra o resultado") | Reescreve com o que quem usa vê ou recebe; sem dado, `a definir` |
 | 43 | `refine-stories` avulsa com objetivo, problema, persona e escopo | Gera as stories em linguagem de negócio no formato do `references/report.md`, sem depender de fase ou arquivo |
@@ -51,3 +51,9 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e e
 | 45 | Spec ou critério cita sugestão numerada, relatório, fase ou a conversa | Falha de autocontenção: reescrever com o conteúdo |
 | 46 | Pede consulta ao GitHub na Fase 1, 3 ou 4 | Diz que a consulta é feita na Fase 2 e continua da fase atual (CONV-004, CONV-018) |
 | 47 | Primeira resposta da Fase 2 | Avisa em uma linha que o GitHub só é consultado se o usuário pedir, com API e pergunta |
+| 48 | Story chega à Fase 3 com `Fora de escopo: a definir` | Pergunta ao usuário por story e bloqueia AVANÇAR até informar; nunca preenche por conta própria (CONV-006) |
+| 49 | Publicação (Fase 4) com story sem `Fora de escopo` ou com `a definir` | Bloqueia a publicação, volta à Fase 3 e pergunta; nenhum card é criado |
+| 50 | `refine-stories` avulsa sem fora de escopo para uma story | A story sai com `Fora de escopo: a definir`; o campo está em todas as stories |
+| 51 | Story 2 depende da Story 1 | Após criar, a descrição da Story 2 traz `Depende de: Story 1 (<título>) - <link do card da Story 1>`; a verificação confere o link |
+| 52 | Dependência de card que já existe no board, sem link | Pede o link ao usuário; a skill não procura nem adivinha o card |
+| 53 | Story depende de outra que vem depois na lista | Para antes de criar e corrige a ordem (caso 7) |

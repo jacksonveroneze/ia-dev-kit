@@ -11,6 +11,8 @@ Este agente tem uma só coluna de gate e não tem modo automático: todo avanço
 | `usuário:<PALAVRA>` | Para e espera a palavra exata. Palavras: AVANÇAR, APROVAR PR, COMENTAR |
 | `auto` | Segue sem esperar, mostra o resultado do estado e grava a transição |
 
+DESCARTAR não é gate de transição: é a confirmação do motor para descartar um `estado.json` CONCLUIDO de outra tarefa e iniciar a nova execução (T1), sem sobrescrever antes dela.
+
 Guardas (coluna Condição) não são gates: valem sempre e não se desligam por este arquivo. São o preflight, os limites de tentativa, o escopo de escrita, o vermelho antes do código, a regra de não deduzir e as regras de git das convenções.
 
 ## Estados

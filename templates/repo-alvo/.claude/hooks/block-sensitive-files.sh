@@ -6,6 +6,7 @@ source "$(dirname "$0")/_lib.sh"
 
 hook_read_input
 file_path="$(hook_field '.tool_input.file_path')" || exit 0
+[ -z "$file_path" ] && file_path="$(hook_field '.tool_input.notebook_path')"
 [ -z "$file_path" ] && exit 0
 
 name="$(basename "$file_path")"

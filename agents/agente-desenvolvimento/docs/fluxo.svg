@@ -20,17 +20,20 @@
 <line x1="213" y1="322" x2="234" y2="322" class="arr" marker-end="url(#arrow)"/>
 <path d="M213 322 L213 374 L234 374" fill="none" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="374" x2="506" y2="374" class="arr" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<text class="ts" x="453" y="365" text-anchor="middle" dominant-baseline="central">COMENTAR</text>
 <line x1="115" y1="348" x2="115" y2="410" class="arr"/>
 <line x1="115" y1="434" x2="115" y2="454" class="arr" marker-end="url(#arrow)"/>
 <line x1="190" y1="504" x2="213" y2="504" class="arr"/>
 <path d="M213 504 L213 478 L234 478" fill="none" class="arr" marker-end="url(#arrow)"/>
 <path d="M213 504 L213 530 L234 530" fill="none" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="530" x2="506" y2="530" class="arr" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<text class="ts" x="453" y="521" text-anchor="middle" dominant-baseline="central">COMENTAR</text>
 <line x1="115" y1="530" x2="115" y2="566" class="arr"/>
 <line x1="115" y1="590" x2="115" y2="610" class="arr" marker-end="url(#arrow)"/>
 <line x1="190" y1="634" x2="213" y2="634" class="arr"/>
 <line x1="213" y1="634" x2="234" y2="634" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="634" x2="506" y2="634" class="arr" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+<text class="ts" x="453" y="625" text-anchor="middle" dominant-baseline="central">COMENTAR</text>
 <line x1="115" y1="660" x2="115" y2="674" class="arr"/>
 <line x1="115" y1="698" x2="115" y2="718" class="arr" marker-end="url(#arrow)"/>
 <line x1="190" y1="794" x2="213" y2="794" class="arr"/>
