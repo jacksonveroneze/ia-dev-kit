@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+# Permissao minima: o job so le o codigo.
+permissions:
+  contents: read
+
+# Um run por branch/PR; push novo cancela o anterior.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # a definir: caminho da solution (.sln ou .slnx), ex.: app/src/Projeto.slnx
+  SOLUTION: a-definir.slnx
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET (versao do global.json)
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: |
+            **/packages.lock.json
+            **/Directory.Packages.props
+            **/*.csproj
+
+      - name: Restore
+        run: dotnet restore "$SOLUTION"
+
+      - name: Build
+        run: dotnet build "$SOLUTION" --no-restore --configuration Release
+
+      - name: Test com cobertura
+        run: >
+          dotnet test "$SOLUTION" --no-build --configuration Release
+          --collect:"XPlat Code Coverage"
+          --results-directory ./TestResults
+          --logger "trx;LogFileName=resultado.trx"
+
+      - name: Format (verificacao)
+        run: dotnet format "$SOLUTION" --verify-no-changes --no-restore
+
+      - name: Publicar resultados de teste e cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/
+          if-no-files-found: ignore
+          retention-days: 7

@@ -37,6 +37,7 @@ echo "==> Criando links das convenções"
 
 echo "==> Instalando skills"
 
+install_dir "$ROOT/skills/engineering"
 install_dir "$ROOT/skills/git"
 install_dir "$ROOT/skills/meta-skills"
 install_dir "$ROOT/skills/net"

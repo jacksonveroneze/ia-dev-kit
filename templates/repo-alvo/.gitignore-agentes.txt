@@ -1,0 +1,9 @@
+# Arquivos de trabalho dos agentes (ia-dev-kit). Acrescente ao .gitignore do repositorio.
+# Estado da sessao do agente (progresso, card em andamento). Nunca entra em commit nem em PR.
+estado.json
+# Rascunhos de spec.md, plan.md e tasks.md em refinamento (agente-especificacao).
+rascunho/
+# Configuracao local do Claude Code (preferencias pessoais, nao compartilhadas).
+.claude/settings.local.json
+# Worktrees locais de trabalho paralelo.
+.worktrees/
