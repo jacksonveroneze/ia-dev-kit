@@ -39,6 +39,7 @@ echo "==> Instalando skills"
 
 install_dir "$ROOT/skills/git"
 install_dir "$ROOT/skills/meta-skills"
+install_dir "$ROOT/skills/net"
 install_dir "$ROOT/skills/trello"
 
 echo "==> Concluído: ${#installed[@]} link(s) criado(s)"
