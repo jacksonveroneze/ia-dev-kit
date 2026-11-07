@@ -18,8 +18,9 @@ Executado no estado PREFLIGHT, antes do primeiro gate de passagem, para a execu�
 | P10 | Acesso ao GitHub com escrita | `gh auth status`; `gh repo view <repo> --json viewerPermission` | sem login ou permissão menor que WRITE |
 | P11 | Spec, plano e comandos de verificação | procurar `specs/*/spec.md`, `plan.md` e `tasks.md` citados na descrição ou nos arquivos do PR; ler os comandos de build, teste, lint e format do `plan.md`, senão do `CLAUDE.md` ou `AGENTS.md` do repositório | sem nenhum conjunto de comandos. Modo rígido: pergunta ao usuário e usa a resposta. Modo automático: falha. Spec ausente não falha: registra "sem spec" |
 | P12 | Linha de base verde | rodar os comandos de P11 na árvore limpa, um por vez | algum falha, ou a árvore fica suja depois |
+| P13 | `estado.json` e `rascunho/` fora do versionamento | `git check-ignore estado.json rascunho/` | algum não está no `.gitignore` |
 
-P1 a P11 são somente leitura e são a exceção listada à regra de comandos (CONV-013). Nenhuma delas altera arquivo ou branch.
+P1 a P11 e P13 são somente leitura e são a exceção listada à regra de comandos (CONV-013). Nenhuma delas altera arquivo ou branch.
 
 ## Relatório (formato fixo)
 ```

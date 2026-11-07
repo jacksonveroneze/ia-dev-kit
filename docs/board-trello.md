@@ -24,12 +24,11 @@ Os agentes de revisão e de resposta à revisão não movem card. Todo movimento
 
 Regras: card sem `agent-ready` não entra no desenvolvimento. Nenhum agente remove label de outro. O refinamento nunca aplica `agent-ready` (a story fica em linguagem de negócio).
 
-### Divergências encontradas no kit (a corrigir nos agentes)
-1. O agente de desenvolvimento (`agents/agente-desenvolvimento/AGENTS.md` linha 37, `resources/convencoes.md` CONV-004) exige no card `Tipo: código`, prontidão `pronta` e especificação técnica no card. Neste fluxo o card é de negócio e a especificação mora em `specs/<card-id>-<slug>/`; a elegibilidade deve ser a label `agent-ready` e o `Status: aprovada` dos arquivos.
-2. `read-trello-card` devolve os campos Tipo, Especificação técnica e Prontidão para codificar; o card de negócio não os tem. Quem lê a story de negócio usa `read-story-card`.
-3. O refinamento (`agents/agente-refinamento/resources/ajuda.md` linha 25) aponta Backlog como lista de destino; coerente com este arquivo, mas o nome precisa ser informado pelo usuário a cada execução.
-4. O template de story do refinamento traz o campo Prioridade (Alta, Média, Baixa), ausente da lista de campos abaixo; tratado como informativo opcional.
-5. `create-trello-card` grava estimativa, prioridade e dependência na descrição e o dev como membro; subtasks vão na checklist `Subtasks`. O template abaixo segue esse formato.
+### Pendências conhecidas do kit
+1. `read-trello-card` devolve os campos Tipo, Especificação técnica e Prontidão para codificar; o card de negócio não os tem. Quem lê a story de negócio usa `read-story-card`.
+2. O refinamento (`agents/agente-refinamento/resources/ajuda.md` linha 25) aponta Backlog como lista de destino; coerente com este arquivo, mas o nome precisa ser informado pelo usuário a cada execução.
+3. O template de story do refinamento traz o campo Prioridade (Alta, Média, Baixa), ausente da lista de campos abaixo; tratado como informativo opcional.
+4. `create-trello-card` grava estimativa, prioridade e dependência na descrição e o dev como membro; subtasks vão na checklist `Subtasks`. O template abaixo segue esse formato.
 
 ## Template do card de negócio
 

@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="680" height="960" viewBox="0 0 680 960" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1020" viewBox="0 0 680 1020" role="img">
 <style>text{font-family:Arial,Helvetica,sans-serif}.th{font-size:14px;font-weight:bold;fill:#2C2C2A}.ts{font-size:12px;fill:#444441}.arr{stroke:#5F5E5A;stroke-width:1.5;fill:none}.c-purple rect,rect.c-purple{fill:#EEEDFE;stroke:#534AB7}.c-purple .th{fill:#26215C}.c-purple .ts{fill:#534AB7}.c-teal rect,rect.c-teal{fill:#E1F5EE;stroke:#0F6E56}.c-teal .th{fill:#04342C}.c-teal .ts{fill:#0F6E56}.c-coral rect,rect.c-coral{fill:#FAECE7;stroke:#993C1D}.c-coral .th{fill:#4A1B0C}.c-coral .ts{fill:#993C1D}.c-amber rect,rect.c-amber{fill:#FAEEDA;stroke:#854F0B}.c-amber .th{fill:#412402}.c-amber .ts{fill:#854F0B}.c-gray rect,rect.c-gray{fill:#F1EFE8;stroke:#5F5E5A}.c-gray .th{fill:#2C2C2A}.c-gray .ts{fill:#5F5E5A}.c-red rect,rect.c-red{fill:#FCEBEB;stroke:#A32D2D}.c-red .th{fill:#501313}.c-red .ts{fill:#A32D2D}</style>
-<rect width="680" height="960" fill="#ffffff"/>
+<rect width="680" height="1020" fill="#ffffff"/>
 <title>Fluxo do agente de especificação e suas integrações</title>
-<desc>Seis etapas em sequência com os gates do usuário entre elas, as skills e o subagent de cada etapa, as integrações com Trello, Git e GitHub, e o desvio para o estado bloqueado.</desc>
+<desc>Seis etapas em sequência com os gates do usuário entre elas, as skills e o subagent de cada etapa, as integrações com Trello, Git e GitHub, o movimento final do card para Especificado e o desvio para o estado bloqueado.</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 
 <line x1="115" y1="102" x2="115" y2="126" class="arr"/>
@@ -33,10 +33,12 @@
 <path d="M213 676 L213 704 L234 704" fill="none" class="arr" marker-end="url(#arrow)"/>
 <path d="M213 676 L213 756 L234 756" fill="none" class="arr" marker-end="url(#arrow)"/>
 <path d="M213 676 L213 808 L234 808" fill="none" class="arr" marker-end="url(#arrow)"/>
+<path d="M213 676 L213 860 L234 860" fill="none" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="652" x2="506" y2="652" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="704" x2="506" y2="704" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="756" x2="506" y2="756" class="arr" marker-end="url(#arrow)"/>
 <line x1="400" y1="808" x2="506" y2="808" class="arr" marker-end="url(#arrow)"/>
+<line x1="400" y1="860" x2="506" y2="860" class="arr" marker-end="url(#arrow)"/>
 <path d="M400 114 L452 114 L452 327 L506 327" fill="none" class="arr" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
 <path d="M400 196 L452 196" fill="none" class="arr" stroke-dasharray="4 4"/>
 
@@ -60,7 +62,7 @@
 <text class="ts" x="115" y="686" text-anchor="middle" dominant-baseline="central">Preview e envio</text></g>
 <g class="c-purple"><rect x="40" y="770" width="150" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="115" y="784" text-anchor="middle" dominant-baseline="central">Concluído</text>
-<text class="ts" x="115" y="801" text-anchor="middle" dominant-baseline="central">PR, comentário, label</text></g>
+<text class="ts" x="115" y="801" text-anchor="middle" dominant-baseline="central">PR, label, Especificado</text></g>
 
 <g class="c-amber"><rect x="50" y="126" width="130" height="24" rx="12" stroke-width="0.5"/>
 <text class="ts" x="115" y="138" text-anchor="middle" dominant-baseline="central">AVANÇAR</text></g>
@@ -80,7 +82,7 @@
 <text class="ts" x="318" y="72" text-anchor="middle" dominant-baseline="central">Lê e valida o card</text></g>
 <g class="c-teal"><rect x="236" y="92" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="107" text-anchor="middle" dominant-baseline="central">preflight</text>
-<text class="ts" x="318" y="124" text-anchor="middle" dominant-baseline="central">10 verificações</text></g>
+<text class="ts" x="318" y="124" text-anchor="middle" dominant-baseline="central">12 verificações</text></g>
 <g class="c-teal"><rect x="236" y="174" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="189" text-anchor="middle" dominant-baseline="central">context-explorer</text>
 <text class="ts" x="318" y="206" text-anchor="middle" dominant-baseline="central">Resume o código</text></g>
@@ -128,27 +130,34 @@
 <text class="th" x="574" y="801" text-anchor="middle" dominant-baseline="central">Trello</text>
 <text class="ts" x="574" y="818" text-anchor="middle" dominant-baseline="central">Aplica a label</text></g>
 
+<g class="c-coral"><rect x="508" y="838" width="132" height="44" rx="8" stroke-width="0.5"/>
+<text class="th" x="574" y="853" text-anchor="middle" dominant-baseline="central">Trello</text>
+<text class="ts" x="574" y="870" text-anchor="middle" dominant-baseline="central">Move o card</text></g>
+<g class="c-teal"><rect x="236" y="838" width="164" height="44" rx="8" stroke-width="0.5"/>
+<text class="th" x="318" y="853" text-anchor="middle" dominant-baseline="central">move-trello-card</text>
+<text class="ts" x="318" y="870" text-anchor="middle" dominant-baseline="central">Move para Especificado</text></g>
+
 <g class="c-red"><rect x="508" y="294" width="132" height="66" rx="8" stroke-width="0.5"/>
 <text class="th" x="574" y="318" text-anchor="middle" dominant-baseline="central">Bloqueado</text>
 <text class="ts" x="574" y="338" text-anchor="middle" dominant-baseline="central">Oferece COMENTAR</text></g>
 
-<g class="c-gray"><rect x="236" y="870" width="164" height="44" rx="8" stroke-width="0.5"/>
-<text class="th" x="318" y="885" text-anchor="middle" dominant-baseline="central">fluxo.md</text>
-<text class="ts" x="318" y="902" text-anchor="middle" dominant-baseline="central">Estados e gates</text></g>
-<g class="c-gray"><rect x="508" y="870" width="132" height="44" rx="8" stroke-width="0.5"/>
-<text class="th" x="574" y="885" text-anchor="middle" dominant-baseline="central">estado.json</text>
-<text class="ts" x="574" y="902" text-anchor="middle" dominant-baseline="central">e rascunho/</text></g>
+<g class="c-gray"><rect x="236" y="930" width="164" height="44" rx="8" stroke-width="0.5"/>
+<text class="th" x="318" y="945" text-anchor="middle" dominant-baseline="central">fluxo.md</text>
+<text class="ts" x="318" y="962" text-anchor="middle" dominant-baseline="central">Estados e gates</text></g>
+<g class="c-gray"><rect x="508" y="930" width="132" height="44" rx="8" stroke-width="0.5"/>
+<text class="th" x="574" y="945" text-anchor="middle" dominant-baseline="central">estado.json</text>
+<text class="ts" x="574" y="962" text-anchor="middle" dominant-baseline="central">e rascunho/</text></g>
 
-<rect class="c-purple" x="40" y="900" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="60" y="907" dominant-baseline="central">Etapa</text>
-<rect class="c-teal" x="40" y="924" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="60" y="931" dominant-baseline="central">Skill ou subagent</text>
-<rect class="c-coral" x="170" y="924" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="190" y="931" dominant-baseline="central">Integração externa</text>
-<rect class="c-amber" x="320" y="924" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="340" y="931" dominant-baseline="central">Gate do usuário</text>
-<rect class="c-gray" x="450" y="924" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="470" y="931" dominant-baseline="central">Arquivo</text>
-<rect class="c-red" x="540" y="924" width="14" height="14" rx="3" stroke-width="0.5"/>
-<text class="ts" x="560" y="931" dominant-baseline="central">Bloqueio (tracejado)</text>
+<rect class="c-purple" x="40" y="960" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="60" y="967" dominant-baseline="central">Etapa</text>
+<rect class="c-teal" x="40" y="984" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="60" y="991" dominant-baseline="central">Skill ou subagent</text>
+<rect class="c-coral" x="170" y="984" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="190" y="991" dominant-baseline="central">Integração externa</text>
+<rect class="c-amber" x="320" y="984" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="340" y="991" dominant-baseline="central">Gate do usuário</text>
+<rect class="c-gray" x="450" y="984" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="470" y="991" dominant-baseline="central">Arquivo</text>
+<rect class="c-red" x="540" y="984" width="14" height="14" rx="3" stroke-width="0.5"/>
+<text class="ts" x="560" y="991" dominant-baseline="central">Bloqueio (tracejado)</text>
 </svg>

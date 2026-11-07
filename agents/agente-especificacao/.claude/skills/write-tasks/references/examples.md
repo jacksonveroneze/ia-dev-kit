@@ -16,7 +16,7 @@ Caminhos de teste permitidos:
 Atrás de feature flag: não
 Definição de pronto:
 - [ ] Os dois critérios cobertos por testes
-- [ ] Build, teste e lint passando
+- [ ] Build, teste, lint e format passando
 Status: pendente
 ```
 Por que está certo: uma fatia mergeável, arquivos copiados do plano, critérios declarados.

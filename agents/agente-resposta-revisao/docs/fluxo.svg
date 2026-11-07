@@ -19,7 +19,7 @@
 <text class="ts" x="318" y="71" text-anchor="middle" dominant-baseline="central">Lê threads e checks</text></g>
 <g class="c-teal"><rect x="236" y="92" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="105" text-anchor="middle" dominant-baseline="central">preflight</text>
-<text class="ts" x="318" y="123" text-anchor="middle" dominant-baseline="central">12 verificações</text></g>
+<text class="ts" x="318" y="123" text-anchor="middle" dominant-baseline="central">13 verificações</text></g>
 <g class="c-teal"><rect x="236" y="174" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="187" text-anchor="middle" dominant-baseline="central">comment-triager</text>
 <text class="ts" x="318" y="205" text-anchor="middle" dominant-baseline="central">Avalia cada comentário</text></g>

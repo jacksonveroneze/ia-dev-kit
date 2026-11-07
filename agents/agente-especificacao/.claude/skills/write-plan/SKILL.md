@@ -23,7 +23,7 @@ O rascunho de `references/template.md` mais o relatório de `references/report.m
 - **Local (caminhos reais):** arquivo existente só com caminho confirmado no resumo do código. Arquivo novo marcado `criar`, com o diretório pai existente no resumo. Nunca invente caminho.
 - **Local (padrão existente):** siga o padrão e as convenções do resumo do código, citando arquivo e linha. Divergência entre spec e código: liste em `Pendências`, sem escolher.
 - **Local (pacote novo):** dependência fora da stack já usada só com confirmação do usuário; até lá, `(proposto, confirmar)`.
-- **Local (comandos):** build, teste e lint exatos, vindos do código ou do usuário. Sem eles, `a definir`.
+- **Local (comandos):** build, teste, lint e format exatos, vindos do código ou do usuário. Sem eles, `a definir`.
 - **Local (rastreabilidade):** toda decisão `DT-nn` aponta para `RF` ou `CA`; todo `CA` tem ao menos um teste. Identificador aprovado não muda nem é reaproveitado.
 - **Local (rollout e rollback):** toda mudança em comportamento existente declara como entra e como reverte (por exemplo, feature flag e depreciação do antigo). Sem informação: `a definir`.
 - **Local (refinamento):** ao receber ajuste, altere só o que foi pedido e liste em `Mudanças`.

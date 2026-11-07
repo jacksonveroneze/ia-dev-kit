@@ -17,11 +17,11 @@ Arquivos a criar ou alterar:
 Caminhos de teste permitidos:
 - {caminho}
 Testes: {CA -> nome do teste}
-Comandos: build {comando}; teste {comando}; lint {comando}
+Comandos: build {comando}; teste {comando}; lint {comando}; format {comando | não se aplica}
 Atrás de feature flag: {nome | não}
 Definição de pronto:
 - [ ] {critério verificável da tarefa}
-- [ ] Build, teste e lint passando
+- [ ] Build, teste, lint e format passando
 Status: pendente
 
 ## T-02 - {título}

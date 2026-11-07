@@ -37,6 +37,7 @@ Status: rascunho
 - Build: {comando}
 - Teste: {comando}
 - Lint: {comando}
+- Format: {comando | não se aplica}
 
 ## Rollout e rollback
 - Entrada: {como entra em produção}

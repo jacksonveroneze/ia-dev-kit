@@ -51,3 +51,22 @@ Dado que o card, o código ou o usuário não trouxeram é escrito como `a defin
 - `spec.md` não cita tecnologia, classe, arquivo nem endpoint.
 - `plan.md` não cria nem muda requisito: se precisar, volta para a spec (VOLTAR).
 - `tasks.md` não decide arquitetura: só fatia o que o plano definiu.
+
+## Constitution
+
+`specs/constitution.md` do repositório-alvo (modelo em `templates/repo-alvo/specs/constitution.md`) traz as regras fixas `CONST-nnn`. É opcional para o agente iniciar, mas obrigatório como guia quando existe (CONV-020).
+
+| Situação | Comportamento |
+|---|---|
+| Ausente | Aviso no preflight (P12), sem bloquear. O orquestrador informa `constitution: ausente` ao `context-explorer`, que registra em `Lacunas`. |
+| Existente | O `context-explorer` recebe o caminho como guia do repositório e devolve as regras relevantes. O orquestrador repassa as `CONST-nnn` aplicáveis às skills de rascunho. |
+
+Onde citar (pelo identificador, nunca copiando o texto da regra):
+
+| Arquivo | Onde |
+|---|---|
+| `spec.md` | seção Restrições, só regra de negócio ou de produto, sem tecnologia |
+| `plan.md` | `Base: CONST-nnn` em cada DT que decorre de uma regra |
+| `tasks.md` | observação da tarefa que aplica a regra |
+
+Conflito entre o card e uma regra: item `a definir` com a pergunta (CONV-004); a regra vale até o humano decidir e o rascunho não é aprovado enquanto o item existir. Regra marcada `(aposentada)` não é citada. Se o arquivo tiver valor `a definir`, o agente o repassa como pendência, nunca o preenche.

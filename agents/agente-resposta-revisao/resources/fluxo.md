@@ -43,8 +43,8 @@ Guardas (coluna Condição) não são gates: valem em todos os modos e não se d
 | T6 | TRIAGEM | triagem pronta | CORRECAO | decisões do usuário com ao menos um CONCORDAR | grava as decisões em `rascunho/triagem.md` | usuário:APROVAR TRIAGEM | usuário:APROVAR TRIAGEM |
 | T7 | TRIAGEM | triagem pronta | RESPOSTA | decisões do usuário sem nenhum CONCORDAR | grava as decisões em `rascunho/triagem.md` | usuário:APROVAR TRIAGEM | usuário:APROVAR TRIAGEM |
 | T8 | CORRECAO | comandos passam | REVISAO_DIFF | | | usuário:AVANÇAR | auto |
-| T9 | CORRECAO | comandos falham | CORRECAO | `tentativas < 3` | soma 1 em `tentativas` | auto | auto |
-| T10 | CORRECAO | comandos falham | BLOQUEADO | `tentativas = 3` | | auto | auto |
+| T9 | CORRECAO | comandos falham | CORRECAO | `tentativas < 2` | soma 1 em `tentativas` | auto | auto |
+| T10 | CORRECAO | comandos falham | BLOQUEADO | `tentativas = 2` | | auto | auto |
 | T11 | REVISAO_DIFF | diff pronto | COMMIT | | | usuário:APROVAR CORREÇÕES | usuário:APROVAR CORREÇÕES |
 | T12 | REVISAO_DIFF | ajuste pedido | CORRECAO | `ciclos < 2` | soma 1 em `ciclos`; zera `tentativas` | usuário:AJUSTAR | usuário:AJUSTAR |
 | T13 | REVISAO_DIFF | ajuste pedido | BLOQUEADO | `ciclos = 2` | | auto | auto |

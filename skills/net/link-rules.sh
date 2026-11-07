@@ -1,3 +1,4 @@
+#!/bin/bash
 # link-rules.sh — gerencia net/<skill>/references/dotnet-conventions.md
 #
 # Uso:
@@ -7,8 +8,6 @@
 #
 # Só remove symlinks; arquivo real em references/ nunca é apagado.
 # Apaga references/ apenas se ficar vazia.
-
-#!/bin/bash
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
