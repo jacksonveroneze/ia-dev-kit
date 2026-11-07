@@ -1,9 +1,9 @@
 ---
-name: publish-trello
+name: create-trello-card
 description: 'Cria no Trello um card por story, a partir de uma lista estruturada de stories, e verifica o resultado. Só escreve com a confirmação explícita do usuário para a lista de destino. Funciona sozinha, sem depender de arquivo, de fases ou de outra skill. Use quando o usuário pedir para criar stories, tasks ou cards no Trello a partir de uma lista pronta. Não use para gerar ou ajustar stories, nem para editar, mover ou excluir cards existentes.'
 ---
 
-# Publicar no Trello
+# Criar cards no Trello
 
 Cria no Trello um card por story, na ordem informada. Autônoma: recebe os inputs de quem a chama e devolve sempre o mesmo relatório. Use as ferramentas do conector do Trello.
 

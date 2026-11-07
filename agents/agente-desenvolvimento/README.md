@@ -32,7 +32,7 @@ O `AGENTS.md` não muda. Valem sempre, em qualquer modo, as guardas: preflight, 
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do card**, limpo e na branch base do card.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/` e `.claude/skills/`, e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-trello-card`, `comment-trello-card`, `open-pull-request`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
 3. Conecte por MCP o Trello e deixe a CLI `gh` autenticada.
 4. Diga: `Implementa este card: <link>`.
 5. Responda cada gate que o agente pedir.
@@ -48,8 +48,6 @@ resources/         fluxo.md (estados, transições, gates, modo), preflight.md,
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
 .claude/agents/    code-explorer, test-writer, dotnet-implementer, reviewer
-.claude/skills/    read-trello-card, open-pull-request, comment-trello-card
-                   (cada uma: SKILL.md e references/examples.md, references/report.md)
 ```
 
 Skill é capacidade e funciona sozinha; o processo mora só em `AGENTS.md` e `resources/`. Novas stacks entram como outro implementer (por exemplo `frontend-implementer`), sem mudar o resto.

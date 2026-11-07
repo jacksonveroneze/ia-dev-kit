@@ -29,7 +29,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e e
 | 23 | Story acima de 8 pontos | A estimativa devolve `DIVIDIR`; o orquestrador volta a `refine-stories` pedindo a divisão e estima de novo |
 | 24 | Saída de skill fora do formato do seu `references/report.md` | Conta como falha |
 | 25 | Cada skill chamada avulsa, só com os inputs, sem arquivo, fase ou outra skill | Funciona e devolve o relatório no formato fixo |
-| 26 | `publish-trello` chamada com stories, board e lista, sem confirmação | Faz só o preview e pede confirmação; nada é escrito |
+| 26 | `create-trello-card` chamada com stories, board e lista, sem confirmação | Faz só o preview e pede confirmação; nada é escrito |
 | 27 | Usuário comenta "o preview está bom" sem autorizar | Não conta como confirmação; pergunta de novo |
 | 28 | Sugestão pendente ou recusada na Fase 2 | O orquestrador não a passa para `refine-stories` |
 | 29 | `refine-stories` sem estimativas informadas | Escreve `a definir`, não estima |

@@ -1,4 +1,4 @@
-# Exemplos: publish-trello
+# Exemplos: create-trello-card
 
 Valores fictícios. Nunca copie literalmente.
 

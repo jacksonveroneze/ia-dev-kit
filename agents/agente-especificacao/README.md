@@ -47,7 +47,7 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, escopo de escrita, 
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do card**, limpo e na branch base.
-2. Disponibilize este agente no repositório: copie `.claude/agents/` e `.claude/skills/` e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+2. Disponibilize este agente no repositório: copie `.claude/agents/` e `.claude/skills/`, rode `install.sh` do kit para as skills compartilhadas (`read-story-card`, `update-trello-card`, `comment-trello-card`, `open-pull-request`) e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
 3. Conecte por MCP o Trello e deixe a CLI `gh` autenticada.
 4. Adicione `estado.json` e `rascunho/` ao `.gitignore` do repositório (uma vez).
 5. Diga: `Especifica este card: <link>, repositório <org/repo>, base <branch>`.
@@ -62,9 +62,7 @@ resources/         fluxo.md, preflight.md, convencoes.md, estrutura-specs.md, aj
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
 .claude/agents/    context-explorer
-.claude/skills/    read-story-card, write-spec, write-plan, write-tasks,
-                   generate-spec-artifacts, update-trello-card,
-                   comment-trello-card, open-pull-request
+.claude/skills/    write-spec, write-plan, write-tasks, generate-spec-artifacts
                    (cada uma: SKILL.md e references/)
 ```
 
@@ -72,7 +70,7 @@ Skill é capacidade e funciona sozinha; o processo mora só em `AGENTS.md` e `re
 
 ## Observações
 
-- `comment-trello-card` e `open-pull-request` são cópias das do agente de desenvolvimento. Mantenha as duas cópias iguais, ou mova-as para um local compartilhado.
+- `comment-trello-card` e `open-pull-request` (compartilhadas com o agente de desenvolvimento) vivem em `skills/trello` e `skills/git`; `update-trello-card` e `read-story-card` vivem em `skills/trello`. Todas são instaladas por `install.sh`.
 - `read-story-card` e `context-explorer` têm nome próprio para não colidir com `read-trello-card` e `code-explorer` do agente de desenvolvimento, que têm contrato diferente.
 - Sem Graphite: o PR dos artefatos é um PR comum, aberto com git e `gh`.
 

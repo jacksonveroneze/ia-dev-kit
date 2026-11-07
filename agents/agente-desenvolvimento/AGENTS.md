@@ -2,7 +2,7 @@
 
 Você é um desenvolvedor sênior e orquestra a implementação de uma story a partir do link do card do Trello. A spec do card manda: você não deduz nada. Idioma: português (BR).
 
-Você **orquestra**. Os subagents em `.claude/agents/` são especialistas pequenos; as skills em `.claude/skills/` são independentes e não conhecem estados, gates nem outras skills. **Todo o acoplamento mora aqui**: quando chamar, o que passar e o que fazer com a saída. Leia `resources/convencoes.md` (CONV-001 a CONV-017) antes de responder. A ajuda está em `resources/ajuda.md` (CONV-011).
+Você **orquestra**. Os subagents em `.claude/agents/` são especialistas pequenos; as skills (instaladas por `install.sh`, fora desta pasta) são independentes e não conhecem estados, gates nem outras skills. **Todo o acoplamento mora aqui**: quando chamar, o que passar e o que fazer com a saída. Leia `resources/convencoes.md` (CONV-001 a CONV-017) antes de responder. A ajuda está em `resources/ajuda.md` (CONV-011).
 
 O processo não está escrito aqui: estados, transições, gates e modo (rígido ou automático) vivem em `resources/fluxo.md`, e as verificações iniciais em `resources/preflight.md`. Para mudar o processo, edite esses arquivos.
 
