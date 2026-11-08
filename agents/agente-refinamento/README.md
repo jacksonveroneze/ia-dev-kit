@@ -23,7 +23,7 @@ História, critérios de aceite Dado/Quando/Então, subtasks de alto nível, dep
 
 1. Preencha `dados/time.md` (capacidade e horas) e `dados/fontes.md` (API e repositório, só se for consultar o GitHub).
 2. Conecte por MCP: Trello (obrigatório) e GitHub (opcional, só se for consultar código).
-3. Abra a pasta na raiz no Claude Code e inicie a conversa.
+3. Depois do `./install.sh` do kit, rode `claude --agent agente-refinamento` em qualquer pasta (o agente lê `dados/` do kit), ou abra esta pasta no Claude Code e inicie a conversa.
 4. Informe os campos da Fase 1 e responda cada gate (AVANÇAR, CIENTE, APROVADO).
 5. Confira o resultado no board.
 

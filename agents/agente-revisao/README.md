@@ -44,7 +44,7 @@ O `AGENTS.md` não muda. Valem sempre, em qualquer configuração, as guardas: p
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do PR**, com o checkout no head do PR (`gh pr checkout <número>`) e a árvore limpa. Os revisores leem os arquivos desse checkout.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-pull-request`, `post-review-comments`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+2. Instale o kit uma vez (`./install.sh` na raiz do kit). Ele instala no `~/.claude` as skills (`read-pull-request`, `post-review-comments`), os subagents e o agente `agente-revisao`; nada é copiado nem importado no repositório. Inicie a sessão com `claude --agent agente-revisao`.
 3. Deixe a CLI `gh` autenticada.
 4. Diga: `Revisa este PR: <URL>`.
 5. Responda cada gate que o agente pedir. Na etapa 4, revise você mesmo o PR e use a lista de cenários de teste.

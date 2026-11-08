@@ -31,7 +31,7 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, vermelho antes do c
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório da spec**, limpo e na branch base, com a spec já na base (os três arquivos com `Status: aprovada`). PR da spec ainda aberto bloqueia; PR fechado sem merge não prova nada, vale o que está na base.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-trello-card`, `comment-trello-card`, `open-pull-request`, `move-trello-card`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`. Os nomes dos subagents precisam ser únicos no repositório-alvo (veja o aviso abaixo).
+2. Instale o kit uma vez (`./install.sh` na raiz do kit). Ele instala no `~/.claude` as skills (`read-trello-card`, `comment-trello-card`, `open-pull-request`, `move-trello-card`), os subagents e o agente `agente-desenvolvimento`; nada é copiado nem importado no repositório. Inicie a sessão com `claude --agent agente-desenvolvimento`. Os nomes dos subagents precisam ser únicos entre os agentes instalados (veja o aviso abaixo).
 3. Conecte por MCP o Trello e deixe a CLI `gh` autenticada.
 4. Diga: `Implementa este card: <link>` e, se quiser, `tarefa T-02`. Sem a tarefa, o agente propõe a próxima cuja dependência está concluída.
 5. Responda cada gate que o agente pedir. Para outra tarefa do mesmo card, faça uma nova execução (veja a seção abaixo).

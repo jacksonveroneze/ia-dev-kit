@@ -49,7 +49,7 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, escopo de escrita, 
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do card**, limpo e na branch base.
-2. Disponibilize este agente no repositório: copie `.claude/agents/` e `.claude/skills/`, rode `install.sh` do kit para as skills compartilhadas (`read-story-card`, `update-trello-card`, `comment-trello-card`, `move-trello-card`, `open-pull-request`) e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
+2. Instale o kit uma vez (`./install.sh` na raiz do kit). Ele instala no `~/.claude` as skills (`write-spec`, `write-plan`, `write-tasks`, `generate-spec-artifacts` e as compartilhadas `read-story-card`, `update-trello-card`, `comment-trello-card`, `move-trello-card`, `open-pull-request`), os subagents e o agente `agente-especificacao`; nada é copiado nem importado no repositório. Inicie a sessão com `claude --agent agente-especificacao`.
 3. Conecte por MCP o Trello (o board precisa ter a lista `Specified`) e deixe a CLI `gh` autenticada.
 4. Adicione `estado.json` e `rascunho/` ao `.gitignore` do repositório (uma vez).
 5. Diga: `Especifica este card: <link>, repositório <org/repo>, base <branch>`.

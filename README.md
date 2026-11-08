@@ -90,9 +90,9 @@ Em [`skills/meta-skills/`](skills/meta-skills). Material comum (anatomia, régua
 
 ## Agentes
 
-Os agentes rodam no Claude Code aberto na raiz do repositório-alvo (o que será alterado), com o `.claude/agents/` do agente copiado, as skills instaladas por `install.sh` e o `AGENTS.md` do agente importado no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`); o passo a passo está no `README.md` de cada agente. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. O refinamento gera cards em linguagem de negócio, sem detalhe técnico de código; a especificação técnica e a label `agent-ready` que o agente de desenvolvimento exige são feitas em outro passo. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
+Os agentes rodam no Claude Code aberto na raiz do repositório-alvo (o que será alterado), com `claude --agent <nome-do-agente>`. O `./install.sh` instala uma vez, no `~/.claude`, as skills, os subagents e o agente de cada pasta; nada é copiado nem importado no repositório-alvo, e a árvore dele continua limpa. O passo a passo está no `README.md` de cada agente. Cada um tem `README.md`, `AGENTS.md`, `docs/fluxo.svg` e `evals/casos.md`. O refinamento gera cards em linguagem de negócio, sem detalhe técnico de código; a especificação técnica e a label `agent-ready` que o agente de desenvolvimento exige são feitas em outro passo. Todo avanço passa por um gate de aprovação humana, e a revisão e o merge do PR continuam manuais.
 
-**Um agente por sessão.** Cada sessão do Claude Code usa UM agente por vez: cinco `AGENTS.md` importados no mesmo `CLAUDE.md` se contradizem (estados, gates e palavras de gate diferentes) e compartilham o mesmo `estado.json`. Importe só o `AGENTS.md` do agente em uso, ou use uma pasta ou worktree por agente (por exemplo, com `git-worktrees`). Os nomes dos subagents também precisam ser únicos no repositório-alvo: o subagent de testes do agente de resposta à revisão se chama `review-test-writer` para não colidir com o `test-writer` do agente de desenvolvimento.
+**Um agente por sessão.** Cada sessão do Claude Code usa UM agente por vez (`claude --agent <nome>`): os cinco `AGENTS.md` se contradizem (estados, gates e palavras de gate diferentes) e compartilham o mesmo `estado.json`. Para trabalhar com dois agentes ao mesmo tempo, use uma pasta ou worktree por agente (por exemplo, com `git-worktrees`). Os nomes dos subagents precisam ser únicos entre os agentes instalados: o subagent de testes do agente de resposta à revisão se chama `review-test-writer` para não colidir com o `test-writer` do agente de desenvolvimento.
 
 ### [agente-refinamento](agents/agente-refinamento)
 
@@ -166,8 +166,9 @@ Em [`templates/`](templates): `CLAUDE.md` global e de projeto, `specs/constituti
 ## Instalação
 
 ```bash
-./install.sh     # cria links das skills de skills/engineering, git, meta-skills, net e trello em ~/.codex, ~/.copilot e ~/.claude
-./uninstall.sh   # remove os links
+./install.sh     # links das skills (engineering, git, meta-skills, net, trello e as de cada agente) em ~/.codex, ~/.copilot e ~/.claude;
+                 # e, em ~/.claude/agents, os subagents (links) e um arquivo por agente (gerado, com o caminho absoluto do kit)
+./uninstall.sh   # remove os links e os arquivos de agente gerados
 ```
 
-Só os diretórios que já existem em `$HOME` são usados. Destinos existentes que não sejam links simbólicos são ignorados.
+Só os diretórios que já existem em `$HOME` são usados. Destinos existentes que não sejam links simbólicos (ou, para o arquivo do agente, que não tenham sido gerados pelo `install.sh`) são ignorados. Depois de mudar o kit, rode `./install.sh` de novo. Para iniciar um agente: `cd <repositório-alvo> && claude --agent agente-especificacao`.

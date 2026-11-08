@@ -41,7 +41,7 @@ O `AGENTS.md` não muda. Valem sempre, em qualquer modo, as guardas: preflight, 
 ## Como usar
 
 1. Abra o Claude Code na **raiz do repositório do PR**, na branch do PR, com a árvore limpa.
-2. Disponibilize este agente nesse repositório: copie (ou aponte por link simbólico) `.claude/agents/`, rode `install.sh` do kit para instalar as skills (`read-review-comments`, `reply-review-comment`), e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`. Os nomes dos subagents precisam ser únicos no repositório-alvo (veja o aviso abaixo).
+2. Instale o kit uma vez (`./install.sh` na raiz do kit). Ele instala no `~/.claude` as skills (`read-review-comments`, `reply-review-comment`), os subagents e o agente `agente-resposta-revisao`; nada é copiado nem importado no repositório. Inicie a sessão com `claude --agent agente-resposta-revisao`. Os nomes dos subagents precisam ser únicos entre os agentes instalados (veja o aviso abaixo).
 3. Deixe a CLI `gh` autenticada com permissão de escrita no repositório.
 4. Diga: `Responde as revisões do PR <URL ou org/repo#número>`.
 5. Responda cada gate que o agente pedir.
