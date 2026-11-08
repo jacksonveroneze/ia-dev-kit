@@ -20,11 +20,11 @@ Guardas (coluna Condição) não são gates: valem sempre e não se desligam por
 | Estado | Etapa | Nome da etapa | Ação do estado (gera o evento) |
 |---|---|---|---|
 | LEITURA | 1 | Leitura e validação | `read-trello-card` só para o link e a label; conferir `agent-ready` |
-| PREFLIGHT | 1 | Leitura e validação | verificações de `resources/preflight.md`; Parte A de `move-trello-card` (Em andamento) |
+| PREFLIGHT | 1 | Leitura e validação | verificações de `resources/preflight.md`; Parte A de `move-trello-card` (In Progress) |
 | TESTES | 2 | Testes | `code-explorer`; `test-writer` (pula se a tarefa não tem testes); comprovar o vermelho |
 | CODIGO | 3 | Código | `dotnet-implementer`; loop de build, teste, lint e format do plano; documentação listada |
 | REVISAO | 4 | Revisão | `reviewer` |
-| ENTREGA | 5 | Entrega | Parte A de `open-pull-request`, `comment-trello-card` e `move-trello-card` (Em review) |
+| ENTREGA | 5 | Entrega | Parte A de `open-pull-request`, `comment-trello-card` e `move-trello-card` (In Review) |
 | BLOQUEADO | etapa em que parou | Bloqueado | resumir o motivo e oferecer comentário no card |
 | CONCLUIDO | 5 | Concluído | encerrar |
 
@@ -35,7 +35,7 @@ Guardas (coluna Condição) não são gates: valem sempre e não se desligam por
 | T1 | (início) | link do card informado | LEITURA | | | auto |
 | T2 | LEITURA | card elegível | PREFLIGHT | label `agent-ready` | | auto |
 | T3 | LEITURA | card não elegível | BLOQUEADO | | | auto |
-| T4 | PREFLIGHT | todas as verificações ok | TESTES | nenhuma pendência | grava a tarefa em `estado.json`; Parte B de `move-trello-card` (Em andamento), com a frase AVANÇAR citada como autorização; card já em Em andamento: não move | usuário:AVANÇAR |
+| T4 | PREFLIGHT | todas as verificações ok | TESTES | nenhuma pendência | grava a tarefa em `estado.json`; Parte B de `move-trello-card` (In Progress), com a frase AVANÇAR citada como autorização; card já em In Progress: não move | usuário:AVANÇAR |
 | T5 | PREFLIGHT | alguma verificação falhou | BLOQUEADO | | | auto |
 | T6 | TESTES | testes vermelhos | CODIGO | vermelho comprovado com evidência | | usuário:AVANÇAR |
 | T7 | TESTES | tarefa sem testes | CODIGO | `tasks.md` não lista critérios nem testes para a tarefa | | usuário:AVANÇAR |
@@ -46,7 +46,7 @@ Guardas (coluna Condição) não são gates: valem sempre e não se desligam por
 | T12 | REVISAO | APROVADO | ENTREGA | | | usuário:AVANÇAR |
 | T13 | REVISAO | REPROVADO | CODIGO | `ciclos < 2` | soma 1 em `ciclos`; zera `tentativas` | auto |
 | T14 | REVISAO | REPROVADO | BLOQUEADO | `ciclos = 2` | | auto |
-| T15 | ENTREGA | previews prontos | CONCLUIDO | | Parte B de `open-pull-request`; depois Parte B de `comment-trello-card` com o link do PR; por fim Parte B de `move-trello-card` (Em review; card já em Em review: não move) | usuário:APROVAR PR |
+| T15 | ENTREGA | previews prontos | CONCLUIDO | | Parte B de `open-pull-request`; depois Parte B de `comment-trello-card` com o link do PR; por fim Parte B de `move-trello-card` (In Review; card já em In Review: não move) | usuário:APROVAR PR |
 | T16 | BLOQUEADO | comentário sobre o bloqueio | CONCLUIDO | | `comment-trello-card` | usuário:COMENTAR |
 
 ## Como o orquestrador usa esta tabela

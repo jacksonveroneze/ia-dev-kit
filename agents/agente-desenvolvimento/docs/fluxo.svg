@@ -63,7 +63,7 @@
 <text class="ts" x="574" y="124" text-anchor="middle" dominant-baseline="central">Spec aprovada na base</text></g>
 <g class="c-teal"><rect x="236" y="144" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="159" text-anchor="middle" dominant-baseline="central">move-trello-card</text>
-<text class="ts" x="318" y="176" text-anchor="middle" dominant-baseline="central">Card para Em andamento</text></g>
+<text class="ts" x="318" y="176" text-anchor="middle" dominant-baseline="central">Card para In Progress</text></g>
 <g class="c-coral"><rect x="508" y="144" width="132" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="574" y="159" text-anchor="middle" dominant-baseline="central">Trello</text>
 <text class="ts" x="574" y="176" text-anchor="middle" dominant-baseline="central">Move após AVANÇAR</text></g>
@@ -131,7 +131,7 @@
 <text class="ts" x="574" y="804" text-anchor="middle" dominant-baseline="central">Publica o comentário</text></g>
 <g class="c-teal"><rect x="236" y="824" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="839" text-anchor="middle" dominant-baseline="central">move-trello-card</text>
-<text class="ts" x="318" y="856" text-anchor="middle" dominant-baseline="central">Card para Em review</text></g>
+<text class="ts" x="318" y="856" text-anchor="middle" dominant-baseline="central">Card para In Review</text></g>
 <g class="c-coral"><rect x="508" y="824" width="132" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="574" y="839" text-anchor="middle" dominant-baseline="central">Trello</text>
 <text class="ts" x="574" y="856" text-anchor="middle" dominant-baseline="central">Nunca para Done</text></g>
@@ -139,7 +139,7 @@
 <text class="ts" x="115" y="894" text-anchor="middle" dominant-baseline="central">APROVAR PR</text></g>
 <g class="c-purple"><rect x="40" y="928" width="150" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="115" y="942" text-anchor="middle" dominant-baseline="central">Concluído</text>
-<text class="ts" x="115" y="959" text-anchor="middle" dominant-baseline="central">PR, comentário, Em review</text></g>
+<text class="ts" x="115" y="959" text-anchor="middle" dominant-baseline="central">PR, comentário, In Review</text></g>
 <g class="c-gray"><rect x="236" y="928" width="164" height="44" rx="8" stroke-width="0.5"/>
 <text class="th" x="318" y="943" text-anchor="middle" dominant-baseline="central">fluxo.md</text>
 <text class="ts" x="318" y="960" text-anchor="middle" dominant-baseline="central">Estados e gates</text></g>

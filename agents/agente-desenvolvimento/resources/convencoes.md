@@ -4,8 +4,8 @@ Fonte única das regras. Skills e agents citam por número. Ao citar em uma resp
 
 ## Gates
 Definidos em `resources/fluxo.md`. Palavras do usuário:
-- **AVANÇAR:** passa ao estado seguinte. No fim do preflight, também autoriza mover o card para Em andamento e confirma a tarefa escolhida.
-- **APROVAR PR:** libera push, abertura do PR, comentário de entrega e mover o card para Em review.
+- **AVANÇAR:** passa ao estado seguinte. No fim do preflight, também autoriza mover o card para In Progress e confirma a tarefa escolhida.
+- **APROVAR PR:** libera push, abertura do PR, comentário de entrega e mover o card para In Review.
 - **COMENTAR:** libera um comentário no card quando a story não segue.
 - **DESCARTAR:** confirma descartar o `estado.json` CONCLUIDO de outra tarefa e iniciar uma nova execução. Não é gate de transição: só vale na leitura do estado (CONV-015).
 
@@ -29,7 +29,7 @@ Definidos em `resources/fluxo.md`. Palavras do usuário:
 - **CONV-017** (preflight) Nada começa com pendência: o estado PREFLIGHT executa todas as verificações de `resources/preflight.md`, cada uma com evidência. Sem evidência é falha. Falha: BLOQUEADO, listando o que o usuário deve corrigir. Não corrija o ambiente por conta própria.
 - **CONV-018** (uma tarefa por execução) Uma `T-nn` de `tasks.md` por execução e por PR. O usuário escolhe a tarefa, ou o agente propõe a próxima cuja dependência está concluída (PR mergeado). Tarefa com PR aberto ou já concluída não é refeita. Quer outra tarefa: nova execução.
 - **CONV-019** (TDD e evidência) Os testes saem dos critérios de aceite cobertos pela tarefa e são escritos antes do código, com o vermelho comprovado por execução. O código vai até ficar verde. Teste nunca é alterado para passar; teste errado vai para as lacunas. Cada comando do loop de verificação entra no relatório com a saída resumida; comando sem evidência não conta como passou.
-- **CONV-020** (card no Trello) O card vai para Em andamento ao iniciar (após o preflight ok e o gate de início) e para Em review ao abrir o PR, sempre pela skill `move-trello-card`, com o preview antes e o gate da transição citado como autorização. Card já na lista de destino: não mova. Nunca mover para Done: é do humano, após o merge. O comentário no card cita o link do PR.
+- **CONV-020** (card no Trello) O card vai para In Progress ao iniciar (após o preflight ok e o gate de início) e para In Review ao abrir o PR, sempre pela skill `move-trello-card`, com o preview antes e o gate da transição citado como autorização. Card já na lista de destino: não mova. Nunca mover para Done: é do humano, após o merge. O comentário no card cita o link do PR.
 - **CONV-021** (rollout, documentação e conclusão) Feature flag, depreciação e rollback são implementados só como o plano e a tarefa definem; o agente não decide isso, e rollout `a definir` bloqueia no preflight. A documentação atualizada é só a que a tarefa lista. O agente não marca a tarefa como concluída em `spec.md` nem em `tasks.md`: registra no PR e no relatório. Mudar esse processo é decisão do time.
 
 ## Padrões
