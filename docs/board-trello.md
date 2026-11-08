@@ -7,21 +7,21 @@ Fonte de verdade do board usado pelo fluxo de desenvolvimento com agentes. Agent
 | # | Lista | Significado | Quem move o card para cá |
 |---|---|---|---|
 | 1 | Backlog | Card de negócio criado pelo refinamento, ainda não revisado por humano | Ninguém move: o agente de refinamento cria o card aqui |
-| 2 | Refinado | Story revisada e aceita por um humano; pode ser especificada | Humano (Backlog para Refinado) |
-| 3 | Especificado | Spec, plano e tarefas aprovados e entregues por PR; card com a label `agent-ready` | Agente de especificação, como último passo da entrega (depois do PR, do comentário e da label) |
-| 4 | Em andamento | Desenvolvimento iniciado; o card permanece aqui (ou em Em review) enquanto houver tarefa T-nn sem PR integrado | Agente de desenvolvimento, ao iniciar uma tarefa (card já em Em andamento: não move) |
-| 5 | Em review | PR de código aberto, aguardando revisão humana | Agente de desenvolvimento, ao abrir o PR de código de uma tarefa (card já em Em review: não move) |
+| 2 | Refined | Story revisada e aceita por um humano; pode ser especificada | Humano (Backlog para Refined) |
+| 3 | Specified | Spec, plano e tarefas aprovados e entregues por PR; card com a label `agent-ready` | Agente de especificação, como último passo da entrega (depois do PR, do comentário e da label) |
+| 4 | In Progress | Desenvolvimento iniciado; o card permanece aqui (ou em In Review) enquanto houver tarefa T-nn sem PR integrado | Agente de desenvolvimento, ao iniciar uma tarefa (card já em In Progress: não move) |
+| 5 | In Review | PR de código aberto, aguardando revisão humana | Agente de desenvolvimento, ao abrir o PR de código de uma tarefa (card já em In Review: não move) |
 | 6 | Done | Todas as tarefas T-nn do card com PR integrado | Humano, depois do merge do PR da última tarefa |
 
 Os agentes de revisão e de resposta à revisão não movem card. O agente de refinamento só cria cards (em Backlog). Todo movimento usa a skill `move-trello-card`, com preview e autorização. Nomes das listas são exatos; lista inexistente ou ambígua interrompe o movimento (nunca se cria lista).
 
-### Refinado antes da especificação
-Nada trava a especificação de um card fora de Refinado. O preflight do agente de especificação (P13) lê a lista atual do card, somente leitura: fora de Refinado vira aviso (não bloqueia) no relatório, e o usuário precisa confirmar explicitamente, antes do AVANÇAR, que quer seguir assim.
+### Refined antes da especificação
+Nada trava a especificação de um card fora de Refined. O preflight do agente de especificação (P13) lê a lista atual do card, somente leitura: fora de Refined vira aviso (não bloqueia) no relatório, e o usuário precisa confirmar explicitamente, antes do AVANÇAR, que quer seguir assim.
 
 ### Regra de Done
-Done só quando todas as tarefas T-nn do card estiverem com PR integrado. Entre tarefas, o card permanece em Em andamento ou Em review. Mover para Done antes disso faz o agente de desenvolvimento bloquear (P11), porque lista Done sempre falha no preflight dele.
+Done só quando todas as tarefas T-nn do card estiverem com PR integrado. Entre tarefas, o card permanece em In Progress ou In Review. Mover para Done antes disso faz o agente de desenvolvimento bloquear (P11), porque lista Done sempre falha no preflight dele.
 
-Como reverter: o humano move o card de volta para Em andamento (no Trello, ou com `move-trello-card` e autorização). Nenhum agente move para Done nem reverte um Done sozinho.
+Como reverter: o humano move o card de volta para In Progress (no Trello, ou com `move-trello-card` e autorização). Nenhum agente move para Done nem reverte um Done sozinho.
 
 ## Labels
 
@@ -71,11 +71,11 @@ Completo para ser especificado: História, Critérios de aceite, Subtasks, Depen
 | Agente | Faz | Move card | Aplica label |
 |---|---|---|---|
 | Refinamento | Cria os cards de negócio no Backlog | Não | `Epic: <nome>` |
-| Especificação | Lê o card e avisa se não está em Refinado (P13, não bloqueia); escreve spec, plano e tarefas; abre o PR dos artefatos na branch `spec/<slug>`; comenta o link no card | Para Especificado, como último passo da entrega, depois da label | `agent-ready` |
-| Desenvolvimento | Implementa uma tarefa T-nn por PR (só código e testes), a partir da spec achada pela branch `spec/<slug>` | Para Em andamento ao iniciar uma tarefa; para Em review ao abrir o PR de código; nunca para Done | Nenhuma |
+| Especificação | Lê o card e avisa se não está em Refined (P13, não bloqueia); escreve spec, plano e tarefas; abre o PR dos artefatos na branch `spec/<slug>`; comenta o link no card | Para Specified, como último passo da entrega, depois da label | `agent-ready` |
+| Desenvolvimento | Implementa uma tarefa T-nn por PR (só código e testes), a partir da spec achada pela branch `spec/<slug>` | Para In Progress ao iniciar uma tarefa; para In Review ao abrir o PR de código; nunca para Done | Nenhuma |
 | Revisão | Revisa o PR com revisores em paralelo; gate humano | Não | Nenhuma |
 | Resposta à revisão | Responde aos comentários do PR | Não | Nenhuma |
-| Humano | Revisa as stories, aprova, faz o merge, confirma seguir com card fora de Refinado | Backlog para Refinado; para Done depois do merge da última tarefa; de volta para Em andamento se Done veio antes da hora | Qualquer, quando preciso |
+| Humano | Revisa as stories, aprova, faz o merge, confirma seguir com card fora de Refined | Backlog para Refined; para Done depois do merge da última tarefa; de volta para In Progress se Done veio antes da hora | Qualquer, quando preciso |
 
 ## Regras
 1. O agente nunca move um card para Done. Done é do humano, depois do merge, e só com todas as tarefas T-nn integradas (ver Regra de Done).

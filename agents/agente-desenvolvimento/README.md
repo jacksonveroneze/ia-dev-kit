@@ -1,6 +1,6 @@
 # Agente de Desenvolvimento (v2)
 
-Só codifica. Recebe o link de um card do Trello que já passou pelo agente de especificação, lê `specs/<card-id>-<slug>/{spec,plan,tasks}.md` na branch base e implementa UMA tarefa (`T-nn`) por execução e por PR: valida o ambiente, escreve os testes pelos critérios de aceite (vermelho primeiro), implementa até ficar verde, roda build, teste, lint e format do plano, revisa o diff e abre o PR. Roda no Claude Code. Fica entre o agente de especificação (spec aprovada e card com a label `agent-ready` em Especificado) e o agente de revisão (que revisa o PR).
+Só codifica. Recebe o link de um card do Trello que já passou pelo agente de especificação, lê `specs/<card-id>-<slug>/{spec,plan,tasks}.md` na branch base e implementa UMA tarefa (`T-nn`) por execução e por PR: valida o ambiente, escreve os testes pelos critérios de aceite (vermelho primeiro), implementa até ficar verde, roda build, teste, lint e format do plano, revisa o diff e abre o PR. Roda no Claude Code. Fica entre o agente de especificação (spec aprovada e card com a label `agent-ready` em Specified) e o agente de revisão (que revisa o PR).
 
 ## Fluxo
 
@@ -10,13 +10,13 @@ O fluxo é uma máquina de estados definida em `resources/fluxo.md`. O gate de u
 
 | Etapa | O que acontece | Usa | Gate |
 |---|---|---|---|
-| 1 Leitura e validação | Lê o card (link e label `agent-ready`), roda o preflight (spec aprovada e mergeada, card em Especificado, tarefa livre, comandos do plano, ambiente, linha de base) e mostra o preview de mover o card para Em andamento | `read-trello-card`, `move-trello-card` | AVANÇAR (move o card) |
+| 1 Leitura e validação | Lê o card (link e label `agent-ready`), roda o preflight (spec aprovada e mergeada, card em Specified, tarefa livre, comandos do plano, ambiente, linha de base) e mostra o preview de mover o card para In Progress | `read-trello-card`, `move-trello-card` | AVANÇAR (move o card) |
 | 2 Testes | Lê o código de referência do plano, escreve os testes pelos critérios da tarefa e comprova o vermelho | `code-explorer`, `test-writer` | AVANÇAR |
 | 3 Código | Implementa só os arquivos da tarefa; loop de build, teste, lint e format do plano (3 tentativas); documentação listada | `dotnet-implementer` | AVANÇAR |
 | 4 Revisão | Confere o diff com spec, plano e tarefa (2 ciclos) | `reviewer` | AVANÇAR |
-| 5 Entrega | Preview do PR, do comentário e do movimento para Em review | `open-pull-request`, `comment-trello-card`, `move-trello-card` | APROVAR PR |
+| 5 Entrega | Preview do PR, do comentário e do movimento para In Review | `open-pull-request`, `comment-trello-card`, `move-trello-card` | APROVAR PR |
 
-O card só entra se estiver na lista Especificado com a label `agent-ready`. A spec precisa estar com `Status: aprovada` na base. O agente nunca deduz o que a spec, o plano ou a tarefa não trazem: para e oferece comentar no card (COMENTAR). Marcar a tarefa como concluída em `tasks.md` e mover o card para Done são do time, após o merge.
+O card só entra se estiver na lista Specified com a label `agent-ready`. A spec precisa estar com `Status: aprovada` na base. O agente nunca deduz o que a spec, o plano ou a tarefa não trazem: para e oferece comentar no card (COMENTAR). Marcar a tarefa como concluída em `tasks.md` e mover o card para Done são do time, após o merge.
 
 ## Flexibilidade
 
@@ -41,7 +41,7 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, vermelho antes do c
 
 Depois de CONCLUIDO da T-01, para iniciar a T-02:
 
-1. Espere o merge do PR da T-01 se a T-02 depende dela. Card em Em review ou Em andamento é aceito (existe PR de outra tarefa).
+1. Espere o merge do PR da T-01 se a T-02 depende dela. Card em In Review ou In Progress é aceito (existe PR de outra tarefa).
 2. Volte para a branch base e atualize-a (`git switch <base>` e `git pull`). É manual: o agente não faz.
 3. O `estado.json` da T-01 (CONCLUIDO) precisa sair: o agente pergunta e, com a palavra DESCARTAR, reinicia o arquivo; sem confirmação não sobrescreve nada. Você também pode apagá-lo.
 4. Rode de novo: `Implementa este card: <link>, tarefa T-02`.

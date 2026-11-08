@@ -108,7 +108,7 @@ Conduz o refinamento de histórias em 4 fases (entrada, refinamento, revisão e 
 
 ### [agente-especificacao](agents/agente-especificacao)
 
-Recebe o link de um card do Trello, valida o ambiente, lê o código e conduz, em 6 etapas com gate manual, a spec, o plano e as tarefas (SDD). Com APROVAR ARTEFATOS, grava `specs/<card-id>-<slug>/`, abre o PR, aplica a label `agent-ready` e move o card para Especificado. Lê `specs/constitution.md` do repositório quando existe. Não escreve código.
+Recebe o link de um card do Trello, valida o ambiente, lê o código e conduz, em 6 etapas com gate manual, a spec, o plano e as tarefas (SDD). Com APROVAR ARTEFATOS, grava `specs/<card-id>-<slug>/`, abre o PR, aplica a label `agent-ready` e move o card para Specified. Lê `specs/constitution.md` do repositório quando existe. Não escreve código.
 
 | Componente | Função |
 |---|---|
@@ -118,13 +118,13 @@ Recebe o link de um card do Trello, valida o ambiente, lê o código e conduz, e
 | Skill [`write-tasks`](agents/agente-especificacao/.claude/skills/write-tasks) | Quebra o plano em tarefas do tamanho de um PR. |
 | Skill [`generate-spec-artifacts`](agents/agente-especificacao/.claude/skills/generate-spec-artifacts) | Confere a consistência e grava `spec.md`, `plan.md` e `tasks.md`. |
 | Skill [`update-trello-card`](skills/trello/update-trello-card) | Aplica a label no card, com preview e autorização. |
-| Skill [`move-trello-card`](skills/trello/move-trello-card) | Move o card para a lista Especificado, com preview e autorização. |
+| Skill [`move-trello-card`](skills/trello/move-trello-card) | Move o card para a lista Specified, com preview e autorização. |
 | Skills [`comment-trello-card`](skills/trello/comment-trello-card) e [`open-pull-request`](skills/git/open-pull-request) | Compartilhadas com o agente de desenvolvimento. |
 | Subagent [`context-explorer`](agents/agente-especificacao/.claude/agents/context-explorer.md) | Lê o código e resume padrões e convenções (somente leitura). |
 
 ### [agente-desenvolvimento](agents/agente-desenvolvimento)
 
-Só codifica. Recebe o link de um card com a label `agent-ready`, lê `specs/<card-id>-<slug>/` já aprovada e mergeada, e implementa uma tarefa por vez com TDD: testes antes do código, loop de build, teste, lint e format, revisão do diff e PR. Move o card para Em andamento e Em review.
+Só codifica. Recebe o link de um card com a label `agent-ready`, lê `specs/<card-id>-<slug>/` já aprovada e mergeada, e implementa uma tarefa por vez com TDD: testes antes do código, loop de build, teste, lint e format, revisão do diff e PR. Move o card para In Progress e In Review.
 
 | Componente | Função |
 |---|---|

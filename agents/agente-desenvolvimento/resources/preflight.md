@@ -18,7 +18,7 @@ Os artefatos são lidos pelo git na branch base (`git show HEAD:specs/<card-id>-
 | P8 | Acesso ao GitHub com escrita | `gh auth status`; `gh repo view <repo> --json viewerPermission` | sem login ou permissão menor que WRITE |
 | P9 | Artefatos existem na base | `git ls-tree -r origin/<base> --name-only -- specs/` filtrado por `<card-id>` | não há exatamente uma pasta `specs/<card-id>-<slug>/` com `spec.md`, `plan.md` e `tasks.md` |
 | P10 | Spec aprovada e na base | `git show origin/<base>:specs/<card-id>-<slug>/<arquivo>` do cabeçalho dos três arquivos; `gh pr list --state all --head spec/<slug> --json number,state` | algum com `Status` diferente de `aprovada`, ou `Card` diferente do link, ou há PR da spec ABERTO (`state` OPEN) para o `<slug>` |
-| P11 | Card pronto | resultado de `read-trello-card` (labels) e a lista atual do card, lida em somente leitura pelo conector do Trello | sem a label `agent-ready`; lista diferente de Especificado, exceto quando a lista é Em andamento ou Em review e existe PR de outra tarefa do mesmo card; lista Done sempre falha |
+| P11 | Card pronto | resultado de `read-trello-card` (labels) e a lista atual do card, lida em somente leitura pelo conector do Trello | sem a label `agent-ready`; lista diferente de Specified, exceto quando a lista é In Progress ou In Review e existe PR de outra tarefa do mesmo card; lista Done sempre falha |
 | P12 | Tarefa escolhida livre | `tasks.md`: a `T-nn` existe e está `Status: pendente`; `gh pr list --state all --search "<card-id> T-nn" --json number,state,title,headRefName`; `git branch -a` | não existe; já tem PR aberto; já tem PR mergeado (concluída); branch da tarefa já existe |
 | P13 | Dependências da tarefa concluídas | cada `T` em `Depende de` da tarefa tem PR mergeado (mesma busca de P12); cada arquivo ou tipo que o plano diz vir de outra tarefa ou story existe na base | dependência sem PR mergeado, ou ausente na base |
 | P14 | Comandos e rollout definidos | `plan.md`: seções Comandos e Rollout e rollback; `tasks.md`: linha `Comandos` da tarefa | build, teste ou lint ausente ou `a definir`; format listado como `a definir`; rollout com `a definir`; comandos da tarefa divergem do plano |
@@ -44,7 +44,7 @@ Tarefa: <T-nn - título> (informada | proposta)
 |---|---|---|---|
 | P1 | Repositório local é o da spec | ok ou falhou | <saída resumida> |
 Pendências: <nenhuma | lista do que corrigir>
-Preview do card: <Parte A de move-trello-card: lista atual -> Em andamento>
+Preview do card: <Parte A de move-trello-card: lista atual -> In Progress>
 ```
 
 ## Regras

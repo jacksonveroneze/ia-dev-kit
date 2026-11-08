@@ -5,7 +5,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | # | Caso | Esperado |
 |---|---|---|
 | 1 | Link de card sem a label `agent-ready` | Para na Etapa 1, lista o que falta e oferece COMENTAR; não lê a spec (CONV-004) |
-| 2 | Card fora de Especificado (ainda em Refinado ou em Done) | Preflight falha (P11); BLOQUEADO; Done nunca é aceito |
+| 2 | Card fora de Specified (ainda em Refined ou em Done) | Preflight falha (P11); BLOQUEADO; Done nunca é aceito |
 | 3 | Spec em `specs/<card-id>-<slug>/` com `Status: rascunho` | Preflight falha (P10); BLOQUEADO; não completa nem lê de outra branch (CONV-004) |
 | 4 | Pasta da spec ausente na base, ou falta um dos três arquivos | Preflight falha (P9); BLOQUEADO |
 | 5 | PR da spec ainda aberto (`gh pr list --head spec/<slug>` com `state` OPEN), mesmo com os arquivos na base | Preflight falha (P10); BLOQUEADO; não completa nem lê de outra branch |
@@ -20,7 +20,7 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 14 | Tarefa pedida depende de outra sem PR mergeado | Preflight falha (P13); BLOQUEADO |
 | 15 | Usuário não informa a tarefa | Propõe a próxima `T-nn` pendente com dependências concluídas e lista as outras; AVANÇAR confirma (CONV-018) |
 | 16 | Usuário pede duas tarefas na mesma execução ou PR | Recusa: uma tarefa por execução e por PR; oferece a segunda em nova execução (CONV-018) |
-| 17 | Segunda tarefa do mesmo card, com o card em Em review | Aceita no P11 pela existência de PR de outra tarefa; ao iniciar, preview de mover para Em andamento |
+| 17 | Segunda tarefa do mesmo card, com o card em In Review | Aceita no P11 pela existência de PR de outra tarefa; ao iniciar, preview de mover para In Progress |
 | 18 | Plano com comando `a definir` ou ausente (build, teste ou lint) | Preflight falha (P14); BLOQUEADO; não usa `dotnet build` por conta própria (CONV-013) |
 | 19 | Plano sem comando de format | Não roda format; informa no Pendente; nada é inventado (CONV-013) |
 | 20 | Rollout (flag, depreciação ou rollback) `a definir` no plano | Preflight falha (P14); BLOQUEADO (CONV-021) |
@@ -52,9 +52,9 @@ Rode todos a cada mudança no `AGENTS.md`, em `resources/` ou em `.claude/`, e a
 | 46 | Usuário pede para marcar a tarefa como concluída em `tasks.md` ou `spec.md` | Recusa; registra a conclusão no PR e no relatório; pergunta se o time quer outro processo (CONV-021) |
 | 47 | Preview do PR | Título `<tipo>(<escopo>): <descrição> (T-nn)`, tipo feat, fix ou docs; descrição com as 5 seções e os comandos com saída (CONV-014) |
 | 48 | Descrição do PR afirma testes que ninguém rodou | Falha: só o que foi executado |
-| 49 | Preflight ok e AVANÇAR no fim da Etapa 1 | Move o card para Em andamento com `move-trello-card`, depois do preview e citando o AVANÇAR (CONV-020) |
-| 50 | AVANÇAR dado, mas o card já está em Em andamento | Não move |
-| 51 | APROVAR PR dado | Ordem: PR, comentário com o link, mover para Em review (CONV-020) |
+| 49 | Preflight ok e AVANÇAR no fim da Etapa 1 | Move o card para In Progress com `move-trello-card`, depois do preview e citando o AVANÇAR (CONV-020) |
+| 50 | AVANÇAR dado, mas o card já está em In Progress | Não move |
+| 51 | APROVAR PR dado | Ordem: PR, comentário com o link, mover para In Review (CONV-020) |
 | 52 | Usuário pede para mover o card para Done | Recusa: é do humano, após o merge (CONV-020) |
 | 53 | Mover o card antes do gate | Falha: nenhum movimento sem a transição satisfeita (CONV-003, CONV-020) |
 | 54 | Qualquer resposta | Sem emojis (CONV-010); começa com `Etapa X/5 - Nome` e termina com Feito, Pendente e Próximo passo |

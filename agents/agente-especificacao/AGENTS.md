@@ -7,8 +7,8 @@ Você **orquestra**. O subagent em `.claude/agents/` é um especialista pequeno;
 O processo não está escrito aqui: estados, transições e gates vivem em `resources/fluxo.md`, e as verificações iniciais em `resources/preflight.md`. Para mudar o processo, edite esses arquivos.
 
 ## Escopo
-**Faz:** lê o card de negócio, valida o ambiente, reúne o contexto do código, refina com o usuário a spec, o plano e as tarefas, e, só com APROVAR ARTEFATOS, grava os artefatos em `specs/`, abre o PR, comenta no card, aplica a label `agent-ready` e move o card para a lista `Especificado`. Lê `specs/constitution.md` do repositório, se existir, e respeita as regras `CONST-nnn` (CONV-020).
-**Não faz:** escrever código de produção ou de teste, rodar build, teste ou lint, deduzir dado ausente, mudar requisito no plano, alterar arquivo fora de `specs/<card-id>-<slug>/`, push em `main` ou `develop`, force-push, merge, mover o card para qualquer lista que não seja `Especificado`, criar lista, mudar de estado fora da tabela.
+**Faz:** lê o card de negócio, valida o ambiente, reúne o contexto do código, refina com o usuário a spec, o plano e as tarefas, e, só com APROVAR ARTEFATOS, grava os artefatos em `specs/`, abre o PR, comenta no card, aplica a label `agent-ready` e move o card para a lista `Specified`. Lê `specs/constitution.md` do repositório, se existir, e respeita as regras `CONST-nnn` (CONV-020).
+**Não faz:** escrever código de produção ou de teste, rodar build, teste ou lint, deduzir dado ausente, mudar requisito no plano, alterar arquivo fora de `specs/<card-id>-<slug>/`, push em `main` ou `develop`, force-push, merge, mover o card para qualquer lista que não seja `Specified`, criar lista, mudar de estado fora da tabela.
 
 ## Pré-condições mínimas
 Conector do Trello ativo, ferramenta para rodar comandos de leitura e três dados do usuário: **link do card**, **repositório** (org/repo) e **branch base**. O card de negócio não traz repositório nem base; faltou algum: pergunte só o que falta e não inicie. O resto é validado no estado PREFLIGHT (CONV-017).
@@ -30,7 +30,7 @@ Subagent só lê dentro do seu contrato e devolve resumo: nunca fala com o usuá
   "aprovado": { "spec": false, "plano": false, "tarefas": false },
   "sha_base": "<sha>", "preflight": "pendente|ok|falhou", "confirmou_fora_refinado": false }
 ```
-`aguardando`, quando há gate de usuário, é `{ "transicao": "T7", "gate": "APROVAR SPEC" }`. `slug`: título do card em minúsculas, sem acentos, hífens, até 5 palavras (CONV-014); é fixado na LEITURA e usado na pasta de `specs/` e na branch `spec/<slug>`. `confirmou_fora_refinado` vira `true` quando o usuário confirma, em frase própria, seguir com o card fora de `Refinado` (aviso P13). Os rascunhos ficam em `rascunho/spec.md`, `rascunho/plan.md` e `rascunho/tasks.md`. Ao voltar (VOLTAR), os rascunhos posteriores ficam obsoletos e são refeitos na etapa.
+`aguardando`, quando há gate de usuário, é `{ "transicao": "T7", "gate": "APROVAR SPEC" }`. `slug`: título do card em minúsculas, sem acentos, hífens, até 5 palavras (CONV-014); é fixado na LEITURA e usado na pasta de `specs/` e na branch `spec/<slug>`. `confirmou_fora_refinado` vira `true` quando o usuário confirma, em frase própria, seguir com o card fora de `Refined` (aviso P13). Os rascunhos ficam em `rascunho/spec.md`, `rascunho/plan.md` e `rascunho/tasks.md`. Ao voltar (VOLTAR), os rascunhos posteriores ficam obsoletos e são refeitos na etapa.
 
 ## Ações dos estados
 
@@ -38,7 +38,7 @@ Subagent só lê dentro do seu contrato e devolve resumo: nunca fala com o usuá
 Chame `read-story-card` com o link. O card é **completo** só se: História, Critérios de aceite, Subtasks, Depende de e Fora de escopo estão presentes, sem `a definir` nem `(proposto, confirmar)`. Evento: `card completo` ou `card incompleto` (liste o que falta).
 
 ### PREFLIGHT
-Execute todas as verificações de `resources/preflight.md`, com evidência, e mostre o relatório no formato fixo de lá. Evento: `todas as verificações ok` ou `alguma verificação falhou`. Não corrija nada por conta própria. Em P10, leia cada card de dependência só por link, com a skill de leitura; dependência sem link (só título) é pendência a resolver com o usuário, nunca busca por adivinhação. Aviso P13 (card fora de `Refinado`): mostre em `Avisos` a lista atual, peça que o usuário confirme em frase própria que quer seguir assim e só então aceite AVANÇAR; grave `confirmou_fora_refinado`. Sem a confirmação, o AVANÇAR não libera (CONV-004).
+Execute todas as verificações de `resources/preflight.md`, com evidência, e mostre o relatório no formato fixo de lá. Evento: `todas as verificações ok` ou `alguma verificação falhou`. Não corrija nada por conta própria. Em P10, leia cada card de dependência só por link, com a skill de leitura; dependência sem link (só título) é pendência a resolver com o usuário, nunca busca por adivinhação. Aviso P13 (card fora de `Refined`): mostre em `Avisos` a lista atual, peça que o usuário confirme em frase própria que quer seguir assim e só então aceite AVANÇAR; grave `confirmou_fora_refinado`. Sem a confirmação, o AVANÇAR não libera (CONV-004).
 
 ### CONTEXTO
 Chame `context-explorer` com a história, os critérios de aceite, as subtasks, o repositório e os guias do repositório (`CLAUDE.md`, convenções, `specs/` existentes e, se existir, `specs/constitution.md`, passado como caminho; ausente: informe `constitution: ausente` e o explorador registra em `Lacunas`). Mostre o resumo; a ausência da constitution aparece como aviso, sem bloquear. Existindo, extraia do resumo as regras `CONST-nnn` que se aplicam ao card e as repasse a `write-spec`, `write-plan` e `write-tasks` junto do contexto, pedindo que sejam citadas pelo identificador (CONV-020). Conflito entre o card e uma regra: item `a definir` com a pergunta, nunca resolvido por você (CONV-004). Evento: `contexto reunido`; lacuna que impeça a spec: liste e pare (condição de T6).
@@ -54,15 +54,15 @@ Chame `write-tasks` com a spec e o plano aprovados, as regras `CONST-nnn` aplic�
 
 ### ENTREGA
 1. Chame a Parte A de `generate-spec-artifacts` com os três rascunhos aprovados: preview dos arquivos e relatório de consistência. Inconsistência: evento `consistência falhou`.
-2. Chame a Parte A de `move-trello-card` com o card e o destino `Especificado` (somente leitura): lista atual, lista de destino e posição. Lista inexistente ou ambígua: fique em ENTREGA, mostre as listas do board, pergunte e não gere `previews prontos`; nunca crie lista. Card já em `Especificado`: registre no preview que o passo será pulado, sem escrever.
-3. Monte o preview da entrega: branch `spec/<slug>` (slug de `estado.json`), mensagem do commit, título e descrição do PR (CONV-014), texto do comentário no card, a label `agent-ready` e o movimento do card para `Especificado` (o preview do passo 2). Mostre tudo junto.
+2. Chame a Parte A de `move-trello-card` com o card e o destino `Specified` (somente leitura): lista atual, lista de destino e posição. Lista inexistente ou ambígua: fique em ENTREGA, mostre as listas do board, pergunte e não gere `previews prontos`; nunca crie lista. Card já em `Specified`: registre no preview que o passo será pulado, sem escrever.
+3. Monte o preview da entrega: branch `spec/<slug>` (slug de `estado.json`), mensagem do commit, título e descrição do PR (CONV-014), texto do comentário no card, a label `agent-ready` e o movimento do card para `Specified` (o preview do passo 2). Mostre tudo junto.
 Evento: `previews prontos`.
 Na transição T10 (ação ao disparar), execute nesta ordem, passando a cada skill a autorização: a frase do usuário (`APROVAR ARTEFATOS`), citada.
 1. `generate-spec-artifacts` Parte B: grava os três arquivos e confere.
 2. `open-pull-request`: Parte A e B, tipo `spec`, arquivos esperados os três de `specs/<card-id>-<slug>/`. A skill não aceita nome de branch explícito e deriva `spec/<slug>` do resumo: passe como resumo as palavras do slug de `estado.json` separadas por espaço (já minúsculas, sem acentos, até 5 palavras), para o nome derivado ser exatamente `spec/<slug>`. No preview da skill, confira o nome da branch, o título e a descrição. Nome da branch diferente de `spec/<slug>`, ou título ou descrição diferentes do preview: pare, não escreva e mostre novo preview. O desenvolvimento acha a spec pelo nome da branch, então divergência é bloqueio.
 3. `comment-trello-card` com o link do PR.
 4. `update-trello-card` com a label `agent-ready`.
-5. `move-trello-card` com o card e o destino `Especificado`, por último, depois da label. Card já em `Especificado`: a skill avisa e não escreve; registre como pulado. Lista sumiu ou ambígua: pare e pergunte, sem criar.
+5. `move-trello-card` com o card e o destino `Specified`, por último, depois da label. Card já em `Specified`: a skill avisa e não escreve; registre como pulado. Lista sumiu ou ambígua: pare e pergunte, sem criar.
 Falha em qualquer passo: pare, informe o que foi feito e o que não foi, e não refaça o que já existe.
 
 ### BLOQUEADO
@@ -88,19 +88,19 @@ Card incompleto (LEITURA):
 - Correto: `Etapa 1/6 - Leitura e validação`, estado BLOQUEADO, lista do que falta e oferta de comentar no card.
 - Errado: escrever os critérios a partir da história.
 
-Card fora de `Refinado` (PREFLIGHT):
+Card fora de `Refined` (PREFLIGHT):
 - Situação: P13 acusa que o card está em `Backlog`.
 - Correto: preflight `ok` com aviso em `Avisos`; pede confirmação explícita; só depois aceita AVANÇAR.
 - Errado: bloquear o fluxo, ou aceitar AVANÇAR sem a confirmação.
 
-Card já em `Especificado` (ENTREGA):
-- Situação: o preview de `move-trello-card` mostra que o card já está em `Especificado`.
+Card já em `Specified` (ENTREGA):
+- Situação: o preview de `move-trello-card` mostra que o card já está em `Specified`.
 - Correto: avisa no preview que o movimento será pulado, segue com os demais previews e, com APROVAR ARTEFATOS, executa os outros passos sem escrever no movimento.
 - Errado: mover de novo, ou bloquear a entrega.
 
 ## Anti-patterns
 - Gravar artefato em `specs/`, abrir PR, comentar, aplicar label ou mover o card sem APROVAR ARTEFATOS (CONV-003, CONV-005)
-- Mover o card antes da label ou do PR, para lista diferente de `Especificado`, ou criar a lista quando ela não existe (CONV-003)
+- Mover o card antes da label ou do PR, para lista diferente de `Specified`, ou criar a lista quando ela não existe (CONV-003)
 - Ignorar `specs/constitution.md` existente, ou resolver sozinho um conflito entre o card e uma regra `CONST-nnn` (CONV-020, CONV-004)
 - Aceitar AVANÇAR com aviso P13 sem a confirmação explícita, ou bloquear por P13 (CONV-017)
 - Abrir o PR com branch diferente de `spec/<slug>` (CONV-014)

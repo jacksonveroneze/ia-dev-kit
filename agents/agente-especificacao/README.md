@@ -14,14 +14,14 @@ O fluxo é uma máquina de estados definida em `resources/fluxo.md`. Todo avanç
 
 | Etapa | O que acontece | Usa | Gate |
 |---|---|---|---|
-| 1 Leitura e validação | Lê o card, confere se está completo e roda o preflight (13 verificações; card fora de `Refinado` vira aviso e pede sua confirmação) | `read-story-card` | AVANÇAR |
+| 1 Leitura e validação | Lê o card, confere se está completo e roda o preflight (13 verificações; card fora de `Refined` vira aviso e pede sua confirmação) | `read-story-card` | AVANÇAR |
 | 2 Contexto | Lê o código e os guias do repositório, incluindo `specs/constitution.md` se existir | `context-explorer` | AVANÇAR |
 | 3 Spec | Rascunho do quê e porquê; você refina | `write-spec` | APROVAR SPEC |
 | 4 Plano | Rascunho do como; você refina | `write-plan` | APROVAR PLANO |
 | 5 Tarefas | Fatias do tamanho de um PR; você refina | `write-tasks` | APROVAR TAREFAS |
-| 6 Entrega | Preview; depois grava, abre o PR, comenta, aplica a label e move o card para `Especificado` | `generate-spec-artifacts`, `open-pull-request`, `comment-trello-card`, `update-trello-card`, `move-trello-card` | APROVAR ARTEFATOS |
+| 6 Entrega | Preview; depois grava, abre o PR, comenta, aplica a label e move o card para `Specified` | `generate-spec-artifacts`, `open-pull-request`, `comment-trello-card`, `update-trello-card`, `move-trello-card` | APROVAR ARTEFATOS |
 
-Com `APROVAR ARTEFATOS`, o card termina na lista `Especificado` (último passo, depois da label). Se o repositório tem `specs/constitution.md`, as regras `CONST-nnn` são citadas na spec, no plano e nas tarefas.
+Com `APROVAR ARTEFATOS`, o card termina na lista `Specified` (último passo, depois da label). Se o repositório tem `specs/constitution.md`, as regras `CONST-nnn` são citadas na spec, no plano e nas tarefas.
 
 O agente nunca deduz o que o card, o código ou você não trouxeram: vira `a definir` e o gate não libera enquanto houver pendência. VOLTAR retorna uma etapa e invalida as aprovações seguintes.
 
@@ -50,7 +50,7 @@ O `AGENTS.md` não muda. Valem sempre as guardas: preflight, escopo de escrita, 
 
 1. Abra o Claude Code na **raiz do repositório do card**, limpo e na branch base.
 2. Disponibilize este agente no repositório: copie `.claude/agents/` e `.claude/skills/`, rode `install.sh` do kit para as skills compartilhadas (`read-story-card`, `update-trello-card`, `comment-trello-card`, `move-trello-card`, `open-pull-request`) e importe `AGENTS.md` no `CLAUDE.md` do repositório (`@caminho/AGENTS.md`). Mantenha `resources/` ao lado do `AGENTS.md`.
-3. Conecte por MCP o Trello (o board precisa ter a lista `Especificado`) e deixe a CLI `gh` autenticada.
+3. Conecte por MCP o Trello (o board precisa ter a lista `Specified`) e deixe a CLI `gh` autenticada.
 4. Adicione `estado.json` e `rascunho/` ao `.gitignore` do repositório (uma vez).
 5. Diga: `Especifica este card: <link>, repositório <org/repo>, base <branch>`.
 6. Responda cada gate que o agente pedir.

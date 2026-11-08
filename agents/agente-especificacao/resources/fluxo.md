@@ -25,7 +25,7 @@ Com `auto` em T7, T8 ou T9, a Condição continua valendo: rascunho com item `a 
 | SPEC | 3 | Spec | `write-spec`; refazer o rascunho a cada ajuste |
 | PLANO | 4 | Plano | `write-plan`; refazer o rascunho a cada ajuste |
 | TAREFAS | 5 | Tarefas | `write-tasks`; refazer o rascunho a cada ajuste |
-| ENTREGA | 6 | Entrega | Parte A de `generate-spec-artifacts`; Parte A de `move-trello-card` (destino `Especificado`); montar o preview da entrega (PR, comentário, label e movimento do card) |
+| ENTREGA | 6 | Entrega | Parte A de `generate-spec-artifacts`; Parte A de `move-trello-card` (destino `Specified`); montar o preview da entrega (PR, comentário, label e movimento do card) |
 | BLOQUEADO | etapa em que parou | Bloqueado | resumir o motivo e oferecer comentário no card |
 | CONCLUIDO | 6 | Concluído | encerrar |
 
@@ -36,13 +36,13 @@ Com `auto` em T7, T8 ou T9, a Condição continua valendo: rascunho com item `a 
 | T1 | (início) | link do card, repositório e branch base informados | LEITURA | | | auto |
 | T2 | LEITURA | card completo | PREFLIGHT | completo | | auto |
 | T3 | LEITURA | card incompleto | BLOQUEADO | | | auto |
-| T4 | PREFLIGHT | todas as verificações ok | CONTEXTO | nenhuma pendência; com aviso P13 (card fora de `Refinado`), só após confirmação explícita do usuário | | usuário:AVANÇAR |
+| T4 | PREFLIGHT | todas as verificações ok | CONTEXTO | nenhuma pendência; com aviso P13 (card fora de `Refined`), só após confirmação explícita do usuário | | usuário:AVANÇAR |
 | T5 | PREFLIGHT | alguma verificação falhou | BLOQUEADO | | | auto |
 | T6 | CONTEXTO | contexto reunido | SPEC | sem lacuna que impeça a spec | | usuário:AVANÇAR |
 | T7 | SPEC | rascunho pronto | PLANO | zero item `a definir` | marca spec aprovada em `estado.json` | usuário:APROVAR SPEC |
 | T8 | PLANO | rascunho pronto | TAREFAS | zero item `a definir` | marca plano aprovado | usuário:APROVAR PLANO |
 | T9 | TAREFAS | rascunho pronto | ENTREGA | zero item `a definir` | marca tarefas aprovadas | usuário:APROVAR TAREFAS |
-| T10 | ENTREGA | previews prontos | CONCLUIDO | consistência ok; lista `Especificado` resolvida no preview; nome da branch conferido no preview | Parte B de `generate-spec-artifacts`; depois `open-pull-request` (resumo que gera o slug de `estado.json`; conferir título, descrição e branch `spec/<slug>`); depois `comment-trello-card`; depois `update-trello-card` (label `agent-ready`); por fim `move-trello-card` para `Especificado` | usuário:APROVAR ARTEFATOS |
+| T10 | ENTREGA | previews prontos | CONCLUIDO | consistência ok; lista `Specified` resolvida no preview; nome da branch conferido no preview | Parte B de `generate-spec-artifacts`; depois `open-pull-request` (resumo que gera o slug de `estado.json`; conferir título, descrição e branch `spec/<slug>`); depois `comment-trello-card`; depois `update-trello-card` (label `agent-ready`); por fim `move-trello-card` para `Specified` | usuário:APROVAR ARTEFATOS |
 | T11 | BLOQUEADO | comentário sobre o bloqueio | CONCLUIDO | | `comment-trello-card` | usuário:COMENTAR |
 | T12 | PLANO | pedido de voltar | SPEC | | desmarca spec, plano e tarefas aprovados | usuário:VOLTAR |
 | T13 | TAREFAS | pedido de voltar | PLANO | | desmarca plano e tarefas aprovados | usuário:VOLTAR |
@@ -50,7 +50,7 @@ Com `auto` em T7, T8 ou T9, a Condição continua valendo: rascunho com item `a 
 | T15 | ENTREGA | consistência falhou | BLOQUEADO | | | auto |
 
 ## Notas do preflight (T4)
-- P13 (card fora de `Refinado`) é aviso, não bloqueia. O relatório o mostra em `Avisos` e o orquestrador pede confirmação explícita do usuário antes de aceitar AVANÇAR. Sem confirmação, o estado fica em PREFLIGHT.
+- P13 (card fora de `Refined`) é aviso, não bloqueia. O relatório o mostra em `Avisos` e o orquestrador pede confirmação explícita do usuário antes de aceitar AVANÇAR. Sem confirmação, o estado fica em PREFLIGHT.
 
 ## Como o orquestrador usa esta tabela
 1. Execute a ação do estado atual e determine o evento.
@@ -60,9 +60,9 @@ Com `auto` em T7, T8 ou T9, a Condição continua valendo: rascunho com item `a 
 5. Estado ou transição inexistente neste arquivo: pare e pergunte.
 
 ## Notas da entrega (T10)
-- O movimento do card é sempre o último passo, depois da label `agent-ready`: o card só chega em `Especificado` com a label já aplicada.
-- Lista `Especificado` inexistente ou ambígua no preview: o estado fica em ENTREGA, o evento `previews prontos` não é gerado, as listas do board são mostradas e o usuário decide. Nunca se cria lista.
-- Card já em `Especificado`: o preview avisa, T10 continua e o passo de mover não escreve.
+- O movimento do card é sempre o último passo, depois da label `agent-ready`: o card só chega em `Specified` com a label já aplicada.
+- Lista `Specified` inexistente ou ambígua no preview: o estado fica em ENTREGA, o evento `previews prontos` não é gerado, as listas do board são mostradas e o usuário decide. Nunca se cria lista.
+- Card já em `Specified`: o preview avisa, T10 continua e o passo de mover não escreve.
 - Falha ao mover (lista sumiu, erro do conector): pare, informe que PR, comentário e label já existem e o card não foi movido; não refaça nada.
 - Branch da spec: o desenvolvimento procura a spec pelo nome `spec/<slug>`. A skill `open-pull-request` deriva o nome do resumo, então o orquestrador passa um resumo cujo slug seja exatamente o de `estado.json`; o preview traz o nome derivado e, se divergir de `spec/<slug>`, o estado fica em ENTREGA e nada é escrito.
 
