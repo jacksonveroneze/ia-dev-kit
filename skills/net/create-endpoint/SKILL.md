@@ -57,7 +57,7 @@ criá-lo. Nunca sobrescreva arquivo existente.
 Existem, antes de começar:
 - na Application, em `Features/{AggregateFolder}/{Operation}/`: `I{Operation}UseCase`, `{Operation}Request` e `{Operation}Response` (e, no paginado, `{Operation}Validator`);
 - na Api, os helpers listados no Bloco A.2 de `references/prerequisites.md`;
-- no GetById, `Id` do `{Operation}Request` do tipo `Guid` (a rota usa `{id:guid}`).
+- no GetById, `Id` do `{Operation}Request` de um tipo com constraint de rota: `Guid` (`guid`), `int` (`int`) ou `long` (`long`). O tipo é lido do `Request`, não presumido (`{IdType}` e `{IdRouteConstraint}`). Outro tipo: pare e relate.
 
 Esta skill não cria use case, helper, registro de DI, nem projeto de testes: se um pré-requisito
 estiver ausente, ela para e relata o que falta e onde era esperado — sem apontar como resolver. Ela
@@ -83,7 +83,7 @@ Aggregate ou AggregateFolder ausente.
 3. **Resolver identificação.** Nunca use o namespace dos exemplos.
    - `ApiRootNamespace` e `ApplicationRootNamespace` (e `ApiTestsRootNamespace`, se houver testes), cada um do seu `.csproj`. Preferencial: `dotnet msbuild <csproj> -getProperty:RootNamespace`. Fallback: `<RootNamespace>`; senão `<AssemblyName>`; senão o nome do `.csproj` sem extensão.
    - Namespace do use case: `{ApplicationRootNamespace}.Features.{AggregateFolder}.{Operation}` (`using` explícito).
-   - Declare, num bloco só, antes de escrever qualquer coisa: `Aggregate=`, `AggregateFolder=`, `Operation=`, `resource=`, `ApiRootNamespace=`, `ApplicationRootNamespace=`, e o path final de cada arquivo.
+   - Declare, num bloco só, antes de escrever qualquer coisa: `Aggregate=`, `AggregateFolder=`, `Operation=`, `resource=`, `IdType=` e `IdRouteConstraint=` (só no GetById), `ApiRootNamespace=`, `ApplicationRootNamespace=`, e o path final de cada arquivo.
 4. **Checar existência.** Se `{Operation}Endpoint.cs` (ou, no paginado, algum arquivo de `Models/`) já existe, ou o método já está na cadeia do `RouteMappings`, pare aqui — não sobrescreva nem duplique, relate.
 5. **Checar usings globais** da Api (`Microsoft.AspNetCore.Mvc`, `MapsterMapper`, `FluentValidation`, a lib `Result`): se já são `global using`, não repita o `using` (`IDE0005` é erro).
 6. **Executar `references/prerequisites.md`** (verifica; cria só o que falta; para se faltar helper) e declarar os namespaces reais dos helpers.
