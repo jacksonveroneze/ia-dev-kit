@@ -18,6 +18,7 @@ Cada skill segue a mesma anatomia: `SKILL.md` (quando usar, entradas, passos) e 
 | [`agents/agente-desenvolvimento/`](agents/agente-desenvolvimento) | Agente que implementa uma tarefa da spec e abre o PR |
 | [`agents/agente-revisao/`](agents/agente-revisao) | Agente que revisa um PR com 4 revisores em paralelo |
 | [`agents/agente-resposta-revisao/`](agents/agente-resposta-revisao) | Agente que ajuda o autor a responder às revisões do PR |
+| [`agents/subagents/`](agents/subagents) | Subagents agnósticos, que rodam sem nenhum agente: revisores de PR e pesquisa em GitHub |
 | [`templates/`](templates) | Modelos para o repositório-alvo: CLAUDE.md, constitution, hooks, CI |
 | [`docs/board-trello.md`](docs/board-trello.md) | Guia do board do Trello: listas, labels e quem move o quê |
 
@@ -104,7 +105,7 @@ Conduz o refinamento de histórias em 4 fases (entrada, refinamento, revisão e 
 | Skill [`estimate-stories`](agents/agente-refinamento/.claude/skills/estimate-stories) | Estima pontos e horas, sugere o dev e sinaliza carga versus capacidade. |
 | Skill [`read-github`](skills/git/read-github) | Lê um repositório e explica a regra atual com arquivo e linha, riscos e lacunas. |
 | Skill [`create-trello-card`](skills/trello/create-trello-card) | Cria um card por story e verifica o resultado, após confirmação. |
-| Subagent [`github-researcher`](agents/agente-refinamento/.claude/agents/github-researcher.md) | Pesquisa em GitHub (somente leitura) na fase de contexto. |
+| Subagent [`github-researcher`](agents/subagents/research/github-researcher.md) | Pesquisa em GitHub (somente leitura) na fase de contexto. |
 
 ### [agente-especificacao](agents/agente-especificacao)
 
@@ -145,7 +146,7 @@ Revisa um PR aberto em 6 etapas: lê o PR e a spec, dispara 4 revisores em paral
 |---|---|
 | Skill [`read-pull-request`](skills/git/read-pull-request) | Lê o PR, somente leitura. |
 | Skill [`post-review-comments`](skills/git/post-review-comments) | Publica a review, após autorização. |
-| Subagents [`reviewer-quality`](agents/agente-revisao/.claude/agents/reviewer-quality.md), [`reviewer-performance`](agents/agente-revisao/.claude/agents/reviewer-performance.md), [`reviewer-tests`](agents/agente-revisao/.claude/agents/reviewer-tests.md), [`reviewer-security`](agents/agente-revisao/.claude/agents/reviewer-security.md) | Revisores somente leitura, com saída em formato fixo. |
+| Subagents [`reviewer-quality`](agents/subagents/review/reviewer-quality.md), [`reviewer-performance`](agents/subagents/review/reviewer-performance.md), [`reviewer-tests`](agents/subagents/review/reviewer-tests.md), [`reviewer-security`](agents/subagents/review/reviewer-security.md) | Revisores somente leitura, com saída em formato fixo. |
 
 ### [agente-resposta-revisao](agents/agente-resposta-revisao)
 
@@ -167,7 +168,7 @@ Em [`templates/`](templates): `CLAUDE.md` global e de projeto, `specs/constituti
 
 ```bash
 ./install.sh     # links das skills (engineering, git, meta-skills, net, trello e as de cada agente) em ~/.codex, ~/.copilot e ~/.claude;
-                 # e, em ~/.claude/agents, os subagents (links) e um arquivo por agente (gerado, com o caminho absoluto do kit)
+                 # e, em ~/.claude/agents, os subagents (links; os de agents/subagents/ e os de cada agente) e um arquivo por agente (gerado, com o caminho absoluto do kit)
 ./uninstall.sh   # remove os links e os arquivos de agente gerados
 ```
 

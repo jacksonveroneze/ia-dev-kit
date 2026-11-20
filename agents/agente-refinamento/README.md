@@ -51,14 +51,14 @@ dados/             time.md, fontes.md
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
 .claude/skills/    estimate-stories, refine-stories (cada uma: SKILL.md e references/examples.md, references/report.md)
-.claude/agents/    github-researcher
+(o subagent github-researcher fica em agents/subagents/research/, instalado por install.sh)
 ```
 
 Skill é capacidade e funciona sozinha; o processo mora só no `AGENTS.md`. As skills compartilhadas `read-github` (`skills/git`) e `create-trello-card` (`skills/trello`) são instaladas por `install.sh`.
 
 ## GitHub Copilot
 
-- **VS Code:** lê `AGENTS.md` (habilite `chat.useAgentsMdFile`), `.claude/skills/` (rode `install.sh` para as compartilhadas) e `.claude/agents/`. Configure o MCP do Trello nele.
+- **VS Code:** lê `AGENTS.md` (habilite `chat.useAgentsMdFile`), `.claude/skills/` e `.claude/agents/` (rode `install.sh` para as skills compartilhadas e para o `github-researcher`). Configure o MCP do Trello nele.
 - **CLI:** copie os agents para `.github/agents/*.agent.md`. Sem a cópia, a consulta ao GitHub roda a skill na conversa.
 
 ## Testes

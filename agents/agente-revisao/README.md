@@ -19,7 +19,7 @@ O fluxo é uma máquina de estados definida em `resources/fluxo.md`. O gate de u
 | 5 Publicação | Preview da review (`COMMENT`) e publicação | `post-review-comments` | PUBLICAR |
 | 6 Concluído | Confere que os comentários foram publicados e resume | | |
 
-Os revisores:
+Os revisores são subagents agnósticos, em [`agents/subagents/review/`](../subagents/review), e também rodam sozinhos fora deste agente:
 
 | Revisor | Foco |
 |---|---|
@@ -37,7 +37,7 @@ Cada achado traz severidade (`BLOQUEANTE`, `IMPORTANTE` ou `SUGESTAO`), `arquivo
 | Tirar uma aprovação manual | Em `resources/fluxo.md`, troque o gate da transição por `auto` |
 | Incluir ou remover um estado | Edite as tabelas Estados e Transições |
 | Incluir uma verificação inicial | Acrescente a linha em `resources/preflight.md` |
-| Incluir um revisor | Crie o arquivo em `.claude/agents/` e acrescente-o à etapa 3 em `resources/fluxo.md` |
+| Incluir um revisor | Crie o arquivo em `agents/subagents/review/`, rode `./install.sh` e acrescente-o à etapa 3 em `resources/fluxo.md` |
 
 O `AGENTS.md` não muda. Valem sempre, em qualquer configuração, as guardas: preflight, escopo de escrita, evento `COMMENT`, bloqueio de dado protegido e regras de git. Mantenha APROVAR COMENTÁRIOS e PUBLICAR como gates de usuário.
 
@@ -59,7 +59,7 @@ resources/         fluxo.md (estados, transições, gates), preflight.md,
                    convencoes.md, ajuda.md
 evals/casos.md     casos de teste
 docs/fluxo.svg     diagrama do fluxo
-.claude/agents/    reviewer-quality, reviewer-performance, reviewer-tests, reviewer-security
+(os revisores ficam em agents/subagents/review/, instalados por install.sh)
 ```
 
 Skill é capacidade e funciona sozinha; o processo mora só em `AGENTS.md` e `resources/`.

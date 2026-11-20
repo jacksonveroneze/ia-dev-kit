@@ -34,11 +34,40 @@ install_dir() {
   done
 }
 
+# Link de um subagent (arquivo .md) em ~/.claude/agents. $2 é a origem, só para a mensagem.
+link_subagent() {
+  local f="$1" origem="$2" base dest
+  base="$(basename "$f")"
+  dest="$HOME/.claude/agents/$base"
+  [ -L "$dest" ] && rm "$dest"
+  if [ -e "$dest" ]; then
+    echo "  ! ${base%.md} (subagent): já existe e não é link; ignorado"
+    return 0
+  fi
+  ln -sfn "$f" "$dest"
+  echo "  - ${base%.md} ($origem) -> .claude"
+  agents_installed+=("${base%.md}")
+}
+
+# Subagents agnósticos, em agents/subagents/<tema>/<nome>.md: rodam sem nenhum orquestrador.
+# Só no Claude Code.
+install_subagents() {
+  local f
+
+  [ -d "$HOME/.claude" ] || return 0
+  [ -d "$HOME/.claude/agents" ] || mkdir -p "$HOME/.claude/agents"
+
+  for f in "$ROOT"/agents/subagents/*/*.md; do
+    [ -f "$f" ] || continue
+    link_subagent "$f" "subagent $(basename "$(dirname "$f")")"
+  done
+}
+
 # Subagents do agente (links) e o próprio agente (arquivo gerado), só no Claude Code.
 # O arquivo gerado aponta, por caminho absoluto, para o AGENTS.md e os resources/ do kit,
 # então o agente roda na raiz de qualquer repositório: claude --agent <nome>.
 install_agent_files() {
-  local a="$1" name f dest base
+  local a="$1" name f dest
   name="$(basename "$a")"
 
   [ -d "$HOME/.claude" ] || return 0
@@ -46,16 +75,7 @@ install_agent_files() {
 
   for f in "$a"/.claude/agents/*.md; do
     [ -f "$f" ] || continue
-    base="$(basename "$f")"
-    dest="$HOME/.claude/agents/$base"
-    [ -L "$dest" ] && rm "$dest"
-    if [ -e "$dest" ]; then
-      echo "  ! ${base%.md} (subagent): já existe e não é link; ignorado"
-      continue
-    fi
-    ln -sfn "$f" "$dest"
-    echo "  - ${base%.md} (subagent de $name) -> .claude"
-    agents_installed+=("${base%.md}")
+    link_subagent "$f" "subagent de $name"
   done
 
   dest="$HOME/.claude/agents/$name.md"
@@ -104,6 +124,10 @@ install_dir "$ROOT/skills/git"
 install_dir "$ROOT/skills/meta-skills"
 install_dir "$ROOT/skills/net"
 install_dir "$ROOT/skills/trello"
+
+echo "==> Instalando subagents"
+
+install_subagents
 
 echo "==> Instalando agentes"
 

@@ -59,5 +59,5 @@ Com `auto` em T10 ou T12, a Condição continua valendo, e a skill de publicaç�
 ## Como alterar
 - **Remover uma aprovação manual:** troque o gate da linha por `auto`.
 - **Incluir um estado:** adicione a linha em Estados e as transições de entrada e saída. Exemplo: um estado de "resposta ao autor" depois de PUBLICACAO.
-- **Incluir um revisor:** crie o arquivo em `.claude/agents/` e acrescente-o na ação de REVISAO e na condição de T7.
+- **Incluir um revisor:** crie o arquivo em `agents/subagents/review/`, rode `./install.sh` e acrescente-o na ação de REVISAO e na condição de T7.
 - **Autorização da skill de escrita:** com gate `auto` em T12, o orquestrador informa a `post-review-comments` a autorização prévia (a transição, citada) no lugar da resposta do usuário.
