@@ -27,7 +27,7 @@ Certo — com contexto: `Account` (demais arquivos: o template com `GetAccountBy
 ```csharp
 using MapsterMapper;
 using {ApplicationRootNamespace}.Abstractions.Repositories.Accounts;
-using {DomainErrorsNamespace};
+using {DomainErrorsNamespace};                    // namespace declarado no DomainErrors.cs localizado por busca
 using {EntityNamespace};
 
 namespace {ApplicationRootNamespace}.Features.Accounts.GetAccountById;

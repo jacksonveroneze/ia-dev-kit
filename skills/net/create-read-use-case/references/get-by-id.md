@@ -9,8 +9,8 @@ esperado, modelado como `NotFound` — nunca sucesso vazio nem exceção.
 
 ## Pré-condições específicas deste padrão
 - A porta `I{Aggregate}Repository` tem `GetByIdAsync({IdType} id, CancellationToken cancellationToken)`. Ausente ou com outra assinatura: pare e relate o que era esperado e onde.
-- `Domain/Common/DomainErrors.cs` existe; resolva também `{DomainErrorsNamespace}` (o `namespace` declarado no arquivo) e declare-o junto dos demais valores. Arquivo inexistente: pare e relate.
-- `DomainErrors.{Aggregate}Error.NotFound` existindo, use. Não existindo, acrescente-o seguindo o padrão dos erros vizinhos do arquivo (`Code` estável `{Aggregate}.NotFound`, CONV-021). Esse é o único arquivo fora da Application que esta skill escreve.
+- Localize `DomainErrors.cs` por busca dentro de `{DomainProjectDir}` (pode estar em `Domain/Common/`, `Domain/Errors/` ou outra pasta; não presuma o caminho). Resolva `{DomainErrorsFile}` (o arquivo encontrado) e `{DomainErrorsNamespace}` (o `namespace` declarado no próprio arquivo) e declare-os junto dos demais valores. Nenhum arquivo encontrado: pare e relate o que era esperado e onde. Mais de um: pare e pergunte qual usar.
+- `DomainErrors.{Aggregate}Error.NotFound` existindo, use. Não existindo, acrescente-o seguindo o padrão dos erros vizinhos do arquivo (`Code` estável `{Aggregate}.NotFound`, CONV-021). Só no `{DomainErrorsFile}` localizado: a skill nunca cria o `DomainErrors.cs`. Esse é o único arquivo fora da Application que esta skill escreve.
 
 ## Raciocínio antes de escrever (CoT) — específico deste padrão
 - Antes de gerar: (1) `DomainErrors.{Aggregate}Error.NotFound` existe ou será acrescentado; (2) a porta tem `GetByIdAsync`; (3) qualifique o tipo da entidade inline só se houver ambiguidade de nome.
