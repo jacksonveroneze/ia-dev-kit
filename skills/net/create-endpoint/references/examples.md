@@ -59,6 +59,10 @@ internal static class GetAccountByIdEndpoint
 }
 ```
 
+Outros tipos de id: o tipo vem da propriedade `Id` do `Request`. Com `int`, a rota é `"{id:int}"` e o
+parâmetro `int id`; com `string`, a rota é `"{id}"` (sem constraint), o parâmetro `string id`, e qualquer
+valor chega ao use case. O resto do endpoint não muda, e o formato do id nunca é validado no endpoint.
+
 Diferença: só adapta protocolo — monta o `Request`, chama o use case, devolve `ToIResult()` (CONV-040/036);
 nenhum `DbContext`, `try/catch` ou status manual; devolve o response da Application, não a entidade
 (CONV-037/070); nome de rota igual à operação; policy por constante (CONV-079); `CancellationToken`
