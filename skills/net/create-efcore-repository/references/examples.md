@@ -3,10 +3,12 @@
 Exemplos de apoio do `SKILL.md`. Em conflito com o Template canônico (`template.md`), o Template vence;
 os exemplos são reforço didático, não a fonte primária.
 
-Pedido: "repositório do agregado Account." (`Aggregate=Account`, `AggregateFolder=Accounts`,
-`IdType=Guid`.)
+## Só GetById
+Pedido: "repositório do agregado Account, só com GetById." (`Aggregate=Account`,
+`AggregateFolder=Accounts`, `Operations=GetById`, `IdType=Guid`.)
 
-Errado — sem contexto: generic repository, síncrono, vaza `IQueryable`, porta junto da
+Errado — gerar o CRUD completo (`GetPagedAsync`, `CreateAsync`, `UpdateAsync`, `DeleteAsync`) quando só o
+`GetById` foi pedido. Outro errado — sem contexto: generic repository, síncrono, vaza `IQueryable`, porta junto da
 implementação e fora da Application, injeta `DbContext` direto:
 ```csharp
 namespace Bank.Infrastructure;                        // porta junto da impl, fora da Application
@@ -20,6 +22,54 @@ public class AccountRepository(AppDbContext db)       // injeta DbContext direto
 {
 }
 ```
+
+Certo — com contexto. Porta em
+`{ApplicationProjectDir}/Abstractions/Repositories/Accounts/IAccountRepository.cs`:
+```csharp
+using {EntityNamespace};
+
+namespace {ApplicationRootNamespace}.Abstractions.Repositories.Accounts;
+
+public interface IAccountRepository
+{
+    Task<Account?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken);
+}
+```
+
+Implementação em `{InfrastructureProjectDir}/Repositories/Accounts/AccountRepository.cs`:
+```csharp
+using {EntityNamespace};
+using JacksonVeroneze.NET.EntityFramework.Interfaces;
+
+namespace {InfrastructureRootNamespace}.Repositories.Accounts;
+
+public sealed class AccountRepository(
+    IEfCoreRepository<Account, {DbContextType}> efRepository) : IAccountRepository
+{
+    public Task<Account?> GetByIdAsync(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        return efRepository.GetByIdAsync(
+            filter => filter.Id == id, cancellationToken);
+    }
+}
+```
+
+Diferença: só a operação pedida na porta e na implementação, sem `Page<T>`, sem `using` de paginação e
+sem `SaveChanges` (nada de mutação foi pedido); porta específica do agregado na Application e
+implementação na Infrastructure, cada uma com o `RootNamespace` do **seu** projeto (CONV-010/030/013);
+retorna `Account?`, não `IQueryable` nem `Result` (CONV-034); construtor primário injeta
+`IEfCoreRepository<Account, {DbContextType}>`, nunca o `DbContext` direto; `GetByIdAsync` repassa uma
+única chamada async, sem `async`/`await` e com corpo em bloco (CONV-088/089); lambda descritivo
+(`filter`), nunca `x` (CONV-090); `cancellationToken` sem default, um parâmetro por linha
+(CONV-044/074); implementação `sealed` (CONV-064).
+
+## CRUD completo (quando o usuário pede as cinco operações)
+Pedido: "repositório do agregado Account com GetById, GetPaged, Create, Update e Delete."
+(`Operations=GetById, GetPaged, Create, Update, Delete`.) Só aqui entram `Page<T>` e o `using` de paginação.
 
 Certo — com contexto. Porta em
 `{ApplicationProjectDir}/Abstractions/Repositories/Accounts/IAccountRepository.cs`:
@@ -120,7 +170,7 @@ public sealed class AccountRepository(
 }
 ```
 
-Diferença: porta específica do agregado na Application e implementação na Infrastructure, cada
+Diferença (CRUD completo; vale a do GetById, mais): porta específica do agregado na Application e implementação na Infrastructure, cada
 uma com o `RootNamespace` do **seu** projeto (CONV-010/030/013); retorna `Account?`/`Page<Account>`,
 não `IQueryable` nem `Result` (CONV-034); construtor primário injeta
 `IEfCoreRepository<Account, {DbContextType}>`, nunca o `DbContext` direto, e `{DbContextType}` é o
