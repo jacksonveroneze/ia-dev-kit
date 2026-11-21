@@ -3,10 +3,15 @@
 Molde dos dois arquivos gerados. Em conflito com os Exemplos, o Template vence. Os placeholders
 recebem os valores resolvidos no passo 2 do Fluxo; nunca copie literalmente.
 
+Cada método abaixo é um bloco independente: gere só os blocos das operações solicitadas (`Operations`),
+na porta e na implementação, e deixe de fora os demais. Os `using` seguem os blocos presentes:
+`JacksonVeroneze.NET.Pagination.Offset` só com `GetPaged`; `{EntityNamespace}` e
+`JacksonVeroneze.NET.EntityFramework.Interfaces` sempre. O `{IdType}` só aparece com `GetById`.
+
 ```csharp
 // {ApplicationProjectDir}/Abstractions/Repositories/{AggregateFolder}/I{Aggregate}Repository.cs
 // using {EntityNamespace};                        // só se não houver global using (passo 5)
-// using JacksonVeroneze.NET.Pagination.Offset;    // só se não houver global using (passo 5)
+// using JacksonVeroneze.NET.Pagination.Offset;    // só com GetPaged, e só se não houver global using (passo 5)
 
 namespace {ApplicationRootNamespace}.Abstractions.Repositories.{AggregateFolder};
 
@@ -39,7 +44,7 @@ public interface I{Aggregate}Repository
 // {InfrastructureProjectDir}/Repositories/{AggregateFolder}/{Aggregate}Repository.cs
 // using {EntityNamespace};                                    // só se não houver global using (passo 5)
 // using JacksonVeroneze.NET.EntityFramework.Interfaces;       // só se não houver global using (passo 5)
-// using JacksonVeroneze.NET.Pagination.Offset;                // só se não houver global using (passo 5)
+// using JacksonVeroneze.NET.Pagination.Offset;                // só com GetPaged, e só se não houver global using (passo 5)
 
 namespace {InfrastructureRootNamespace}.Repositories.{AggregateFolder};
 

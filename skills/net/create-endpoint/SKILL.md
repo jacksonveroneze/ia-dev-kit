@@ -57,7 +57,7 @@ criá-lo. Nunca sobrescreva arquivo existente.
 Existem, antes de começar:
 - na Application, em `Features/{AggregateFolder}/{Operation}/`: `I{Operation}UseCase`, `{Operation}Request` e `{Operation}Response` (e, no paginado, `{Operation}Validator`);
 - na Api, os helpers listados no Bloco A.2 de `references/prerequisites.md`;
-- no GetById, `Id` do `{Operation}Request` do tipo `Guid` (a rota usa `{id:guid}`).
+- no GetById, `Id` do `{Operation}Request` de tipo `Guid`, `int` ou `string`. O tipo é lido da propriedade `Id` do `Request`, não presumido (`{IdType}`; a constraint de rota `{IdRouteConstraint}` deriva dele, tabela em `references/get-by-id.md`). Outro tipo: pare e relate o que era esperado e onde.
 
 Esta skill não cria use case, helper, registro de DI, nem projeto de testes: se um pré-requisito
 estiver ausente, ela para e relata o que falta e onde era esperado — sem apontar como resolver. Ela
@@ -83,7 +83,8 @@ Aggregate ou AggregateFolder ausente.
 3. **Resolver identificação.** Nunca use o namespace dos exemplos.
    - `ApiRootNamespace` e `ApplicationRootNamespace` (e `ApiTestsRootNamespace`, se houver testes), cada um do seu `.csproj`. Preferencial: `dotnet msbuild <csproj> -getProperty:RootNamespace`. Fallback: `<RootNamespace>`; senão `<AssemblyName>`; senão o nome do `.csproj` sem extensão.
    - Namespace do use case: `{ApplicationRootNamespace}.Features.{AggregateFolder}.{Operation}` (`using` explícito).
-   - Declare, num bloco só, antes de escrever qualquer coisa: `Aggregate=`, `AggregateFolder=`, `Operation=`, `resource=`, `ApiRootNamespace=`, `ApplicationRootNamespace=`, e o path final de cada arquivo.
+   - No GetById, leia o tipo da propriedade `Id` do `{Operation}Request` (`Guid`, `int` ou `string`; outro: pare e relate) e derive `IdType` e `IdRouteConstraint` (`guid`, `int` ou nenhuma para `string`).
+   - Declare, num bloco só, antes de escrever qualquer coisa: `Aggregate=`, `AggregateFolder=`, `Operation=`, `resource=`, `IdType=` e `IdRouteConstraint=` (só no GetById; `nenhuma` para `string`), `ApiRootNamespace=`, `ApplicationRootNamespace=`, e o path final de cada arquivo.
 4. **Checar existência.** Se `{Operation}Endpoint.cs` (ou, no paginado, algum arquivo de `Models/`) já existe, ou o método já está na cadeia do `RouteMappings`, pare aqui — não sobrescreva nem duplique, relate.
 5. **Checar usings globais** da Api (`Microsoft.AspNetCore.Mvc`, `MapsterMapper`, `FluentValidation`, a lib `Result`): se já são `global using`, não repita o `using` (`IDE0005` é erro).
 6. **Executar `references/prerequisites.md`** (verifica; cria só o que falta; para se faltar helper) e declarar os namespaces reais dos helpers.
@@ -108,7 +109,7 @@ Leia o arquivo do padrão escolhido, inteiro, antes de escrever; cada um traz o 
 Outro use case (escrita, cursor, outra leitura): **não há padrão** — pare e pergunte, não improvise.
 
 ## Exemplos
-Leia `references/examples.md` antes de escrever: `GetById`, `GetPaged` e pedidos incompletos ou fora de padrão.
+Leia `references/examples.md` antes de escrever: `GetById` (exemplo com `Guid` e nota para `int` e `string`), `GetPaged` e pedidos incompletos ou fora de padrão.
 
 ## Anti-patterns (recusar)
 - Escrever sem todos os inputs ou inferir o que falta → pare e liste só o que falta.
@@ -125,6 +126,7 @@ Leia `references/examples.md` antes de escrever: `GetById`, `GetPaged` e pedidos
 ## Checklist + Harness
 Checklist (comum; o arquivo do padrão acrescenta os itens do padrão):
 - [ ] Todos os inputs informados e válidos antes de qualquer escrita; nada inferido.
+- [ ] No GetById, `IdType` lido do `Request` (`Guid`, `int` ou `string`) e `IdRouteConstraint` declarados no passo 3; o endpoint não restringe nem valida o formato do id.
 - [ ] `references/prerequisites.md` executado e arquivo do padrão lido; nada duplicado.
 - [ ] Arquivos nos paths e namespaces de "O que gera", com o `RootNamespace` da Api; um tipo por arquivo (CONV-012/013).
 - [ ] Endpoint fino: monta o Request, chama o use case, devolve `ToIResult()` (CONV-040/036); sem `try/catch`.
@@ -147,4 +149,4 @@ vez e, se persistir, reporte como Harness incompleto e pare — não declare o e
 concluído.
 
 ## Relatório
-Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.
+No GetById, o relatório informa o `IdType` e a `IdRouteConstraint` usados. Ao concluir (ou parar), apresente o relatório no formato de `references/report.md`.

@@ -4,7 +4,7 @@ Apresentado ao concluir ou ao parar. Uma tabela, só o que foi feito, uma linha 
 
 | Item | Resultado |
 |---|---|
-| Endpoint | `{ApiProjectDir}/Endpoints/{AggregateFolder}/v1/{Operation}Endpoint.cs` e, no paginado, os modelos REST em `Models/` |
+| Endpoint | `{ApiProjectDir}/Endpoints/{AggregateFolder}/v1/{Operation}Endpoint.cs` e, no paginado, os modelos REST em `Models/`; no GetById, também o `IdType` e a `IdRouteConstraint` usados |
 | Acréscimos | linha na cadeia do `RouteMappings`, chamada no `Program.cs` e constante `RouteNames` (só o que faltava) |
 | Compartilhados criados | `ResultTranslator` e `RouteMappings`, só se não existiam; ou "nenhum" |
 | Testes | arquivos criados e cenários cobertos, ou "projeto de testes ausente: não criado" |
