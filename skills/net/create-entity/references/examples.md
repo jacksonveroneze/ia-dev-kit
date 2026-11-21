@@ -75,6 +75,50 @@ Diferença: `sealed class` com ctor privado (CONV-023/064); `Open` valida e reto
 EF (CONV-024); todas as propriedades `get`-only — nada muda depois do nascimento, porque nenhum
 comportamento foi pedido nem gerado; `Error` único, `Code` estável (CONV-021).
 
+## Identity = int (id gerado pelo banco)
+Mesmo pedido, com `Identity` = `int`. Muda só a identidade: o `Id` não é inicializado pela entidade
+(nem parâmetro no construtor, nem argumento no `Create`, nem `Id = 0`), e o banco atribui o valor.
+```csharp
+public sealed class Account
+{
+    private static readonly Error InitialDepositNegative =
+        Error.Create("Account.InitialDepositNegative",
+            "Initial deposit cannot be negative.");
+
+    public int Id { get; }
+
+    public AccountNumber Number { get; }
+
+    public Money Balance { get; }
+
+    public DateTimeOffset OpenedAt { get; }
+
+    private Account(AccountNumber number,
+        Money balance, DateTimeOffset openedAt)
+    {
+        Number = number;
+        Balance = balance;
+        OpenedAt = openedAt;
+    }
+
+    public static Result<Account> Open(
+        AccountNumber number, Money initialDeposit,
+        DateTimeOffset openedAt)
+    {
+        if (initialDeposit.Amount < 0)
+        {
+            return Result<Account>
+                .FromInvalid(InitialDepositNegative);
+        }
+
+        return Result<Account>.WithSuccess(
+            new Account(number, initialDeposit, openedAt));
+    }
+}
+```
+Errado com `int`: `Id = 0;` no construtor, parâmetro `int id` no `Open`, ou `[Key]`/`[DatabaseGenerated]` na
+entidade (CONV-024). Testes não afirmam valor inicial de `Id`.
+
 ## Pedido incompleto
 "Crie a entidade Account." Faltam o agregado, o estado (propriedades e tipos, com cada uma fixa ou
 mutável) e as invariantes de criação.
